@@ -1,0 +1,39 @@
+[
+  {
+    "id": 1,
+    "name": "Shisha, 20mm",
+    "used_amount":200,
+    "building":"Z1",
+    "total_item_per_floor":2600,
+    "description": "Made in turkey"
+    },
+    
+    {
+      "id": 2,
+      "name": "Shish, 15mm",
+      "used_amount":100,
+      "building":"B2",
+      "total_item_per_floor":700,
+      "description": "Hieghest quality"
+      },
+    {
+      "id": 3,
+      "name": "Concreat, colim",
+      "used_amount":240,
+      "building":"H1",
+      "total_item_per_floor":4800,
+      "description": "new and old ones"
+      },
+      {
+        "id": 4,
+        "name": "Concreat, slap",
+        "used_amount":170,
+        "building":"Z4",
+        "total_item_per_floor":170,
+        "description": "made in china"
+        }
+      
+  
+]
+
+

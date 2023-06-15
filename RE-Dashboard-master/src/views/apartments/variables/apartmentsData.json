@@ -1,0 +1,76 @@
+[
+  {
+    "id": 1,
+    "name": "Z1A1",
+    "type": "Installments",
+    "number_of_installments": 5,
+    "price_per_installments": 2500,
+    "remaining_price": 10000,
+    "total_price": 12500,
+    "description":"Luxurious apartment with high-end finishes and breathtaking vistas",
+    "building_id": "B001"
+    }
+    ,
+    {
+    "id": 2,
+    "name": "Z1A2",
+    "type": "Installments",
+    "number_of_installments": 4,
+    "price_per_installments": 2500,
+    "remaining_price": 7500,
+    "total_price": 10000,
+    "description":"Elegant apartment with tasteful decor and panoramic views",
+    "building_id": "B001"
+    }
+    ,
+    {
+    "id": 3,
+    "name": "Z1A3",
+    "type": "Cash",
+    "number_of_installments": 1,
+    "price_per_installments": 30000,
+    "remaining_price": 0,
+    "total_price": 30000,
+    "description":"Cozy apartment with modern interiors and ample natural light",
+    "building_id": "B001"
+    },
+    
+    {
+    "id": 4,
+    "name": "X2A1",
+    "type": "Installments",
+    "number_of_installments": 6,
+    "price_per_installments": 5000,
+    "remaining_price": 25000,
+    "total_price": 30000,
+    "description":"Stylish apartment with a spacious layout and contemporary design.",
+    "building_id": "B002"
+    }
+    ,
+    {
+    "id": 5,
+    "name": "X2A2",
+    "type": "Installments",
+    "number_of_installments": 2,
+    "price_per_installments": 5000,
+    "remaining_price": 5000,
+    "total_price": 10000,
+    "description":"Tranquil apartment in a peaceful neighborhood with well-appointed amenities",
+    "building_id": "B002"
+    },
+    
+    {
+    "id": 6,
+    "name": "Y3A1",
+    "type": "Cash",
+    "number_of_installments": 1,
+    "price_per_installments": 43000,
+    "remaining_price": 0,
+    "total_price": 43000,
+    "description":"Chic apartment with sleek finishes and an open-concept floor plan",
+    "building_id": "B003"
+    }
+]
+
+
+
