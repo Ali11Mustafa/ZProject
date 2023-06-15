@@ -58,5 +58,9 @@
     "prettier": "^2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.1",
     "tailwindcss": "^3.1.8"
+  },
+  "netlify": {
+    "build": "npm run build",
+    "publish": "build"
   }
 }
