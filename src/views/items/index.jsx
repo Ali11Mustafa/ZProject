@@ -1,12 +1,15 @@
 
+import { useEffect,useState } from "react";
 import  itemsData  from "./variables/itemsData.json";
-
 import ItemsTable from "./components/ItemsTable"; 
 import useItemsTableColumns from "./variables/useItemsTableColumns";
+import axios from "axios";
+import useFetchItems from "hooks/useFetchItems";
 
 const ItemsDashboard = () => {
+  const {itemsTableColumns} = useItemsTableColumns();
+ const {Data}=useFetchItems();
 
-  const {itemsTableColumns} = useItemsTableColumns()
 
   return (
     <div>
@@ -16,7 +19,7 @@ const ItemsDashboard = () => {
         <div>
           <ItemsTable
             columnsData={itemsTableColumns}
-            tableData={itemsData}
+            tableData={Data}
           />
         </div>
 

@@ -12,27 +12,15 @@ export default function useItemsTableColumns() {
     },
     {
       Header: t("itemsTable.columns.type"),
+      accessor: "remaining_item",
+    },
+    {
+      Header: t("itemsTable.columns.remaining_item"),
       accessor: "type",
     },
     {
-      Header: t("itemsTable.columns.amount"),
-      accessor: "amount",
-    },
-    {
-      Header: t("itemsTable.columns.amountUnit"),
-      accessor: "amount_unit",
-    },
-    {
-      Header: t("itemsTable.columns.remainingAmount"),
-      accessor: "remaining_amount",
-    },
-    {
-      Header: t("itemsTable.columns.totalPrice"),
-      accessor: "total_price",
-    },
-    {
-      Header: t("itemsTable.columns.pricePerBuilding"),
-      accessor: "price_per_building",
+      Header: t("itemsTable.columns.actions"),
+      accessor: "actions",
     },
    
   ];
@@ -42,4 +30,3 @@ export default function useItemsTableColumns() {
 
   return {itemsTableColumns}
 }
-

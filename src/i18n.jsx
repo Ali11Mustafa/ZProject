@@ -51,11 +51,12 @@ const resources = {
         columns:{
           "name":'NAME',
           "type":'TYPE',
-          "amount":'AMOUNT',
+          "remaining_item":'REMAINING ITEM',
           "amountUnit":'AMOUNT UNIT',
           "remainingAmount":'REMAINING AMOUNT',
           "totalPrice":'TOTAL PRICE',
           "pricePerBuilding":'PRICE PER BUILDING',
+          "actions":'ACTIONS',
       },
       },
      
@@ -65,8 +66,6 @@ const resources = {
         "numberOfFloors":"Number of Floors",
         "numberOfApartmentsPerFloor":"No. of Apartments per Floor",
         "description":"Description",
-        "close":"Close",
-        "add":"Add"
       },
       newApartment:{
         "title":"Add New Apartment",
@@ -75,8 +74,7 @@ const resources = {
         "typeOfInstallments":"Type of Installments",
         "numberOfInstallments":"Number of Installments",
         "description":"Description",
-        "close":"Close",
-        "add":"Add"
+  
       },
       newNeed:{
         "title":"Add New Need",
@@ -84,8 +82,6 @@ const resources = {
         "usedAmount":"Used Amount",
         "building":"Building",
         "description":"Description",
-        "close":"Close",
-        "add":"Add"
         
       },
       newItem:{
@@ -95,8 +91,6 @@ const resources = {
         "amount":"Amount",
         "amountUnit":"Amount Unit",
         "totalPrice":"Total Price",
-        "close":"Close",
-        "add":"Add"
         
       }
       ,
@@ -123,6 +117,16 @@ const resources = {
         "en":"English",
         "ku":"Kurdish",
         "ar":"arabic"
+      },
+      widgets:{
+        "numberOfBuildings":"Number of Buildings",
+        "numberOfApartments":"Number of Apartments",
+      },
+      formButtons:{
+        "create":"Create",
+        "update":"Update",
+        "close":"Close",
+        "cancel":"Cancle",
       }
     }
     
@@ -172,11 +176,12 @@ const resources = {
         columns:{
           "name":'ناو',
           "type":'جۆر',
-          "amount":'ڕێژە',
+          "remaining_item":'ڕێژە',
           "amountUnit":'یەکەی ڕێژە',
           "remainingAmount":'ڕێژەی ماوە',
           "totalPrice":'کۆی گشتی نرخ',
           "pricePerBuilding":'نرخی هەر بینایەک',
+          "actions":'کردارەکان',
       },
       },
       apartmentsTable:{
@@ -199,8 +204,6 @@ const resources = {
         "numberOfFloors":"ژمارەی نهۆمەکان",
         "numberOfApartmentsPerFloor":"ژمارەی شوقەکان بۆ هەر نهۆمێک",
         "descriptioon":"باسکردن",
-        "close":"داخستن",
-        "add":"زیادکردن"
       },
       newApartment:{
         "title":"شوقەی نوێ زیاد بکە",
@@ -209,8 +212,6 @@ const resources = {
         "typeOfInstallments":"جۆری قیستەکان",
         "numberOfInstallments":"ژمارەی قیستەکان",
         "description":"باسکردن",
-        "close":"داخستن",
-        "add":"زیادکردن"
       },
       newNeed:{
         "title":"پێداویستی نوێ زیادبکە",
@@ -218,8 +219,7 @@ const resources = {
         "usedAmount":"ڕێژەی بەکارهاتوو",
         "building":"باڵەخانە",
         "description":"باسکردن",
-        "close":"داخستن",
-        "add":"زیادکردن"
+       
         
       },
       newItem:{
@@ -229,8 +229,7 @@ const resources = {
         "amount":"ڕێژە",
         "amountUnit":"یەکەی ڕێژە",
         "totalPrice":"کۆی گشتی بڕه پارە",
-        "close":"داخستن",
-        "add":"زیادکردن"
+       
         
       },
       actions:{
@@ -243,6 +242,16 @@ const resources = {
         "en":"ئینگلیزی",
         "ku":"کوردی",
         "ar":"عەرەبی"
+      },
+      widgets:{
+        "numberOfBuildings":"ژمارەی باڵەخانەکان",
+        "numberOfApartments":"ژمارەی شوقەکان",
+      },
+      formButtons:{
+        "create":"دروستبکە",
+        "update":"نوێبکەوە",
+        "close":"دابخە",
+        "cancel":"پەشیمانبوونەوە",
       }
     },
   
@@ -292,11 +301,12 @@ const resources = {
         columns:{
           "name":'اسم',
           "type":'النوع',
-          "amount":'المبلغ',
+          "remaining_item":'المبلغ',
           "amountUnit":'وحدة المبلغ',
           "remainingAmount":'الكمية المتبقية',
           "totalPrice":'السعر الكلي',
           "pricePerBuilding":'سعر المبنى',
+          "actions":'أجراءات',
       },
       },
       apartmentsTable:{
@@ -319,8 +329,7 @@ const resources = {
         "numberOfFloors":"عدد الطوابق",
         "numberOfApartmentsPerFloor":"عدد الشقق في الطابق",
         "descriptioon":"وصف",
-        "close":"يغلق",
-        "add":"يضيف"
+        
       }
       ,
       newApartment:{
@@ -330,8 +339,7 @@ const resources = {
         "typeOfInstallments":"نوع الأقساط",
         "numberOfInstallments":"عدد الأقساط",
         "description":"وصف",
-        "close":"يغلق",
-        "add":"يضيف"
+      
       },
       newNeed:{
         "title":"أضف حاجة جديدة",
@@ -339,8 +347,7 @@ const resources = {
         "usedAmount":"المبلغ المستخدم",
         "building":"البناء",
         "description":"وصف",
-        "close":"يغلق",
-        "add":"يضيف"
+      
         
       },
       newItem:{
@@ -350,8 +357,7 @@ const resources = {
         "amount":"المبلغ",
         "amountUnit":"وحدة المبلغ",
         "totalPrice":"السعر الكلي",
-        "close":"يغلق",
-        "add":"يضيف"
+       
         
         
       },
@@ -365,6 +371,16 @@ const resources = {
         "en":"الإنكليزية",
           "ku":"الكردية",
           "ar":"العربية"
+      },
+      widgets:{
+        "numberOfBuildings":"عدد المباني",
+        "numberOfApartments":"عدد الشقق",
+      },
+      formButtons:{
+        "create":"يخلق",
+        "update":"تحديث",
+        "close":"يغلق",
+        "cancel":"يلغي",
       }
     },
    

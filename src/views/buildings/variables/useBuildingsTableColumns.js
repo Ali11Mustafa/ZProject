@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-
-
 export default function useBuildingsTableColumns() {
   const {t} = useTranslation()
 
@@ -41,4 +39,3 @@ export default function useBuildingsTableColumns() {
 
   return {buildingsTableColumns}
 }
-

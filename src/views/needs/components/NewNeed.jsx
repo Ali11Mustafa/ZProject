@@ -135,12 +135,12 @@ export default function NewNeed() {
                     type="button"
                     onClick={() => setShowModal(false)}
                   >
-                    {t("newNeed.close")}
+                    {t("formButtons.close")}
                   </button>
                   <button
                    className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                   >
-                     {t("newNeed.add")}
+                     {t("formButtons.create")}
                   </button>
                 </div>
                   </form>

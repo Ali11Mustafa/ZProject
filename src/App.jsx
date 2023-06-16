@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Routes, Route  } from "react-router-dom";
-  
 import Apartments from "pages/Apartments";
 import { create } from "zustand";
 import Buildings from "pages/Buildings";
@@ -8,7 +7,8 @@ import Auth from "pages/Auth";
 import Needs from "pages/Needs";
 import Items from "pages/Items";
 import { useTranslation } from "react-i18next";
-
+import UpdateItem from "views/items/pages/UpdateItem";
+import DeleteItem from "views/items/pages/DeleteItem";
 
 export const useSearchStore = create((set) => ({
   searchText: '',
@@ -22,6 +22,7 @@ export const useAuthStore = create((set) => ({
   login: () => set(() => ({ isAuthenticated: true })),
   logout: () => set(() => ({ isAuthenticated: false })),
 }));
+
 export const useLanguageStore = create((set) => ({
   language: 'en',
   changeLanguage: (language) => set(() => ({ language: language })),
@@ -45,12 +46,16 @@ const App = () => {
   if(!isAuthenticated){
     return <Auth/>
   }
+
   return (
     <Routes> 
       <Route path="/" element={<Buildings />} /> 
       <Route path="/apartments/:buildingId" element={<Apartments />} /> 
       <Route path="/needs" element={<Needs />} /> 
       <Route path="/items" element={<Items />} /> 
+      <Route path="/items/update/:itemId" element={<UpdateItem />} /> 
+      <Route path="/items/delete/:itemId" element={<DeleteItem />} /> 
+
     </Routes>
   );
 };

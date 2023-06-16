@@ -10,6 +10,9 @@ import {
 import NewItem from "./NewItem";
 import { useLanguageStore } from "App";
 import { useTranslation } from "react-i18next";
+import { FiEdit } from "react-icons/fi";
+import { MdDeleteOutline } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 
 const ItemsTable = (props) => {
@@ -18,6 +21,7 @@ const ItemsTable = (props) => {
   const columns = useMemo(() => columnsData, [columnsData]);
   
   const data = useMemo(() => tableData, [tableData]);
+
 
   const tableInstance = useTable(
     {
@@ -83,10 +87,12 @@ const ItemsTable = (props) => {
           </thead>
           <tbody {...getTableBodyProps()} >
             {page.map((row, index) => {
+              console.log(row);
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()} key={index} >
                   {row.cells.map((cell, index) => {
+                  
                     let data = "";
                    if (cell.column.id === "name") {
                       data = (
@@ -95,51 +101,52 @@ const ItemsTable = (props) => {
                         </p>
                       );
                     }
+                    else if (cell.column.id === "remaining_item") {
+                      data = (
+                        <p  className="text-sm font-medium text-black dark:text-white">
+                          {cell.value}
+                        </p>
+                      );
+                    }
+                   
                     else if (cell.column.id === "type") {
                       data = (
                         <p  className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
-                      );
-                    }
-                   
-                    else if (cell.column.id === "amount") {
-                      data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
                         {cell.value}
                       </p>
                       );
                     }
-                    else if (cell.column.id === "amount_unit") {
-                      data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
-                        {cell.value}
-                      </p>
-                      );
-                    }
-                   
-                    else if (cell.column.id === "remaining_amount") {
-                      data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
-                        {cell.value}
-                      </p>
-                      );
-                    }
-                    else if (cell.column.id === "total_price") {
-                      data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
-                      );
                     
-                    }
-                    else if (cell.column.id === "price_per_building") {
+                    else if (cell.column.id === "actions") {
                       data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
+                        <div className="flex items-center gap-4">
+                          <Link
+                          to={`/items/delete/${row.original.id}`}
+
+className="flex items-center gap-1 text-red-600"
+                          >
+                            <div className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-xl   ">
+                              <MdDeleteOutline />
+                            </div>
+                            <p className="text-start text-sm font-medium text-black dark:text-white">
+                              {t("actions.delete")}
+                            </p>
+                          </Link>
+                          <Link
+                          to={`/items/update/${row.original.id}`}
+                            className="flex items-center gap-1 text-green-600"
+                          >
+                            <div className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-lg   ">
+                              <FiEdit />
+                            </div>
+                            <p className=" text-start text-sm font-medium text-black dark:text-white">
+                              {t("actions.update")}
+                            </p>
+                          </Link>
+
+                          
+                        </div>
                       );
-                    
                     }
                     
                     return (
@@ -169,4 +176,3 @@ const ItemsTable = (props) => {
 };
 
 export default ItemsTable;
-

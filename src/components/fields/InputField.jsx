@@ -6,8 +6,6 @@ function InputField(props) {
   const { label, id, extra, type,name, placeholder, variant, state, disabled, register, value } =
     props;
 
-
-
     const language = useLanguageStore((state) => state.language);
 
 

@@ -147,12 +147,12 @@ export default function NewApartment() {
                     type="button"
                     onClick={() => setShowModal(false)}
                   >
-                    {t("newApartment.close")}
+                    {t("formButtons.close")}
                   </button>
                   <button
                     className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                   >
-                     {t("newApartment.add")}
+                     {t("formButtons.create")}
                   </button>
                 </div>
                   </form>
