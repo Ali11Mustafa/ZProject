@@ -1,13 +1,30 @@
 
 
-import  needsData  from "./variables/needsData.json";
-
+import { useState, useEffect } from "react";
+import axios from "axios";
 import NeedsTable from "./components/NeedsTable"; 
 import useNeedsTableColumns from "./variables/useNeedsTableColumns";
 
 const NeedsDashboard = () => {
+  const[needs,setNeeds]=useState([]);
 
   const {needsTableColumns} = useNeedsTableColumns()
+  const API = "https://api.hirari-iq.com/api/needs";
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    axios
+      .get(API)
+      .then((response) => {
+        setNeeds(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <div>
@@ -17,7 +34,7 @@ const NeedsDashboard = () => {
         <div>
           <NeedsTable
             columnsData={needsTableColumns}
-            tableData={needsData}
+            tableData={needs}
           />
         </div>
 

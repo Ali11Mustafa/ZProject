@@ -87,7 +87,6 @@ const ItemsTable = (props) => {
           </thead>
           <tbody {...getTableBodyProps()} >
             {page.map((row, index) => {
-              console.log(row);
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()} key={index} >

@@ -9,6 +9,7 @@ import Items from "pages/Items";
 import { useTranslation } from "react-i18next";
 import UpdateItem from "views/items/pages/UpdateItem";
 import DeleteItem from "views/items/pages/DeleteItem";
+import Updateblock from "views/buildings/Pages/Updateblock";
 
 export const useSearchStore = create((set) => ({
   searchText: '',
@@ -50,6 +51,7 @@ const App = () => {
   return (
     <Routes> 
       <Route path="/" element={<Buildings />} /> 
+      <Route path="/buildings/update/:buildingId" element={<Updateblock />} /> 
       <Route path="/apartments/:buildingId" element={<Apartments />} /> 
       <Route path="/needs" element={<Needs />} /> 
       <Route path="/items" element={<Items />} /> 

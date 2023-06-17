@@ -14,9 +14,10 @@ import { Link } from "react-router-dom";
 import { useSearchStore } from "App";
 import { useTranslation } from "react-i18next";
 import { useLanguageStore } from "App";
+import { data } from "autoprefixer";
 
 const BuildingsTable = (props) => {
-  const { columnsData, tableData } = props;
+  const { columnsData, tableData,OnDeleteBuilding,OnUpdateBlock} = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const searchText = useSearchStore((state) => state.searchText);
@@ -51,11 +52,11 @@ const BuildingsTable = (props) => {
   initialState.pageSize = 11;
 
   function handleDelete(rowId) {
-    // console.log("delete row " + rowId)
+    OnUpdateBlock(rowId,1,tableData);
+    OnDeleteBuilding(rowId)
   }
 
   function handleUpdate(rowId) {
-    // console.log("update row " + rowId)
   }
 
   const { t } = useTranslation();
@@ -103,103 +104,83 @@ const BuildingsTable = (props) => {
             })}
           </thead>
           <tbody {...getTableBodyProps()}>
-            {page.map((row, index) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()} key={index}>
-                  {row.cells.map((cell, index) => {
-                    let data = "";
-                    if (cell.column.id === "name") {
-                      data = (
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.id === "number_of_floors") {
-                      data = (
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.id === "apartments_per_floor") {
-                      data = (
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.id === "number_of_apartments") {
-                      data = (
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.id === "description") {
-                      data = (
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.id === "level") {
-                      data = (
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}%
-                        </p>
-                      );
-                    } else if (cell.column.id === "actions") {
-                      data = (
-                        <div className="flex items-center gap-4">
-                          <button
-                            className="flex items-center gap-1 text-red-600"
-                            onClick={() => handleDelete(row.id)}
-                          >
-                            <div className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-xl   ">
-                              <MdDeleteOutline />
-                            </div>
-                            <p className="text-start text-sm font-medium text-black dark:text-white">
-                              {t("actions.delete")}
-                            </p>
-                          </button>
-                          <button
-                            className="flex items-center gap-1 text-green-600"
-                            onClick={() => handleUpdate(row.id)}
-                          >
-                            <div className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-lg   ">
-                              <FiEdit />
-                            </div>
-                            <p className=" text-start text-sm font-medium text-black dark:text-white">
-                              {t("actions.update")}
-                            </p>
-                          </button>
-
-                          <Link
-                            to={`apartments/${row.original.id}`}
-                            className="flex items-center gap-1 text-blue-600"
-                          >
-                            <div className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-lg  ">
-                              <FiExternalLink />
-                            </div>
-                            <p className=" text-start text-sm font-medium text-black dark:text-white">
-                              {t("actions.apartments")}
-                            </p>
-                          </Link>
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <td
-                        {...cell.getCellProps()}
-                        key={index}
-                        className="pt-[14px] pb-[16px] "
-                      >
-                        {data}
-                      </td>
-                    );
-                  })}
-                </tr>
+  {page.map((row, index) => {
+    prepareRow(row);
+    if (row.original.is_deleted==0) {
+      return (
+        <tr {...row.getRowProps()} key={index}>
+          {row.cells.map((cell, index) => {
+            let data = "";
+            if (cell.column.id === "name" || cell.column.id === "number_of_floor" || cell.column.id === "apartment_per_floor" || cell.column.id === "description") {
+              data = (
+                <p className="text-sm font-medium text-black dark:text-white">
+                  {cell.value}
+                </p>
               );
-            })}
-          </tbody>
+            } else if (cell.column.id === "level") {
+              data = (
+                <p className="text-sm font-medium text-black dark:text-white">
+                  {cell.value}%
+                </p>
+              );
+            } else if (cell.column.id === "actions") {
+              data = (
+                <div className="flex items-center gap-4">
+                  <button
+                    className="flex items-center gap-1 text-red-600"
+                    onClick={() => handleDelete(row.original.id)}
+                  >
+                    <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl">
+                      <MdDeleteOutline />
+                    </div>
+                    <p className="text-start text-sm font-medium text-black dark:text-white">
+                      {t("actions.delete")}
+                    </p>
+                  </button>
+                  <Link to={`/buildings/update/${row.original.id}`}
+                    className="flex items-center gap-1 text-green-600"
+                    onClick={() => handleUpdate(row.id)}
+                  >
+                    <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg">
+                      <FiEdit />
+                    </div>
+                    <p className="text-start text-sm font-medium text-black dark:text-white">
+                      {t("actions.update")}
+                    </p>
+                  </Link>
+                  <Link
+                    to={`apartments/${row.original.id}`}
+                    className="flex items-center gap-1 text-blue-600"
+                  >
+                    <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg">
+                      <FiExternalLink />
+                    </div>
+                    <p className="text-start text-sm font-medium text-black dark:text-white">
+                      {t("actions.apartments")}
+                    </p>
+                  </Link>
+                </div>
+              );
+            }
+
+            return (
+              <td
+                {...cell.getCellProps()}
+                key={index}
+                className="pt-[14px] pb-[16px]"
+              >
+                {data}
+              </td>
+            );
+          })}
+        </tr>
+      );
+    } else {
+      return null;
+    }
+  })}
+</tbody>
+
         </table>
       </div>
     </Card>

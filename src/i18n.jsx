@@ -39,10 +39,10 @@ const resources = {
         "title":"Needs",
         columns:{
           "name":'NAME',
-          "usedAmount":'USED AMOUNT',
-          "building":'BUILDING',
-          "totalItemPerFloor":'TOTAL ITEM PER FLOOR',
+          "need_amount":'NEED AMOUNT',
+          "item":'ITEM',
           "description":'DESCRIPTION',
+          "building":'BUILDING',
       }
       }
       ,
@@ -51,7 +51,7 @@ const resources = {
         columns:{
           "name":'NAME',
           "type":'TYPE',
-          "remaining_item":'REMAINING ITEM',
+          "remainingItem":'REMAINING ITEM',
           "amountUnit":'AMOUNT UNIT',
           "remainingAmount":'REMAINING AMOUNT',
           "totalPrice":'TOTAL PRICE',
@@ -164,10 +164,9 @@ const resources = {
       needsTable:{
         "title":"پێداویستیەکان",
         columns:{
-          "name":'ناو',
-          "usedAmount":'ڕێژەی بەکارهاتوو',
+          "item":'کەرەستە',
+          "need_amount":'ڕێژەی بەکارهاتوو',
           "building":'باڵەخانە',
-          "totalItemPerFloor":'کۆی گشتی شتومەک بۆ هەر نهۆمێک',
           "description":'باسکردن',
       }
       },
@@ -176,7 +175,7 @@ const resources = {
         columns:{
           "name":'ناو',
           "type":'جۆر',
-          "remaining_item":'ڕێژە',
+          "remainingItem":'ڕێژە',
           "amountUnit":'یەکەی ڕێژە',
           "remainingAmount":'ڕێژەی ماوە',
           "totalPrice":'کۆی گشتی نرخ',
@@ -289,11 +288,10 @@ const resources = {
       needsTable:{
         "title":"الاحتياجات",
         columns:{
-          "name":'اسم',
-          "usedAmount":'المبلغ المستخدم',
-          "building":'البناء',
-          "totalItemPerFloor":'إجمالي العنصر لكل طابق',
+          "need_amount":' المبلغ المستخدم ',
+          "item":'مادة',
           "description":'وصف',
+          "building":'البناء',
       }
       },
       itemsTable:{
@@ -301,7 +299,7 @@ const resources = {
         columns:{
           "name":'اسم',
           "type":'النوع',
-          "remaining_item":'المبلغ',
+          "remainingItem":'المبلغ',
           "amountUnit":'وحدة المبلغ',
           "remainingAmount":'الكمية المتبقية',
           "totalPrice":'السعر الكلي',

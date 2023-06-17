@@ -11,11 +11,11 @@ export default function useItemsTableColumns() {
       accessor: "name",
     },
     {
-      Header: t("itemsTable.columns.type"),
+      Header: t("itemsTable.columns.remainingAmount"),
       accessor: "remaining_item",
     },
     {
-      Header: t("itemsTable.columns.remaining_item"),
+      Header: t("itemsTable.columns.type"),
       accessor: "type",
     },
     {

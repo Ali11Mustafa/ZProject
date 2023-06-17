@@ -12,12 +12,10 @@ export default function NewItem() {
 
   const onSubmit = (data) => {
     const API = 'https://api.hirari-iq.com/api/items';
-    console.log(data);
   
     const PostData = () => {
-      axios.post(API, {...data,user_id:2})
+      axios.post(API, {...data,user_id:"1"})
         .then(response => {
-          console.log('Response:', response.data);
         })
         .catch(error => {
           console.error('Error:', error);
@@ -102,9 +100,17 @@ export default function NewItem() {
                       >
                         <option value="">Select a unit</option>
                         <option value="10mm">10mm</option>
-                        <option value="15mm">15mm</option>
-                        <option value="20mm">20mm</option>
-                        <option value="25mm">25mm</option>
+                        <option value="12mm">12mm</option>
+                        <option value="16mm">20mm</option>
+                        <option value="20mm">25mm</option>
+                        <option value="flat">flat</option>
+                        <option value="slab">slab</option>
+                        <option value="column">column</option>
+                        <option value="barrel">barrel</option>
+                        <option value="tie">tie</option>
+
+
+
                       </select>
                     </div>
                   

@@ -13,19 +13,16 @@ function UpdateItem() {
   const {itemId} = useParams()
   const {Data}=useFetchItems();
 
-  console.log(itemId)
 
   const { register, handleSubmit, reset } = useForm();
 
 
   const onSubmit = (data) => {
     const API = `https://api.hirari-iq.com/api/items/${itemId}`;
-    console.log(data);
   
     const PostData = () => {
-      axios.put(API, {...data,user_id:'1'})
+      axios.put(API, {...data,user:1})
         .then(response => {
-          console.log('Response:', response.data);
         })
         .catch(error => {
           console.error('Error:', error);

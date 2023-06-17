@@ -14,6 +14,8 @@ import { useTranslation } from "react-i18next";
 
 const NeedsTable = (props) => {
   const { columnsData, tableData } = props;
+  console.log(tableData);
+  let TypeAndname;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   
@@ -88,40 +90,34 @@ const NeedsTable = (props) => {
                 <tr {...row.getRowProps()} key={index} >
                   {row.cells.map((cell, index) => {
                     let data = "";
-                     if (cell.column.id === "name") {
+                    
+                     if (cell.column.id === "need_amount") {
                       data = (
                         <p  className="text-sm font-medium text-black dark:text-white">
                         {cell.value}
                       </p>
                       );
-                      }else if (cell.column.id === "used_amount") {
+                      }else if (cell.column.id === "description") {
                       data = (
                         <p  className="text-sm font-medium text-black dark:text-white">
                         {cell.value}
                       </p>
                       );
-                    }else if (cell.column.id === "building") {
-                      data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
-                        {cell.value}
-                      </p>
-                      );
-                    }
-                    else if (cell.column.id === "total_item_per_floor") {
-                      data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
-                        {cell.value}
-                      </p>
-                      );
-                    }
-                    else if (cell.column.id === "description") {
-                      data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
-                        {cell.value}
-                      </p>
-                      );
-                    }
-                   
+                    }else if(cell.column.id==="item_id.type"){
+                        TypeAndname =cell.row.original.item_id.name+ ' '+cell.value;
+                        data = (
+                          <p  className="text-sm font-medium text-black dark:text-white">
+                          {TypeAndname}
+                        </p>
+                        );
+                      
+                        } else if (cell.column.id === "block_id.name") {
+                          data = (
+                            <p  className="text-sm font-medium text-black dark:text-white">
+                            {cell.value}
+                          </p>
+                          );
+                        }
                     
                     return (
                      

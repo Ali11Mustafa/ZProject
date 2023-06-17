@@ -9,24 +9,20 @@ export default function useNeedsTableColumns() {
 
   const needsTableColumns = [
     {
-      Header: t("needsTable.columns.name"),
-      accessor: "name",
-    },
-    {
-      Header: t("needsTable.columns.usedAmount"),
-      accessor: "used_amount",
-    },
-    {
-      Header: t("needsTable.columns.building"),
-      accessor: "building",
-    },
-    {
-      Header: t("needsTable.columns.totalItemPerFloor"),
-      accessor: "total_item_per_floor",
+      Header: t("needsTable.columns.need_amount"),
+      accessor: "need_amount",
     },
     {
       Header: t("needsTable.columns.description"),
       accessor: "description",
+    },
+    {
+      Header: t("needsTable.columns.item"),
+      accessor: "item_id.type",
+    },
+    {
+      Header: t("needsTable.columns.building"),
+      accessor: "block_id.name",
     },
    
   ];

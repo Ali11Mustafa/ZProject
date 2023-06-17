@@ -6,20 +6,19 @@ export default function useBuildingsTableColumns() {
   const buildingsTableColumns = [
     {
       Header: t("buildingsTable.columns.name"),
+      //data name
       accessor: "name",
+      //id of the column
     },
     {
       Header: t("buildingsTable.columns.numberOfFloors"),
-      accessor: "number_of_floors",
+      accessor: "number_of_floor",
     },
     {
       Header: t("buildingsTable.columns.apartmentsPerFloor"),
-      accessor: "apartments_per_floor",
+      accessor: "apartment_per_floor",
     },
-    {
-      Header: t("buildingsTable.columns.numberOfApartments"),
-      accessor: "number_of_apartments",
-    },
+   
     {
       Header: t("buildingsTable.columns.description"),
       accessor: "description",

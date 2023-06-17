@@ -1,66 +1,40 @@
-import { useLanguageStore } from "App";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { BsPlus } from "react-icons/bs";
-import axios from "axios";
+import Layout from 'Layout'
+import React from 'react'
+import Card from 'components/card'
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useLanguageStore } from 'App';
+import { Link, useParams } from 'react-router-dom';
+import useFetchItems from 'hooks/useFetchItems';
+import axios from 'axios';
+import { updateBlock } from '../index';
+import { useNavigate } from 'react-router-dom';
 
-export default function NewBuilding() {
-  const [showModal, setShowModal] = React.useState(false);
 
+
+function UpdateBlock() {
+  const {buildingId} = useParams()
+  const navigate=useNavigate();
 
   const { register, handleSubmit, reset } = useForm();
 
-  const onSubmit = data =>{
-    const API = 'https://api.hirari-iq.com/api/blocks';
+
+  const onSubmit = (data) => {
+    updateBlock(buildingId,0,data);
+    navigate("/");
+
   
-    const PostData = () => {
-      axios.post(API, {...data,level:"0"})
-        .then(response => {
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    };
-    PostData();
-    setShowModal(false)
-    reset()
+    reset();
   };
 
   const {t} = useTranslation()
-
   const language = useLanguageStore(state=>state.language)
 
   return (
-    <>
-      <button
-        className="rounded-xs bg-gray-200 dark:bg-white dark:text-blue-800 rounded-md "
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        <BsPlus fontSize={32} />
-      </button>
-      {showModal ? (
-        <>
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">
-            <div className="relative  my-6 mx-auto w-[90%] max-w-xl">
-              {/*content*/}
-              <div className="relative flex w-full flex-col rounded-lg border-0 bg-white  outline-none focus:outline-none">
-                {/*header*/}
-                <div className="border-slate-200 flex items-center justify-between rounded-t border-b border-solid p-5">
-                  <h3 className="text-xl font-semibold dark:text-indigo-900"> {t("newBuilding.title")}</h3>
-                  <button
-                    className={`bg-transparent text-red-500 ${language !== 'en' ? 'float-left mr-auto' : 'float-right ml-auto'} border-0 p-1 text-xl font-semibold`}
-                    onClick={() => setShowModal(false)}
-                  >
-                
-                      ×
-             
-                  </button>
-                </div>
-                {/*body*/}
-                <div>
-                  <form className="mb-4 rounded bg-white px-8 pt-6 pb-8"  onSubmit={handleSubmit(onSubmit)}>
+    <Layout>
+        <Card extra={"w-full h-full sm:overflow-auto px-5 p-5"}>
+        <h1 className='font-bold text-xl mb-10'>Update Item</h1>
+        <form className="mb-4 rounded bg-white px-8 pt-6 pb-8"  onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
@@ -127,13 +101,11 @@ export default function NewBuilding() {
                     </div>
                     {/*footer*/}
                 <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start' } rounded-b pt-5`}  >
-                  <button
+                  <Link to={'/'}
                     className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
-                    type="button"
-                    onClick={() => setShowModal(false)}
                   >
-                    {t("formButtons.close")}
-                  </button>
+                    {t("formButtons.cancel")}
+                  </Link>
                   <button
                     className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                   >
@@ -141,13 +113,9 @@ export default function NewBuilding() {
                   </button>
                 </div>
                   </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="fixed inset-0 z-40 bg-black dark:bg-black opacity-30"></div>
-        </>
-      ) : null}
-    </>
-  );
+    </Card>
+      </Layout>
+  )
 }
+
+export default UpdateBlock;
