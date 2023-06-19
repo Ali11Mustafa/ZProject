@@ -1,7 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios';
 
-function useFetchItems() {
+function useFetchItems({newItem}) {
+ 
 const [Data,setData]=useState([]);
 const API="https://api.hirari-iq.com/api/items";
   useEffect(()=>{

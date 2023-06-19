@@ -23,7 +23,7 @@ function UpdateItem() {
     const PostData = () => {
       axios.put(API, {...data,user:1})
         .then(response => {
-        })
+        }) 
         .catch(error => {
           console.error('Error:', error);
         });

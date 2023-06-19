@@ -5,10 +5,11 @@ import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
 import axios from "axios";
 
-export default function NewItem() {
+export default function NewItem({GetNewItem}) {
   const [showModal, setShowModal] = React.useState(false);
 
   const { register, handleSubmit, reset } = useForm();
+
 
   const onSubmit = (data) => {
     const API = 'https://api.hirari-iq.com/api/items';
@@ -16,6 +17,11 @@ export default function NewItem() {
     const PostData = () => {
       axios.post(API, {...data,user_id:"1"})
         .then(response => {
+
+          console.log(response.data)
+
+          GetNewItem(Math.random());
+  
         })
         .catch(error => {
           console.error('Error:', error);
