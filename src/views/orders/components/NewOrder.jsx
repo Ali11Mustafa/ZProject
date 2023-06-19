@@ -1,14 +1,12 @@
 import { useLanguageStore } from "App";
-import React,{useState,useEffect,useMemo}from "react";
+import React,{useEffect,useState,useMemo} from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
 import axios from "axios";
-
-import { useItemsStore } from "App";
 import useFetchItems from "hooks/useFetchItems";
 
-export default function NewNeed() {
+export default function NewOrder() {
   const [showModal, setShowModal] = React.useState(false);
   const [itemNames,setNames]=useState([]);
   const [itemTypes,setTypes]=useState([]);
@@ -16,7 +14,6 @@ export default function NewNeed() {
   const [itemID,setItemID]=useState(null);
 
   const [buildingName,setBuildingNames]=useState([]);
-
 
    const {Data}=useFetchItems();
    //get Items
@@ -31,28 +28,8 @@ export default function NewNeed() {
         }
       });
     }
-    fetchData();
   }, [Data]);
-  const API = "https://api.hirari-iq.com/api/blocks";
-  const fetchData = () => {
-    axios
-      .get(API)
-      .then((response) => {
-        const newBuildingNames = [];
-        response.data.data.forEach((block) => {
-          console.log("resp ", response.data.data);
-          if (block.is_deleted !== 1) {
-            newBuildingNames.push(block.name);
-            setBuildingId(block.id);
-          }
-        });
-        setBuildingNames(newBuildingNames);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-  
+ 
 
 
 
@@ -60,17 +37,19 @@ export default function NewNeed() {
   const onSubmit = (data) => {
     console.log("data",data);
 
-    const API = 'https://api.hirari-iq.com/api/needs';
+
+    const API = 'https://api.hirari-iq.com/api/orders';
   
     const PostData = () => {
       let newData={
-        need_amount:data.need_amount,
-        description:data.description,
+        amount:data.amount,
+        unit:data.unit,
+        price:data.price,
         user_id:"1",
-        block_id:buildingID,
         item_id:itemID
       }
-      axios.post(API, newData)
+      console.log(newData);
+      axios.post(API,newData)
         .then(response => {
         })
         .catch(error => {
@@ -123,17 +102,33 @@ export default function NewNeed() {
                   <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="need_amount"
+                        for="amount"
                       >
-                    {t("newNeed.need_amount")}
+                    {t("newNeed.amount")}
                       </label>
                       <input
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="need_amount"
-                        name="need_amount"
+                        id="amount"
+                        name="amount"
                         type="text"
                         placeholder="Enter used amount"
-                        {...register("need_amount", { required: true })}
+                        {...register("amount", { required: true })}
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label
+                        className="mb-2 block font-medium text-gray-700"
+                        for="price"
+                      >
+                    {t("newNeed.amount")}
+                      </label>
+                      <input
+                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        id="price"
+                        name="price"
+                        type="text"
+                        placeholder="Enter used amount"
+                        {...register("price", { required: true })}
                       />
                     </div>
                     <div className="mb-4">
@@ -141,15 +136,15 @@ export default function NewNeed() {
                         className="mb-2 block font-medium text-gray-700"
                         for="description"
                       >
-                        {t("newNeed.description")}
+                        {t("unit")}
                       </label>
                       <textarea
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="description"
-                        name="description"
+                        id="unit"
+                        name="unit"
                         type="text"
                         placeholder="Write a description"
-                        {...register("description", { required: true })}
+                        {...register("unit", { required: true })}
                       />
                     </div>
                   <div className="mb-4">
@@ -200,28 +195,6 @@ export default function NewNeed() {
                     </div>
                   
                   
-                    <div className="mb-4">
-                      <label
-                        className="mb-2 block font-medium text-gray-700"
-                        for="no_of_floors"
-                      >
-                        {t("newNeed.building")}
-                      </label>
-                      <select
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="building"
-                        name="building"
-                        type="string"
-                        {...register("building", { required: true })}
-                      >
-                        <option value="">Select a Building</option>
-                        {memoizedBuildingName && memoizedBuildingName.map((name)=>{
-                          return(
-                          <option value={name}>{name}</option>
-                          )
-                        })}
-                      </select>
-                    </div>
                   
                     {/*footer*/}
                     <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start' } rounded-b pt-5`}  >

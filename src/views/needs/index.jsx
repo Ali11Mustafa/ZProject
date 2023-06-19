@@ -7,7 +7,7 @@ import useNeedsTableColumns from "./variables/useNeedsTableColumns";
 
 const NeedsDashboard = () => {
   const[needs,setNeeds]=useState([]);
-
+  
   const {needsTableColumns} = useNeedsTableColumns()
   const API = "https://api.hirari-iq.com/api/needs";
 
@@ -20,6 +20,7 @@ const NeedsDashboard = () => {
       .get(API)
       .then((response) => {
         setNeeds(response.data.data);
+
       })
       .catch((error) => {
         console.error(error);

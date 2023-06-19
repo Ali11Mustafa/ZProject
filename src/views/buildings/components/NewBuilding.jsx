@@ -13,10 +13,11 @@ export default function NewBuilding() {
 
   const onSubmit = data =>{
     const API = 'https://api.hirari-iq.com/api/blocks';
-  
+  console.log(data);
     const PostData = () => {
       axios.post(API, {...data,level:"0"})
         .then(response => {
+          
         })
         .catch(error => {
           console.error('Error:', error);

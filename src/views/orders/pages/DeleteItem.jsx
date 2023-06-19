@@ -6,11 +6,11 @@ const [deleted,setDeleted]=useState(false);
 
 const {itemId}=useParams();
 console.log(itemId)
-const API=`https://api.hirari-iq.com/api/items/${itemId}`;
+const API=`https://api.hirari-iq.com/api/orders/${itemId}`;
   const navigate=useNavigate();
   useEffect(()=>{
     DeleteItem();
-    navigate("/items")
+    navigate("/orders")
   },[]);
    const DeleteItem=()=>{
     axios.delete(API)

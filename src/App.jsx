@@ -10,6 +10,8 @@ import { useTranslation } from "react-i18next";
 import UpdateItem from "views/items/pages/UpdateItem";
 import DeleteItem from "views/items/pages/DeleteItem";
 import Updateblock from "views/buildings/Pages/Updateblock";
+import Orders from "pages/Orders";
+import Users from "pages/Users";
 
 export const useSearchStore = create((set) => ({
   searchText: '',
@@ -28,6 +30,14 @@ export const useLanguageStore = create((set) => ({
   language: 'en',
   changeLanguage: (language) => set(() => ({ language: language })),
 }));
+
+export const useItemsStore = create((set) => ({
+  names:[],
+  types:[],
+  setItemNames: (names) => set(() => ({ names: names })),
+  setItemTypes: (types) => set(() => ({ types: types })),
+}));
+
 
 
 const App = () => {
@@ -57,6 +67,8 @@ const App = () => {
       <Route path="/items" element={<Items />} /> 
       <Route path="/items/update/:itemId" element={<UpdateItem />} /> 
       <Route path="/items/delete/:itemId" element={<DeleteItem />} /> 
+      <Route path="/orders" element={<Orders />} /> 
+      <Route path="/users" element={<Users/>} /> 
 
     </Routes>
   );

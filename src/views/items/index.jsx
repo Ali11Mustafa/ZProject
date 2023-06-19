@@ -5,11 +5,39 @@ import ItemsTable from "./components/ItemsTable";
 import useItemsTableColumns from "./variables/useItemsTableColumns";
 import axios from "axios";
 import useFetchItems from "hooks/useFetchItems";
+import { useItemsStore } from "App";
 
 const ItemsDashboard = () => {
+
+  const [itemNames,setNames]=useState([]);
+  const [itemTypes,setTypes]=useState([]);
   const {itemsTableColumns} = useItemsTableColumns();
  const {Data}=useFetchItems();
+ const setItemNames=useItemsStore(state=>state.setItemNames);
+ const setItemTypes=useItemsStore(state=>state.setItemTypes);
 
+
+//get ite Names
+useEffect(() => {
+  if (Data) {
+    const names = [];
+    const types = [];
+
+    Data.map((item) => {
+      if (item.is_deleted !== 1) {
+        names.push(item.name);
+        types.push(item.type);
+      }
+    });
+
+    setItemNames(names);
+    setItemTypes(types);
+  }
+}, [[Data, setItemNames, setItemTypes]]);
+
+
+
+ 
 
   return (
     <div>

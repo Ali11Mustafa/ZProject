@@ -2,22 +2,24 @@
 
 import { useTranslation } from "react-i18next";
 
-
-
-export default function useNeedsTableColumns() {
+export default function useItemsTableColumns() {
   const {t} = useTranslation()
 
-  const needsTableColumns = [
+  const itemsTableColumns = [
     {
-      Header: t("needsTable.columns.need_amount"),
-      accessor: "need_amount",
+      Header: t("itemsTable.columns.amount"),
+      accessor: "amount",
     },
     {
-      Header: t("needsTable.columns.description"),
-      accessor: "description",
+      Header: t("itemsTable.columns.unit"),
+      accessor: "unit",
     },
     {
-      Header: t("needsTable.status"),
+      Header: t("itemsTable.columns.price"),
+      accessor: "price",
+    },
+    {
+      Header: t("itemsTable.columns.status"),
       accessor: "status",
     },
     {
@@ -37,19 +39,14 @@ export default function useNeedsTableColumns() {
       accessor: "item_info.remaining_item",
     },
     {
-      Header: t("needsTable.columns.building"),
-      accessor: "block_info.name",
+      Header: t("needsTable.actions"),
+      accessor: "actions",
     },
-   
-   
-    
-    
    
   ];
   
 
   
 
-  return {needsTableColumns}
+  return {itemsTableColumns}
 }
-

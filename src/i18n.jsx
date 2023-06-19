@@ -13,6 +13,9 @@ const resources = {
         "buildings":"Buildings",
         "needs":"Needs",
         "items":"Items",
+        "users":"Users",
+        "orders":"Orders"
+
       },
       "dashboard": "Dashboard",
       "logout": "Logout",
@@ -139,6 +142,8 @@ const resources = {
         "buildings":"باڵەخانەکان",
         "needs":"پێداویستیەکان",
         "items":"کەرەستەکان",
+        "users":"Users",
+        "orders":"Orders"
       },
       "dashboard":"داشبۆرد",
       "logout": "چوونە دەرەوە",
@@ -263,6 +268,8 @@ const resources = {
         "buildings":"البنايات",
         "needs":"الاحتياجات",
         "items":"أغراض",
+        "users":"Users",
+        "orders":"Orders"
       },
       "dashboard":"داشبورد",
       "logout": "تسجيل خروج",

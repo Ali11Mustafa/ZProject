@@ -35,6 +35,8 @@ const BuildingDashboard = () => {
       .get(API)
       .then((response) => {
         setBlockData(response.data.data);
+          console.log("check",response.data.data);
+        
       })
       .catch((error) => {
         console.error(error);

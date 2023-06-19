@@ -4,17 +4,19 @@ import axios from 'axios';
 function useFetchItems() {
 const [Data,setData]=useState([]);
 const API="https://api.hirari-iq.com/api/items";
-  
   useEffect(()=>{
     FetchData();
-    console.log(Data);
   },[]);
 
    const FetchData=()=>{
     axios.get(API)
   .then(response => {
-    console.log(response.data);
-    setData(response.data.data);
+    response.data.data.map((item)=>{
+      if(item.is_deleted!==1){
+        setData(previousItem=>[...previousItem,item]);
+      }
+
+    })
   })
   .catch(error => {
     console.error(error);
@@ -25,3 +27,5 @@ const API="https://api.hirari-iq.com/api/items";
 }
 
 export default useFetchItems
+
+
