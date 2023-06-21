@@ -59,11 +59,9 @@ const ApartmentsTable = (props) => {
   initialState.pageSize = 11;
 
  function handleDelete(rowId){
-  console.log("delete row " + rowId)
  }
 
  function handleUpdate(rowId){
-  console.log("update row " + rowId)
  }
 
  const {t} = useTranslation();
