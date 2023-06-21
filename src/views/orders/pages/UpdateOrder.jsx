@@ -62,7 +62,7 @@ function UpdateOrder() {
   return (
     <Layout>
         <Card extra={"w-full h-full sm:overflow-auto px-5 p-5"}>
-        <h1 className='font-bold text-xl mb-10'>Update Item</h1>
+        <h1 className='font-bold text-xl mb-10'>{t('updatePage.orders')}</h1>
         <form className="mb-4 rounded bg-white px-8 pt-6 pb-8"  onSubmit={handleSubmit(onSubmit)}>
                   
                   <div className="mb-4">
@@ -70,7 +70,7 @@ function UpdateOrder() {
                         className="mb-2 block font-medium text-gray-700"
                         for="amount"
                       >
-                    {t("newNeed.need_amount")}
+                    {t("newOrder.order_amount")}
                       </label>
                       <input
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -86,7 +86,7 @@ function UpdateOrder() {
                         className="mb-2 block font-medium text-gray-700"
                         for="type"
                       >
-                        {t("newNeed.type")}
+                        {t("newOrder.order_unit")}
                       </label>
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -111,7 +111,7 @@ function UpdateOrder() {
                         className="mb-2 block font-medium text-gray-700"
                         for="price"
                       >
-                        {t("newNeed.description")}
+                        {t("newOrder.order_price")}
                       </label>
                       <input
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -127,7 +127,7 @@ function UpdateOrder() {
                         className="mb-2 block font-medium text-gray-700"
                         for="name"
                       >
-                        {t("newNeed.name")}
+                        {t("newOrder.item_name")}
                       </label>
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -150,7 +150,7 @@ function UpdateOrder() {
                         className="mb-2 block font-medium text-gray-700"
                         for="type"
                       >
-                        {t("newNeed.type")}
+                        {t("newOrder.item_type")}
                       </label>
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -181,7 +181,7 @@ function UpdateOrder() {
                   <button
                    className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                   >
-                     {t("formButtons.create")}
+                     {t("formButtons.update")}
                   </button>
                 </div>
                   </form>

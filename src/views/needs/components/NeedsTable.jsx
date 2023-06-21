@@ -18,7 +18,6 @@ import { MdDeleteOutline } from "react-icons/md";
 const NeedsTable = (props) => {
   const { columnsData, tableData ,GetNewItem }=props;
   console.log(tableData);
-  let TypeAndname;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   
@@ -219,4 +218,3 @@ const NeedsTable = (props) => {
 };
 
 export default NeedsTable;
-

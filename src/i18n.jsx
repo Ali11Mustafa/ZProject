@@ -1,9 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-// the translations
-// (tip move them in a JSON file and import them,
-// or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
 const resources = {
   en: {
     translation: {
@@ -36,16 +33,20 @@ const resources = {
           "description":'DESCRIPTION',
           "level":'LEVEL',
           "actions":'ACTIONS',
-        }
+        },
       },
       needsTable:{
         "title":"Needs",
-        columns:{
-          "name":'NAME',
+        columns:{ 
           "need_amount":'NEED AMOUNT',
           "item":'ITEM',
           "description":'DESCRIPTION',
+          "remaining_item":'REMAINING ITEM',
           "building":'BUILDING',
+          "username":'USERNAME',  
+          "status":'STATUS',
+          "item_name":'ITEM NAME',
+          "item_type":'ITEM TYPE',
       }
       }
       ,
@@ -59,6 +60,20 @@ const resources = {
           "remainingAmount":'REMAINING AMOUNT',
           "totalPrice":'TOTAL PRICE',
           "pricePerBuilding":'PRICE PER BUILDING',
+          "actions":'ACTIONS',
+      },
+      },
+      ordersTable:{
+        "title":"Orders",
+        columns:{
+          "amount":'AMOUNT',
+          "unit":'UNIT',
+          "price":'PRICE',
+          "status":'STATUS',
+          "remaining_item":'REMAINING ITEM',
+          "item_name":'ITEM NAME',
+          "item_type":'ITEM TYPE',
+          "username":'USERNAME',  
           "actions":'ACTIONS',
       },
       },
@@ -81,8 +96,9 @@ const resources = {
       },
       newNeed:{
         "title":"Add New Need",
-        "name":"Name",
-        "usedAmount":"Used Amount",
+        "need_amount":"Need Amount",
+        "item_name":"Item Name",
+        "item_type":"Item Type",
         "building":"Building",
         "description":"Description",
         
@@ -94,6 +110,15 @@ const resources = {
         "amount":"Amount",
         "amountUnit":"Amount Unit",
         "totalPrice":"Total Price",
+        
+      },
+      newOrder:{
+        "title":"Add New Order",
+        "order_amount":"Order Name",
+        "order_unit":"Order Unit",
+        "order_price":"Order Price", 
+        "item_name":"Item Name",
+        "item_type":"Item Type",
         
       }
       ,
@@ -130,6 +155,12 @@ const resources = {
         "update":"Update",
         "close":"Close",
         "cancel":"Cancle",
+      },
+      updatePage:{
+        "buildings":"Update Building",
+        "needs":"Update Need",
+        "items":"Update Item",
+        "orders":"Update Order",
       }
     }
     
@@ -142,8 +173,8 @@ const resources = {
         "buildings":"باڵەخانەکان",
         "needs":"پێداویستیەکان",
         "items":"کەرەستەکان",
-        "users":"Users",
-        "orders":"Orders"
+        "users":"بەکارهێنەرەکان",
+        "orders":"داواکاریەکان"
       },
       "dashboard":"داشبۆرد",
       "logout": "چوونە دەرەوە",
@@ -167,12 +198,17 @@ const resources = {
         }
       },
       needsTable:{
-        "title":"پێداویستیەکان",
-        columns:{
+        "title":"پێویستیەکان",
+        columns:{ 
+          "need_amount":'ڕێژەی پێویست',
           "item":'کەرەستە',
-          "need_amount":'ڕێژەی بەکارهاتوو',
-          "building":'باڵەخانە',
           "description":'باسکردن',
+          "remaining_item":'کەرەستەی ماوە',
+          "building":'باڵەخانە',
+          "username":'ناوی بەکارهێنەر',
+          "status":'دۆخ',
+          "item_name":'ناوی کەرەستە',
+          "item_type":'جۆری کەرەستە',
       }
       },
       itemsTable:{
@@ -185,6 +221,20 @@ const resources = {
           "remainingAmount":'ڕێژەی ماوە',
           "totalPrice":'کۆی گشتی نرخ',
           "pricePerBuilding":'نرخی هەر بینایەک',
+          "actions":'کردارەکان',
+      },
+      },
+      ordersTable:{
+        "title":"داواکاریەکان",
+        columns:{
+          "amount":'ڕێژە',
+          "unit":'یەکە',
+          "price":'نرخ',
+          "status":'دۆخ',
+          "remaining_item":'کەرەستەی ماوە',
+          "item_name":'ناوی کەرەستە',
+          "item_type":'جۆری کەرەستە',
+          "username":'ناوی بەکارهێەر',  
           "actions":'کردارەکان',
       },
       },
@@ -207,7 +257,7 @@ const resources = {
         "name":"ناو",
         "numberOfFloors":"ژمارەی نهۆمەکان",
         "numberOfApartmentsPerFloor":"ژمارەی شوقەکان بۆ هەر نهۆمێک",
-        "descriptioon":"باسکردن",
+        "description":"باسکردن",
       },
       newApartment:{
         "title":"شوقەی نوێ زیاد بکە",
@@ -219,10 +269,11 @@ const resources = {
       },
       newNeed:{
         "title":"پێداویستی نوێ زیادبکە",
-        "name":"ناو",
-        "usedAmount":"ڕێژەی بەکارهاتوو",
+        "need_amount":"ڕێژەی پێویست",
+        "item_name":"ناوی کەرەستە",
+        "item_type":"جۆری کەرەستە",
         "building":"باڵەخانە",
-        "description":"باسکردن",
+        "description":"باسکردم",
        
         
       },
@@ -234,6 +285,16 @@ const resources = {
         "amountUnit":"یەکەی ڕێژە",
         "totalPrice":"کۆی گشتی بڕه پارە",
        
+        
+      },
+      newOrder:{
+        "title":"زیادکردنی داواکاری نوێ",
+        "order_amount":"ناوی داواکاوی",
+        "order_unit":"یەکەی داواکاری",
+        "order_price":"نرخی داواکاری", 
+        "order_type":"جۆری داواکاری",
+        "item_name":"ناوی کەرەستە",
+        "item_type":"جۆری کەرەستە",
         
       },
       actions:{
@@ -256,7 +317,15 @@ const resources = {
         "update":"نوێبکەوە",
         "close":"دابخە",
         "cancel":"پەشیمانبوونەوە",
+      
+      },
+      updatePage:{
+        "buildings":"نوێکرندەوەی باڵەخانە",
+        "needs":"نوێکردنەوەی پێداویستی",
+        "items":"نوێکردنەوەی کەرەستە",
+        "orders":"نوێکردنەوەی داواکاری",
       }
+      
     },
   
   },
@@ -268,8 +337,8 @@ const resources = {
         "buildings":"البنايات",
         "needs":"الاحتياجات",
         "items":"أغراض",
-        "users":"Users",
-        "orders":"Orders"
+        "users":"المستعملون",
+        "orders":"اوامر"
       },
       "dashboard":"داشبورد",
       "logout": "تسجيل خروج",
@@ -294,11 +363,16 @@ const resources = {
       },
       needsTable:{
         "title":"الاحتياجات",
-        columns:{
-          "need_amount":' المبلغ المستخدم ',
-          "item":'مادة',
+        columns:{ 
+          "need_amount":'المبلغ المطلوب',
+          "item":'بند',
           "description":'وصف',
-          "building":'البناء',
+          "remaining_item":'البند المتبقي',
+          "building":'بناء',
+          "username":'اسم المستخدم',
+          "status":'حالة',
+          "item_name":'اسم العنصر',
+          "item_type":'نوع العنصر',
       }
       },
       itemsTable:{
@@ -311,6 +385,20 @@ const resources = {
           "remainingAmount":'الكمية المتبقية',
           "totalPrice":'السعر الكلي',
           "pricePerBuilding":'سعر المبنى',
+          "actions":'أجراءات',
+      },
+      },
+      ordersTable:{
+        "title":"اوامر",
+        columns:{
+          "amount":'مبلغ',
+          "unit":'وحدة',
+          "price":'سعر',
+          "status":'حالة',
+          "remaining_item":'البند المتبقي',
+          "item_name":"اسم العنصر",
+          "item_type":"نوع العنصر",
+          "username":'اسم المستخدم',  
           "actions":'أجراءات',
       },
       },
@@ -333,7 +421,7 @@ const resources = {
         "name":"اسم",
         "numberOfFloors":"عدد الطوابق",
         "numberOfApartmentsPerFloor":"عدد الشقق في الطابق",
-        "descriptioon":"وصف",
+        "description":"وصف",
         
       }
       ,
@@ -348,9 +436,10 @@ const resources = {
       },
       newNeed:{
         "title":"أضف حاجة جديدة",
-        "name":"اسم",
-        "usedAmount":"المبلغ المستخدم",
-        "building":"البناء",
+        "need_amount":"المبلغ المطلوب",
+        "item_name":"اسم العنصر",
+        "item_type":"نوع العنصر",
+        "building":"بناء",
         "description":"وصف",
       
         
@@ -364,6 +453,16 @@ const resources = {
         "totalPrice":"السعر الكلي",
        
         
+        
+      },
+      newOrder:{
+        "title":"إضافة طلب جديد",
+        "order_amount":"اسم الطلب",
+        "order_unit":"وحدة الطلب",
+        "order_price":"سعر الطلب", 
+        "order_type":"نوع الطلب",
+        "item_name":"اسم العنصر",
+        "item_type":"نوع العنصر",
         
       },
       actions:{
@@ -387,6 +486,13 @@ const resources = {
         "close":"يغلق",
         "cancel":"يلغي",
       }
+      ,
+      updatePage:{
+        "buildings":"تحديث المبنى",
+        "needs":"تحديث الحاجة",
+        "items":"تحديث العنصر",
+        "orders":"تحديث الطلب",
+      }
     },
    
   }
@@ -396,9 +502,7 @@ i18n
   .use(initReactI18next) // passes i18n down to react-i18next
   .init({
     resources,
-    lng: "en", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
-    // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
-    // if you're using a language detector, do not define the lng option
+    lng: "en",
 
     interpolation: {
       escapeValue: false // react already safes from xss

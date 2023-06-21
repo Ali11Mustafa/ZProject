@@ -23,23 +23,25 @@ const NeedsDashboard = () => {
     fetchData();
   }, [newItem]);
 
-  const fetchData = () => {
-    axios
-      .get(API)
-      .then((response) => {
+  const fetchData=()=>{
+    axios.get(API)
+  .then(response => {
 
-      response.data.data.map((item)=>{
-        setNeeds(response.data.data);
-        
-  
-      })
-      
+    let arrayNotDeleted = []
+    response.data.data.map((item)=>{
+      if(item.is_deleted!==1){
+        arrayNotDeleted.push(item);
+      }
 
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+    })
+    
+  setNeeds(arrayNotDeleted);
+
+  })
+  .catch(error => {
+    console.error(error);
+  });
+  }
 
   return (
     <div>

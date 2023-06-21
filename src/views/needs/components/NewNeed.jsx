@@ -70,6 +70,7 @@ export default function NewNeed({GetNewItem}) {
         block_id:buildingID,
         item_id:itemID
       }
+      console.log(itemID);
       axios.post(API, newData)
         .then(response => {
           GetNewItem(Math.random());
@@ -159,7 +160,7 @@ export default function NewNeed({GetNewItem}) {
                         className="mb-2 block font-medium text-gray-700"
                         for="name"
                       >
-                        {t("newNeed.name")}
+                        {t("newNeed.item_name")}
                       </label>
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -182,7 +183,7 @@ export default function NewNeed({GetNewItem}) {
                         className="mb-2 block font-medium text-gray-700"
                         for="type"
                       >
-                        {t("newNeed.type")}
+                        {t("newNeed.item_type")}
                       </label>
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"

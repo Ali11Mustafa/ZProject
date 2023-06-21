@@ -56,9 +56,9 @@ const App = () => {
   
 
 
-  if(!isAuthenticated){
+ /*  if(!isAuthenticated){
     return <Auth/>
-  }
+  } */
 
   return (
     <Routes> 

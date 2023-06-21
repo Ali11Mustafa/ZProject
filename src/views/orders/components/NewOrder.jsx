@@ -92,7 +92,7 @@ export default function NewOrders({GetNewItem}) {
               <div className="relative flex w-full flex-col rounded-lg border-0 bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="border-slate-200 flex items-center justify-between rounded-t border-b border-solid p-5">
-                  <h3 className="text-xl font-semibold dark:text-indigo-900"> {t("newNeed.title")}</h3>
+                  <h3 className="text-xl font-semibold dark:text-indigo-900"> {t("newOrder.title")}</h3>
                   <button
                     className={`bg-transparent text-red-500 ${language !== 'en' ? 'float-left mr-auto' : 'float-right ml-auto'} border-0 p-1 text-xl font-semibold`}
                     onClick={() => setShowModal(false)}
@@ -111,23 +111,23 @@ export default function NewOrders({GetNewItem}) {
                         className="mb-2 block font-medium text-gray-700"
                         for="amount"
                       >
-                    {t("newNeed.need_amount")}
+                    {t("newOrder.order_amount")}
                       </label>
                       <input
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
                         id="amount"
                         name="amount"
                         type="number"
-                        placeholder="Enter used amount"
+                        placeholder="Enter amount"
                         {...register("amount", { required: true })}
                       />
                     </div>
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="type"
+                        for="unit"
                       >
-                        {t("newNeed.type")}
+                        {t("newOrder.order_unit")}
                       </label>
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -135,7 +135,7 @@ export default function NewOrders({GetNewItem}) {
                         name="unit"
                         {...register("unit", { required: true })}
                       >
-                       <option value="">Select a type</option>
+                       <option value="">Select a unit</option>
 
                        <option value="ton">ton</option>
                        <option value="m">m</option>
@@ -152,7 +152,7 @@ export default function NewOrders({GetNewItem}) {
                         className="mb-2 block font-medium text-gray-700"
                         for="price"
                       >
-                        {t("newNeed.description")}
+                        {t("newOrder.order_price")}
                       </label>
                       <input
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -168,7 +168,7 @@ export default function NewOrders({GetNewItem}) {
                         className="mb-2 block font-medium text-gray-700"
                         for="name"
                       >
-                        {t("newNeed.name")}
+                        {t("newOrder.item_name")}
                       </label>
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -191,7 +191,7 @@ export default function NewOrders({GetNewItem}) {
                         className="mb-2 block font-medium text-gray-700"
                         for="type"
                       >
-                        {t("newNeed.type")}
+                        {t("newOrder.item_type")}
                       </label>
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"

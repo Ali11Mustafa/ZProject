@@ -7,39 +7,39 @@ export default function useItemsTableColumns() {
 
   const itemsTableColumns = [
     {
-      Header: t("itemsTable.columns.amount"),
+      Header: t("ordersTable.columns.amount"),
       accessor: "amount",
     },
     {
-      Header: t("itemsTable.columns.unit"),
+      Header: t("ordersTable.columns.unit"),
       accessor: "unit",
     },
     {
-      Header: t("itemsTable.columns.price"),
+      Header: t("ordersTable.columns.price"),
       accessor: "price",
     },
     {
-      Header: t("itemsTable.columns.status"),
+      Header: t("ordersTable.columns.status"),
       accessor: "status",
     },
     {
-      Header: t("needsTable.username"),
+      Header: t("ordersTable.columns.username"),
       accessor: "user_info.name",
     },
     {
-      Header: t("needsTable.columns.item"),
+      Header: t("ordersTable.columns.item_type"),
       accessor: "item_info.type",
     },
     {
-      Header: t("needsTable.name"),
+      Header: t("ordersTable.columns.item_name"),
       accessor: "item_info.name",
     },
     {
-      Header: t("needsTable.remaining_item"),
+      Header: t("ordersTable.columns.remaining_item"),
       accessor: "item_info.remaining_item",
     },
     {
-      Header: t("needsTable.actions"),
+      Header: t("ordersTable.columns.actions"),
       accessor: "actions",
     },
    

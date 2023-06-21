@@ -17,11 +17,11 @@ export default function useNeedsTableColumns() {
       accessor: "description",
     },
     {
-      Header: t("needsTable.status"),
+      Header: t("needsTable.columns.status"),
       accessor: "status",
     },
     {
-      Header: t("needsTable.username"),
+      Header: t("needsTable.columns.username"),
       accessor: "user_info.name",
     },
     {
@@ -29,11 +29,11 @@ export default function useNeedsTableColumns() {
       accessor: "item_info.type",
     },
     {
-      Header: t("needsTable.name"),
+      Header: t("needsTable.columns.item_name"),
       accessor: "item_info.name",
     },
     {
-      Header: t("needsTable.remaining_item"),
+      Header: t("needsTable.columns.remaining_item"),
       accessor: "item_info.remaining_item",
     },
     {
