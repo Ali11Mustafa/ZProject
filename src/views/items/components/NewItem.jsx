@@ -121,23 +121,7 @@ export default function NewItem({GetNewItem}) {
                       </select>
                     </div>
                   
-                    <div className="mb-4">
-                      <label
-                        className="mb-2 block font-medium text-gray-700"
-                        for="remaining_item"
-                      >
-                                  {t("newItem.amountUnit")}
-                      </label>
-                      <input
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="remaining_item"
-                        name="remaining_item"
-                        type="number"
-                        placeholder="Enter the type"
-                        {...register("remaining_item", { required: true })}
-                      />
-                    </div>
-                  
+                   
                    
                   
                     {/*footer*/}

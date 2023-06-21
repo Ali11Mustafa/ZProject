@@ -70,7 +70,7 @@ const OrdersTable = (props) => {
       <div className="text-xl font-semibold text-navy-700 dark:text-white">
           {t("itemsTable.title")}
         </div>
-        <NewOrder/>
+        <NewOrder GetNewItem={GetNewItem}/>
       </header>
 
       <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">

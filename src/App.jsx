@@ -13,6 +13,7 @@ import Updateblock from "views/buildings/Pages/Updateblock";
 import Orders from "pages/Orders";
 import Users from "pages/Users";
 import UpdateNeed from "./views/needs/Pages/UpdateNeed"
+import UpdateOrder from "./views/orders/pages/UpdateOrder"
 
 export const useSearchStore = create((set) => ({
   searchText: '',
@@ -71,6 +72,8 @@ const App = () => {
       <Route path="/orders" element={<Orders />} /> 
       <Route path="/users" element={<Users/>} /> 
       <Route path="/needs/update/:needId" element={<UpdateNeed/>} /> 
+      <Route path="/orders/update/:orderId" element={<UpdateOrder/>} /> 
+
 
     </Routes>
   );

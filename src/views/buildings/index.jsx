@@ -30,18 +30,25 @@ const BuildingDashboard = () => {
     fetchData();
   }, []);
 
-  const fetchData = () => {
-    axios
-      .get(API)
-      .then((response) => {
-        setBlockData(response.data.data);
-          console.log("check",response.data.data);
-        
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  const fetchData=()=>{
+    axios.get(API)
+  .then(response => {
+
+    let arrayNotDeleted = []
+    response.data.data.map((item)=>{
+      if(item.is_deleted!==1){
+        arrayNotDeleted.push(item);
+      }
+
+    })
+    
+  setBlockData(arrayNotDeleted);
+
+  })
+  .catch(error => {
+    console.error(error);
+  });
+  }
 
   const onDeleteBuilding = (BlockId) => {
     const API = `https://api.hirari-iq.com/api/blocks/${BlockId}`;

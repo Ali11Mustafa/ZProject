@@ -1,110 +1,69 @@
-import { useLanguageStore } from "App";
-import React,{useState,useEffect,useMemo}from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { BsPlus } from "react-icons/bs";
-import axios from "axios";
+import Layout from 'Layout'
+import React from 'react'
+import Card from 'components/card'
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useLanguageStore } from 'App';
+import { useParams } from 'react-router-dom';
+import useFetchItems from 'hooks/useFetchItems';
+import axios from 'axios';
+import { useState,useMemo,useEffect} from 'react';
 
-import { useItemsStore } from "App";
-import useFetchItems from "hooks/useFetchItems";
+function UpdateOrder() {
 
-export default function NewOrders({GetNewItem}) {
-  const [showModal, setShowModal] = React.useState(false);
-  const [itemNames,setNames]=useState([]);
-  const [itemTypes,setTypes]=useState([]);
-  const [buildingID,setBuildingId]=useState(null);
-  const [itemID,setItemID]=useState(null);
-
-  const [buildingName,setBuildingNames]=useState([]);
-
-
-   const {Data}=useFetchItems();
-   console.log(Data);
-   //get Items
-   useEffect(() => {
-    if (Data) {
-      Data.forEach((item) => {
-        
-      
-        if (item.is_deleted !== 1) {
-          
-          setNames((previousNames) => [...previousNames, item.name]);
-          setTypes((previousTypes) => [...previousTypes, item.type]);
-          setItemID(item.id);
-          
-        }
-      });
-    }
-  }, [Data]);
-  
-
+  const {orderId} = useParams()
+  const {Data}=useFetchItems();
 
 
   const { register, handleSubmit, reset } = useForm();
-  const onSubmit = (data) => {
-    console.log("data",data);
+  const [showModal, setShowModal] = React.useState(false);
+  const [itemNames,setNames]=useState([]);
+  const [itemTypes,setTypes]=useState([]);
+  const [itemID,setItemID]=useState(null);
 
-    const API = 'https://api.hirari-iq.com/api/orders';
+  const onSubmit = (data) => {
+    const API = `https://api.hirari-iq.com/api/orders/${orderId}`;
   
     const PostData = () => {
-      let newData={
-        amount:data.amount,
-        unit:data.unit,
-        price:data.price,
-        user_id:"1",
-        item_id:itemID
-      }
-      axios.post(API, newData)
+      axios.put(API, {...data,user:1})
         .then(response => {
-          GetNewItem(Math.random());
-
         })
         .catch(error => {
           console.error('Error:', error);
         });
     };
+  
     PostData();
-    setShowModal(false);
     reset();
   };
-  const {t} = useTranslation()
-
-  const language = useLanguageStore(state=>state.language)
+  console.log(Data);
+  //get Items
+  useEffect(() => {
+   if (Data) {
+     Data.forEach((item) => {
+       
+     
+       if (item.is_deleted !== 1) {
+         
+         setNames((previousNames) => [...previousNames, item.name]);
+         setTypes((previousTypes) => [...previousTypes, item.type]);
+         setItemID(item.id);
+         
+       }
+     });
+   }
+ }, [Data]);
+ 
   const memoizedItemNames = useMemo(() => itemNames, [itemNames]);
   const memoizedItemTypes = useMemo(() => itemTypes, [itemTypes]);
-  const memoizedBuildingName = useMemo(() => buildingName, [buildingName]);
-
+  const {t} = useTranslation()
+  const language = useLanguageStore(state=>state.language)
 
   return (
-    <>
-      <button
-        className="rounded-xs bg-gray-200 dark:bg-white dark:text-blue-800 rounded-md "
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        <BsPlus fontSize={32} />
-      </button>
-      {showModal ? (
-        <>
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">
-            <div className="relative  my-6 mx-auto w-[90%] max-w-xl">
-              {/*content*/}
-              <div className="relative flex w-full flex-col rounded-lg border-0 bg-white outline-none focus:outline-none">
-                {/*header*/}
-                <div className="border-slate-200 flex items-center justify-between rounded-t border-b border-solid p-5">
-                  <h3 className="text-xl font-semibold dark:text-indigo-900"> {t("newNeed.title")}</h3>
-                  <button
-                    className={`bg-transparent text-red-500 ${language !== 'en' ? 'float-left mr-auto' : 'float-right ml-auto'} border-0 p-1 text-xl font-semibold`}
-                    onClick={() => setShowModal(false)}
-                  >
-                
-                      ×
-             
-                  </button>
-                </div>
-                {/*body*/}
-                <div>
-                  <form className="mb-4 rounded bg-white px-8 pt-6 pb-8"  onSubmit={handleSubmit(onSubmit)}>
+    <Layout>
+        <Card extra={"w-full h-full sm:overflow-auto px-5 p-5"}>
+        <h1 className='font-bold text-xl mb-10'>Update Item</h1>
+        <form className="mb-4 rounded bg-white px-8 pt-6 pb-8"  onSubmit={handleSubmit(onSubmit)}>
                   
                   <div className="mb-4">
                       <label
@@ -226,13 +185,9 @@ export default function NewOrders({GetNewItem}) {
                   </button>
                 </div>
                   </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="fixed inset-0 z-40 bg-black dark:bg-black opacity-30"></div>
-        </>
-      ) : null}
-    </>
-  );
+    </Card>
+      </Layout>
+  )
 }
+
+export default UpdateOrder
