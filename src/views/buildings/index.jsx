@@ -21,6 +21,13 @@ const updateBlock = (BlockId, deleted, data) => {
 };
 
 const BuildingDashboard = () => {
+  const [newItem, setNewItem] = useState("");
+ 
+  const GetNewItem = (item) =>  {
+    setNewItem(item);
+    //Math.random
+  }
+
   const [BlockData, setBlockData] = useState([]);
   const { buildingsTableColumns } = useBuildingsTableColumns();
   const { t } = useTranslation();
@@ -28,7 +35,7 @@ const BuildingDashboard = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [newItem]);
 
   const fetchData=()=>{
     axios.get(API)
@@ -83,6 +90,8 @@ const BuildingDashboard = () => {
             tableData={BlockData}
             OnDeleteBuilding={onDeleteBuilding}
             OnUpdateBlock={updateBlock}
+            GetNewItem = {GetNewItem} 
+
           />
         </div>
       </div>

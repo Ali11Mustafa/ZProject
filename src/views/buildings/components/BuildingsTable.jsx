@@ -8,9 +8,10 @@ import { Link } from "react-router-dom";
 import { useSearchStore } from "App";
 import { useTranslation } from "react-i18next";
 import { useLanguageStore } from "App";
+import axios from "axios";
 
 const BuildingsTable = (props) => {
-  const { columnsData, tableData, OnDeleteBuilding, OnUpdateBlock } = props;
+  const { columnsData, tableData, OnDeleteBuilding, OnUpdateBlock,GetNewItem } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const searchText = useSearchStore((state) => state.searchText);
@@ -43,16 +44,30 @@ const BuildingsTable = (props) => {
 
   initialState.pageSize = 11;
 
-  function handleDelete(rowId) {
-    OnUpdateBlock(rowId, 1, tableData);
-    OnDeleteBuilding(rowId);
-  }
+  
 
   function handleUpdate(rowId) {}
 
   const { t } = useTranslation();
 
   const language = useLanguageStore((state) => state.language);
+  function deleteMe(e){
+    console.log(e.target.getAttribute('value'));
+  
+  
+    axios.delete(`https://api.hirari-iq.com/api/blocks/${e.target.getAttribute('value')}`)
+  .then(response => {
+    // setDeleted(true);
+    GetNewItem(Math.random());
+    console.log(response);
+    console.log("run")
+  })
+  .catch(error => {
+    console.error(error);
+  });
+  
+  }
+  
 
   return (
     <Card extra={"w-full h-full sm:overflow-auto px-5"}>
@@ -60,7 +75,7 @@ const BuildingsTable = (props) => {
         <div className="text-xl font-semibold text-navy-700 dark:text-white">
           {t("buildingsTable.title")}
         </div>
-        <NewBuilding />
+        <NewBuilding GetNewItem={GetNewItem}/>
       </header>
 
       <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
@@ -122,16 +137,17 @@ const BuildingsTable = (props) => {
                         data = (
                           <div className="flex items-center gap-4">
                             <button
-                              className="flex items-center gap-1 text-red-600"
-                              onClick={() => handleDelete(row.original.id)}
-                            >
-                              <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl">
-                                <MdDeleteOutline />
-                              </div>
-                              <p className="text-start text-sm font-medium text-black dark:text-white">
-                                {t("actions.delete")}
-                              </p>
-                            </button>
+                          value={row.original.id}
+                         onClick={deleteMe}
+                        className="flex items-center gap-1 text-red-600"
+                          >
+                            <div   value={row.original.id} className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-xl   ">
+                              <MdDeleteOutline  value={row.original.id} />
+                            </div>
+                            <p   value={row.original.id} className="text-start text-sm font-medium text-black dark:text-white">
+                              {t("actions.delete")}
+                            </p>
+                          </button>
                             <Link
                               to={`/buildings/update/${row.original.id}`}
                               className="flex items-center gap-1 text-green-600"

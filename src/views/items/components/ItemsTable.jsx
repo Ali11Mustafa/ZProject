@@ -60,7 +60,6 @@ const ItemsTable = (props) => {
 
   axios.delete(`https://api.hirari-iq.com/api/items/${e.target.getAttribute('value')}`)
 .then(response => {
-  // setDeleted(true);
   GetNewItem(Math.random());
   console.log(response);
 })

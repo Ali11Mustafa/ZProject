@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
 import axios from "axios";
 
-export default function NewBuilding() {
+export default function NewBuilding({GetNewItem}) {
   const [showModal, setShowModal] = React.useState(false);
 
 
@@ -17,6 +17,8 @@ export default function NewBuilding() {
     const PostData = () => {
       axios.post(API, {...data,level:"0"})
         .then(response => {
+          GetNewItem(Math.random())
+          
           
         })
         .catch(error => {
