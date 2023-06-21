@@ -20,7 +20,8 @@ export default function NewItem({GetNewItem}) {
 
           console.log(response.data)
 
-          GetNewItem(Math.random());
+         GetNewItem(Math.random());
+         
   
         })
         .catch(error => {

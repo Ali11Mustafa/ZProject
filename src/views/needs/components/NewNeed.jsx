@@ -8,7 +8,7 @@ import axios from "axios";
 import { useItemsStore } from "App";
 import useFetchItems from "hooks/useFetchItems";
 
-export default function NewNeed() {
+export default function NewNeed({GetNewItem}) {
   const [showModal, setShowModal] = React.useState(false);
   const [itemNames,setNames]=useState([]);
   const [itemTypes,setTypes]=useState([]);
@@ -72,6 +72,8 @@ export default function NewNeed() {
       }
       axios.post(API, newData)
         .then(response => {
+          GetNewItem(Math.random());
+
         })
         .catch(error => {
           console.error('Error:', error);

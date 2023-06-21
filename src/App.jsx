@@ -12,6 +12,7 @@ import DeleteItem from "views/items/pages/DeleteItem";
 import Updateblock from "views/buildings/Pages/Updateblock";
 import Orders from "pages/Orders";
 import Users from "pages/Users";
+import UpdateNeed from "./views/needs/Pages/UpdateNeed"
 
 export const useSearchStore = create((set) => ({
   searchText: '',
@@ -69,6 +70,7 @@ const App = () => {
       <Route path="/items/delete/:itemId" element={<DeleteItem />} /> 
       <Route path="/orders" element={<Orders />} /> 
       <Route path="/users" element={<Users/>} /> 
+      <Route path="/needs/update/:needId" element={<UpdateNeed/>} /> 
 
     </Routes>
   );

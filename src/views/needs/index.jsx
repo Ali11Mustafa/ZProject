@@ -4,22 +4,37 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import NeedsTable from "./components/NeedsTable"; 
 import useNeedsTableColumns from "./variables/useNeedsTableColumns";
-
+ 
+  
 const NeedsDashboard = () => {
   const[needs,setNeeds]=useState([]);
+  const [newItem, setNewItem] = useState("");
+
+
+  const GetNewItem = (item) =>  {
+    setNewItem(item);
+    //Math.random
+  }
   
   const {needsTableColumns} = useNeedsTableColumns()
   const API = "https://api.hirari-iq.com/api/needs";
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [newItem]);
 
   const fetchData = () => {
     axios
       .get(API)
       .then((response) => {
-        setNeeds(response.data.data);
+        let arrayNotDeleted = []
+      response.data.data.map((item)=>{
+          arrayNotDeleted.push(item);
+        
+  
+      })
+      
+        setNeeds(arrayNotDeleted);
 
       })
       .catch((error) => {
@@ -36,6 +51,7 @@ const NeedsDashboard = () => {
           <NeedsTable
             columnsData={needsTableColumns}
             tableData={needs}
+            GetNewItem={GetNewItem}
           />
         </div>
 

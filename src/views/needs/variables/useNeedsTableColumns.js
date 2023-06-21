@@ -40,6 +40,10 @@ export default function useNeedsTableColumns() {
       Header: t("needsTable.columns.building"),
       accessor: "block_info.name",
     },
+    {
+      Header: t("itemsTable.columns.actions"),
+      accessor: "actions",
+    },
    
    
     

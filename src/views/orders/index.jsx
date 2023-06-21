@@ -10,28 +10,40 @@ import { useItemsStore } from "App";
 
 const OrdersDashboard = () => {
   const {itemsTableColumns} = useItemsTableColumns();
+  const [newItem, setNewItem] = useState("");
 
 
+  const GetNewItem = (item) =>  {
+    setNewItem(item);
+    //Math.random
+  }
+  
  const [orders,setOrders]=useState([]);
  const API="https://api.hirari-iq.com/api/orders";
    useEffect(()=>{
      FetchData();
-   },[]);
+   },[newItem]);
  
-    const FetchData=()=>{
-     axios.get(API)
-   .then(response => {
-     response.data.data.map((item)=>{
-       if(item.is_deleted!==1){
-         setOrders(previousItem=>[...previousItem,item]);
-       }
- 
-     })
-   })
-   .catch(error => {
-     console.error(error);
-   });
-   }
+    
+   const FetchData=()=>{
+    axios.get(API)
+  .then(response => {
+
+    let arrayNotDeleted = []
+    response.data.data.map((item)=>{
+      if(item.is_deleted!==1){
+        arrayNotDeleted.push(item);
+      }
+
+    })
+    
+  setOrders(arrayNotDeleted);
+
+  })
+  .catch(error => {
+    console.error(error);
+  });
+  }
 
 
 
@@ -44,6 +56,8 @@ const OrdersDashboard = () => {
           <OrdersTable
             columnsData={itemsTableColumns}
             tableData={orders}
+            GetNewItem={GetNewItem}
+            
           />
         </div>
 

@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios';
 
-function useFetchItems({newItem}) {
+function useFetchItems() {
  
 const [Data,setData]=useState([]);
 const API="https://api.hirari-iq.com/api/items";
@@ -16,7 +16,6 @@ const API="https://api.hirari-iq.com/api/items";
       if(item.is_deleted!==1){
         setData(previousItem=>[...previousItem,item]);
       }
-
     })
   })
   .catch(error => {

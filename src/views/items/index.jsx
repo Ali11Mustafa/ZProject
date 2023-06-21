@@ -16,6 +16,7 @@ const ItemsDashboard = () => {
  
   const GetNewItem = (item) =>  {
     setNewItem(item);
+    //Math.random
   }
 
   const [Data,setData]=useState([]);

@@ -1,33 +1,31 @@
-import { useLanguageStore } from "App";
-import React,{useState,useEffect,useMemo}from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { BsPlus } from "react-icons/bs";
-import axios from "axios";
+import Layout from 'Layout'
+import React from 'react'
+import Card from 'components/card'
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useLanguageStore } from 'App';
+import { useParams } from 'react-router-dom';
+import useFetchItems from 'hooks/useFetchItems';
+import { useMemo,useState } from 'react';
+import axios from 'axios';
+import { useEffect } from 'react';
 
-import { useItemsStore } from "App";
-import useFetchItems from "hooks/useFetchItems";
-
-export default function NewOrders({GetNewItem}) {
+function UpdateNeed() {
   const [showModal, setShowModal] = React.useState(false);
   const [itemNames,setNames]=useState([]);
   const [itemTypes,setTypes]=useState([]);
   const [buildingID,setBuildingId]=useState(null);
   const [itemID,setItemID]=useState(null);
-
   const [buildingName,setBuildingNames]=useState([]);
+  const {needId}=useParams();
 
 
    const {Data}=useFetchItems();
-   console.log(Data);
    //get Items
    useEffect(() => {
     if (Data) {
       Data.forEach((item) => {
-        
-      
         if (item.is_deleted !== 1) {
-          
           setNames((previousNames) => [...previousNames, item.name]);
           setTypes((previousTypes) => [...previousTypes, item.type]);
           setItemID(item.id);
@@ -35,7 +33,27 @@ export default function NewOrders({GetNewItem}) {
         }
       });
     }
+    fetchData();
   }, [Data]);
+  const API = "https://api.hirari-iq.com/api/blocks";
+  const fetchData = () => {
+    axios
+      .get(API)
+      .then((response) => {
+        const newBuildingNames = [];
+        response.data.data.forEach((block) => {
+          console.log("resp ", response.data.data);
+          if (block.is_deleted !== 1) {
+            newBuildingNames.push(block.name);
+            setBuildingId(block.id);
+          }
+        });
+        setBuildingNames(newBuildingNames);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   
 
 
@@ -44,19 +62,18 @@ export default function NewOrders({GetNewItem}) {
   const onSubmit = (data) => {
     console.log("data",data);
 
-    const API = 'https://api.hirari-iq.com/api/orders';
+    const API = `https://api.hirari-iq.com/api/needs/${needId}`;
   
     const PostData = () => {
       let newData={
-        amount:data.amount,
-        unit:data.unit,
-        price:data.price,
-        user_id:"2",
+        need_amount:data.need_amount,
+        description:data.description,
+        user_id:"1",
+        block_id:buildingID,
         item_id:itemID
       }
-      axios.post(API, newData)
+      axios.put(API, newData)
         .then(response => {
-          GetNewItem(Math.random());
 
         })
         .catch(error => {
@@ -67,44 +84,19 @@ export default function NewOrders({GetNewItem}) {
     setShowModal(false);
     reset();
   };
-  const {t} = useTranslation()
-
-  const language = useLanguageStore(state=>state.language)
   const memoizedItemNames = useMemo(() => itemNames, [itemNames]);
   const memoizedItemTypes = useMemo(() => itemTypes, [itemTypes]);
   const memoizedBuildingName = useMemo(() => buildingName, [buildingName]);
 
 
+  const {t} = useTranslation()
+  const language = useLanguageStore(state=>state.language)
+
   return (
-    <>
-      <button
-        className="rounded-xs bg-gray-200 dark:bg-white dark:text-blue-800 rounded-md "
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        <BsPlus fontSize={32} />
-      </button>
-      {showModal ? (
-        <>
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">
-            <div className="relative  my-6 mx-auto w-[90%] max-w-xl">
-              {/*content*/}
-              <div className="relative flex w-full flex-col rounded-lg border-0 bg-white outline-none focus:outline-none">
-                {/*header*/}
-                <div className="border-slate-200 flex items-center justify-between rounded-t border-b border-solid p-5">
-                  <h3 className="text-xl font-semibold dark:text-indigo-900"> {t("newNeed.title")}</h3>
-                  <button
-                    className={`bg-transparent text-red-500 ${language !== 'en' ? 'float-left mr-auto' : 'float-right ml-auto'} border-0 p-1 text-xl font-semibold`}
-                    onClick={() => setShowModal(false)}
-                  >
-                
-                      ×
-             
-                  </button>
-                </div>
-                {/*body*/}
-                <div>
-                  <form className="mb-4 rounded bg-white px-8 pt-6 pb-8"  onSubmit={handleSubmit(onSubmit)}>
+    <Layout>
+        <Card extra={"w-full h-full sm:overflow-auto px-5 p-5"}>
+        <h1 className='font-bold text-xl mb-10'>Update Item</h1>
+        <form className="mb-4 rounded bg-white px-8 pt-6 pb-8"  onSubmit={handleSubmit(onSubmit)}>
                   
                   <div className="mb-4">
                       <label
@@ -115,52 +107,27 @@ export default function NewOrders({GetNewItem}) {
                       </label>
                       <input
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="amount"
-                        name="amount"
+                        id="need_amount"
+                        name="need_amount"
                         type="text"
                         placeholder="Enter used amount"
-                        {...register("amount", { required: true })}
+                        {...register("need_amount", { required: true })}
                       />
                     </div>
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="type"
-                      >
-                        {t("newNeed.type")}
-                      </label>
-                      <select
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="unit"
-                        name="unit"
-                        {...register("unit", { required: true })}
-                      >
-                       <option value="">Select a type</option>
-
-                       <option value="ton">ton</option>
-                       <option value="m">m</option>
-                       <option value="m2">m2</option>
-                       <option value="m3">m3</option>
-                       <option value="barrel">barrel</option>
-                          
-                        
-                        
-                      </select>
-                    </div>
-                    <div className="mb-4">
-                      <label
-                        className="mb-2 block font-medium text-gray-700"
-                        for="price"
+                        for="description"
                       >
                         {t("newNeed.description")}
                       </label>
-                      <input
+                      <textarea
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="price"
-                        name="price"
-                        type="number"
-                        placeholder="price"
-                        {...register("price", { required: true })}
+                        id="description"
+                        name="description"
+                        type="text"
+                        placeholder="Write a description"
+                        {...register("description", { required: true })}
                       />
                     </div>
                   <div className="mb-4">
@@ -210,6 +177,30 @@ export default function NewOrders({GetNewItem}) {
                       </select>
                     </div>
                   
+                  
+                    <div className="mb-4">
+                      <label
+                        className="mb-2 block font-medium text-gray-700"
+                        for="no_of_floors"
+                      >
+                        {t("newNeed.building")}
+                      </label>
+                      <select
+                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        id="building"
+                        name="building"
+                        type="string"
+                        {...register("building", { required: true })}
+                      >
+                        <option value="">Select a Building</option>
+                        {memoizedBuildingName && memoizedBuildingName.map((name)=>{
+                          return(
+                          <option value={name}>{name}</option>
+                          )
+                        })}
+                      </select>
+                    </div>
+                  
                     {/*footer*/}
                     <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start' } rounded-b pt-5`}  >
                   <button
@@ -226,13 +217,9 @@ export default function NewOrders({GetNewItem}) {
                   </button>
                 </div>
                   </form>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="fixed inset-0 z-40 bg-black dark:bg-black opacity-30"></div>
-        </>
-      ) : null}
-    </>
-  );
+    </Card>
+      </Layout>
+  )
 }
+
+export default UpdateNeed

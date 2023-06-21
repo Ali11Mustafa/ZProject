@@ -7,15 +7,17 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-import NewItem from "./NewOrder";
+import NewOrder from "./NewOrder";
 import { useLanguageStore } from "App";
 import { useTranslation } from "react-i18next";
 import { FiEdit } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 
 const OrdersTable = (props) => {
-  const { columnsData, tableData } = props;
+  const { columnsData, tableData,GetNewItem } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   
@@ -44,7 +46,21 @@ const OrdersTable = (props) => {
   initialState.pageSize = 11;
 
   const {t} = useTranslation()
-
+  function deleteMe(e){
+    console.log(e.target.getAttribute('value'));
+  
+  
+    axios.delete(`https://api.hirari-iq.com/api/orders/${e.target.getAttribute('value')}`)
+  .then(response => {
+    // setDeleted(true);
+    GetNewItem(Math.random());
+    console.log(response);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+  
+  }
 
  const language = useLanguageStore(state=>state.language)
 
@@ -54,7 +70,7 @@ const OrdersTable = (props) => {
       <div className="text-xl font-semibold text-navy-700 dark:text-white">
           {t("itemsTable.title")}
         </div>
-        <NewItem/>
+        <NewOrder/>
       </header>
 
       <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
@@ -150,20 +166,20 @@ const OrdersTable = (props) => {
                     else if (cell.column.id === "actions") {
                       data = (
                         <div className="flex items-center gap-4">
+                           <button
+                              value={row.original.id}
+                             onClick={deleteMe}
+                            className="flex items-center gap-1 text-red-600"
+                              >
+                                <div   value={row.original.id} className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-xl   ">
+                                  <MdDeleteOutline  value={row.original.id} />
+                                </div>
+                                <p   value={row.original.id} className="text-start text-sm font-medium text-black dark:text-white">
+                                  {t("actions.delete")}
+                                </p>
+                              </button>
                           <Link
-                          to={`/items/delete/${row.original.id}`}
-
-                      className="flex items-center gap-1 text-red-600"
-                          >
-                            <div className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-xl   ">
-                              <MdDeleteOutline />
-                            </div>
-                            <p className="text-start text-sm font-medium text-black dark:text-white">
-                              {t("actions.delete")}
-                            </p>
-                          </Link>
-                          <Link
-                          to={`/items/update/${row.original.id}`}
+                          to={`/orders/update/${row.original.id}`}
                             className="flex items-center gap-1 text-green-600"
                           >
                             <div className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-lg   ">

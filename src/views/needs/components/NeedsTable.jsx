@@ -1,5 +1,6 @@
 import React, { useMemo} from "react"; 
 import Card from "components/card";
+import axios from "axios";
 
 import {
   useGlobalFilter,
@@ -10,10 +11,12 @@ import {
 import NewNeed from "./NewNeed";
 import { useLanguageStore } from "App";
 import { useTranslation } from "react-i18next";
-
+import { FiEdit } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { MdDeleteOutline } from "react-icons/md";
 
 const NeedsTable = (props) => {
-  const { columnsData, tableData } = props;
+  const { columnsData, tableData ,GetNewItem }=props;
   console.log(tableData);
   let TypeAndname;
 
@@ -44,7 +47,21 @@ const NeedsTable = (props) => {
 
 
  const language = useLanguageStore(state=>state.language)
+ function deleteMe(e){
+  console.log(e.target.getAttribute('value'));
 
+
+  axios.delete(`https://api.hirari-iq.com/api/needs/${e.target.getAttribute('value')}`)
+.then(response => {
+  // setDeleted(true);
+  GetNewItem(Math.random());
+  console.log(response);
+})
+.catch(error => {
+  console.error(error);
+});
+
+}
  const {t} =  useTranslation()
 
   return (
@@ -53,7 +70,7 @@ const NeedsTable = (props) => {
       <div className="text-xl font-semibold text-navy-700 dark:text-white">
         {t('needsTable.title')}
         </div>
-        <NewNeed/>
+        <NewNeed GetNewItem={GetNewItem}/>
       </header>
 
       <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
@@ -142,6 +159,36 @@ const NeedsTable = (props) => {
                             <p  className="text-sm font-medium text-black dark:text-white">
                             {cell.value}
                           </p>
+                          );
+                        }else if (cell.column.id === "actions") {
+                          data = (
+                            <div className="flex items-center gap-4">
+                              <button
+                              value={row.original.id}
+                             onClick={deleteMe}
+                            className="flex items-center gap-1 text-red-600"
+                              >
+                                <div   value={row.original.id} className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-xl   ">
+                                  <MdDeleteOutline  value={row.original.id} />
+                                </div>
+                                <p   value={row.original.id} className="text-start text-sm font-medium text-black dark:text-white">
+                                  {t("actions.delete")}
+                                </p>
+                              </button>
+                              <Link
+                              to={`/needs/update/${row.original.id}`}
+                                className="flex items-center gap-1 text-green-600"
+                              >
+                                <div className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-lg   ">
+                                  <FiEdit />
+                                </div>
+                                <p className=" text-start text-sm font-medium text-black dark:text-white">
+                                  {t("actions.update")}
+                                </p>
+                              </Link>
+    
+                              
+                            </div>
                           );
                         }
                     
