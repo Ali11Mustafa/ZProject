@@ -108,8 +108,8 @@ export default function NewItem({GetNewItem}) {
                         <option value="">Select a unit</option>
                         <option value="10mm">10mm</option>
                         <option value="12mm">12mm</option>
-                        <option value="16mm">20mm</option>
-                        <option value="20mm">25mm</option>
+                        <option value="20mm">20mm</option>
+                        <option value="25mm">25mm</option>
                         <option value="flat">flat</option>
                         <option value="slab">slab</option>
                         <option value="column">column</option>
