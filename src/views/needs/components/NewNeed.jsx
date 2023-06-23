@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
 import axios from "axios";
+import Swal from 'sweetalert2'
 
 import { useItemsStore } from "App";
 import useFetchItems from "hooks/useFetchItems";
@@ -59,7 +60,16 @@ export default function NewNeed({GetNewItem}) {
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = (data) => {
     console.log("data",data);
+    let itemName = data.item_name;
+    let itemId;
 
+    if(Data){
+      Data.map(item=>{
+        if(item.name === itemName){
+         itemId = item.id
+        }
+      })
+    }
     const API = 'https://api.hirari-iq.com/api/needs';
   
     const PostData = () => {
@@ -68,14 +78,25 @@ export default function NewNeed({GetNewItem}) {
         description:data.description,
         user_id:"1",
         block_id:buildingID,
-        item_id:itemID
+        item_id:itemId
       }
       console.log(itemID);
       axios.post(API, newData)
         .then(response => {
           GetNewItem(Math.random());
-
-        })
+          
+            console.log(response.status)
+            console.log("add")
+            Swal.fire({
+              position: 'top-center',
+              icon: 'success',
+              title: 'Your work has been saved',
+              showConfirmButton: true,
+              timer: 1500
+            })
+          }
+        
+        )
         .catch(error => {
           console.error('Error:', error);
         });
@@ -164,10 +185,10 @@ export default function NewNeed({GetNewItem}) {
                       </label>
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="name"
-                        name="name"
+                        id="item_name"
+                        name="item_name"
                         type="string"
-                        {...register("name", { required: true })}
+                        {...register("item_name", { required: true })}
                       >
                              <option value="">Select a name</option>
 
@@ -178,29 +199,7 @@ export default function NewNeed({GetNewItem}) {
                         })}
                       </select>
                     </div>
-                    <div className="mb-4">
-                      <label
-                        className="mb-2 block font-medium text-gray-700"
-                        for="type"
-                      >
-                        {t("newNeed.item_type")}
-                      </label>
-                      <select
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="type"
-                        name="type"
-                        {...register("type", { required: true })}
-                      >
-                       <option value="">Select a type</option>
-
-                         {memoizedItemTypes && memoizedItemTypes.map((type)=>{
-                          return(
-                          <option value={type}>{type}</option>
-                          )
-                        })}
-                        
-                      </select>
-                    </div>
+                   
                   
                   
                     <div className="mb-4">

@@ -1,6 +1,8 @@
 import React,{useEffect,useState} from 'react'
 import { useParams,useNavigate } from 'react-router-dom';
 import axios from "axios";
+import Swal from 'sweetalert2'
+
 function DeleteItem() {
 const [deleted,setDeleted]=useState(false);
 

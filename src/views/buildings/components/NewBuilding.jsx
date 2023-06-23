@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
 import axios from "axios";
+import Swal from 'sweetalert2'
 
 export default function NewBuilding({GetNewItem}) {
   const [showModal, setShowModal] = React.useState(false);
@@ -18,6 +19,18 @@ export default function NewBuilding({GetNewItem}) {
       axios.post(API, {...data,level:"0"})
         .then(response => {
           GetNewItem(Math.random())
+          if(response.status==201){
+            console.log(response.status)
+            console.log("add")
+            Swal.fire({
+              position: 'top-center',
+              icon: 'success',
+              title: 'Your work has been saved',
+              showConfirmButton: true,
+              timer: 1500
+            })
+          }
+        
           
           
         })

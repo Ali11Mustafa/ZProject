@@ -1,6 +1,7 @@
 import React, { useMemo} from "react"; 
 import Card from "components/card";
 import axios from "axios";
+import Swal from 'sweetalert2'
 
 import {
   useGlobalFilter,
@@ -46,21 +47,54 @@ const NeedsTable = (props) => {
 
 
  const language = useLanguageStore(state=>state.language)
+
+ function onAccept(id){
+console.log("run")
+ /*  axios.put(`https://api.hirari-iq.com/api/orders/accept/${id}`).then((response)=>{
+    console.log(response);
+    
+  }).catch((error)=>{
+    console.log(error);
+  }) */
+
+ }
+ 
  function deleteMe(e){
   console.log(e.target.getAttribute('value'));
 
-
-  axios.delete(`https://api.hirari-iq.com/api/needs/${e.target.getAttribute('value')}`)
-.then(response => {
-  // setDeleted(true);
-  GetNewItem(Math.random());
-  console.log(response);
-})
-.catch(error => {
-  console.error(error);
-});
-
+  Swal.fire({
+    title: 'Are you sure?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Delete'
+  }).then((result) => {
+ 
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Deleted!',
+        'Your file has been deleted.',
+        'success'
+      )
+      const res= axios.delete(`https://api.hirari-iq.com/api/needs/${e.target.getAttribute('value')}`)
+      .then(response => {
+        // setDeleted(true);
+        GetNewItem(Math.random());
+        console.log(response);
+        if(response.status!=200)
+        Swal.fire(
+          'the item not deleted',
+          'oopss',
+          'failed'
+        )
+      })
+      
+    
+    }
+  })
 }
+
  const {t} =  useTranslation()
 
   return (
@@ -119,13 +153,17 @@ const NeedsTable = (props) => {
                         {cell.value}
                       </p>
                       );
-                    } else if (cell.column.id === "status") {
-                      data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
-                        {cell.value}
-                      </p>
-                      );
-                    }else if (cell.column.id === "user_info.name") {
+                      }else if (cell.column.id === "status") {
+                        data = cell.value !== "accept" ? 
+  
+                            <div className="flex gap-2 items-center">
+                            <button onClick={()=>onAccept(row.original.id)} className="bg-green-400 px-2 py-1 rounded-md dark:text-black">Accept</button>
+                            <button className="bg-red-400 px-2 py-1 rounded-md dark:text-black">Reject</button>
+                            </div>
+                          : <p  className="text-sm font-medium text-green-600 ">{cell.value }</p>
+                          
+                         
+                      }else if (cell.column.id === "user_info.name") {
                       data = (
                         <p  className="text-sm font-medium text-black dark:text-white">
                         {cell.value}

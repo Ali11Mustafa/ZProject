@@ -1,5 +1,7 @@
 import React, { useMemo } from "react"; 
 import Card from "components/card";
+import Swal from 'sweetalert2'
+
 
 import {
   useGlobalFilter,
@@ -57,13 +59,38 @@ const ItemsTable = (props) => {
  function deleteMe(e){
   console.log(e.target.getAttribute('value'));
 
-
-  axios.delete(`https://api.hirari-iq.com/api/items/${e.target.getAttribute('value')}`)
-.then(response => {
-  // setDeleted(true);
-  GetNewItem(Math.random());
-  console.log(response);
-})
+  Swal.fire({
+    title: 'Are you sure?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Delete'
+  }).then((result) => {
+ 
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Deleted!',
+        'Your file has been deleted.',
+        'success'
+      )
+      const res= axios.delete(`https://api.hirari-iq.com/api/items/${e.target.getAttribute('value')}`)
+      .then(response => {
+        // setDeleted(true);
+        GetNewItem(Math.random());
+        console.log(response);
+        if(response.status!=200)
+        Swal.fire(
+          'the item not deleted',
+          'oopss',
+          'failed'
+        )
+      })
+      
+    
+    }
+  })
+ 
 .catch(error => {
   console.error(error);
 });

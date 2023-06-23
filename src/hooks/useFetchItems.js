@@ -9,8 +9,8 @@ const API="https://api.hirari-iq.com/api/items";
     FetchData();
   },[]);
 
-   const FetchData=()=>{
-    axios.get(API)
+   const FetchData= async()=>{
+   await axios.get(API)
   .then(response => {
     response.data.data.map((item)=>{
       if(item.is_deleted!==1){

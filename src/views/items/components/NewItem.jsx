@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
 import axios from "axios";
+import Swal from 'sweetalert2'
+
 
 export default function NewItem({GetNewItem}) {
   const [showModal, setShowModal] = React.useState(false);
@@ -14,13 +16,25 @@ export default function NewItem({GetNewItem}) {
   const onSubmit = (data) => {
     const API = 'https://api.hirari-iq.com/api/items';
   
-    const PostData = () => {
-      axios.post(API, {...data,user_id:"1"})
+    const PostData = async() => {
+    await  axios.post(API, {...data,user_id:"1"})
         .then(response => {
 
           console.log(response.data)
 
          GetNewItem(Math.random());
+         if(response.status==201){
+          console.log(response.status)
+          console.log("add")
+          Swal.fire({
+            position: 'top-center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: true,
+            timer: 1500
+          })
+        }
+      
          
   
         })
