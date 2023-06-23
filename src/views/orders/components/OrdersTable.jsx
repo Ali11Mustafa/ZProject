@@ -1,6 +1,7 @@
 import React, { useMemo } from "react"; 
 import Card from "components/card";
 import Swal from 'sweetalert2'
+import { useState } from "react";
 
 import {
   useGlobalFilter,
@@ -19,6 +20,9 @@ import axios from "axios";
 
 const OrdersTable = (props) => {
   const { columnsData, tableData,GetNewItem } = props;
+  const [pageIndex, setPageIndex] = useState(0);
+
+  
 
   const columns = useMemo(() => columnsData, [columnsData]);
   
@@ -29,6 +33,9 @@ const OrdersTable = (props) => {
     {
       columns,
       data,
+      initialState: { pageIndex: pageIndex, pageSize: 11 },
+
+
     },
     useGlobalFilter,
     useSortBy,
@@ -41,10 +48,14 @@ const OrdersTable = (props) => {
     headerGroups,
     page,
     prepareRow,
-    initialState,
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
+    
   } = tableInstance;
   
-  initialState.pageSize = 11;
+  //initialState.pageSize = 11;
 
   const {t} = useTranslation()
   function onAccept(e){
@@ -122,7 +133,6 @@ const OrdersTable = (props) => {
           // setDeleted(true);
           GetNewItem(Math.random());
           console.log(response);
-          if(response.status!=200)
           Swal.fire(
             'the item not deleted',
             'oopss',
@@ -133,10 +143,12 @@ const OrdersTable = (props) => {
       
       }
     })
-   //ssssssssss
   .catch(error => {
-    console.error(error);
-  });
+    Swal.fire(
+      'error',
+      'oopss',
+      'failed'
+    )  });
   
   }
  const language = useLanguageStore(state=>state.language)
@@ -301,7 +313,16 @@ const OrdersTable = (props) => {
           </tbody>
         </table>
       </div>
+      <div className="flex gap-5 justify-end  mt-4 p-2">
+        <button onClick={() => previousPage()} disabled={!canPreviousPage} className="bg-blue-500 text-white px-4 py-2 rounded-md" >
+          Previous
+        </button>
+        <button onClick={() => nextPage()} disabled={!canNextPage} className="bg-blue-500 text-white px-4 py-2 rounded-md">
+          Next
+        </button>
+      </div>
     </Card>
+    
   );
 };
 

@@ -47,18 +47,46 @@ const NeedsTable = (props) => {
 
 
  const language = useLanguageStore(state=>state.language)
+ function onAccept(e){
+  console.log(e.target.getAttribute('value'));
 
- function onAccept(id){
-console.log("run")
- /*  axios.put(`https://api.hirari-iq.com/api/orders/accept/${id}`).then((response)=>{
-    console.log(response);
-    
-  }).catch((error)=>{
-    console.log(error);
-  }) */
-
- }
+  Swal.fire({
+    title: 'Are you sure?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#10b981',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Accept'
+  }).then((result) => {
  
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Accepted!',
+        'Your file has been saved.',
+        'success'
+      )
+      const res=axios.put(`https://api.hirari-iq.com/api/needs/accept/${e.target.getAttribute('value')}}`).then((response)=>{
+        // setDeleted(true);
+        GetNewItem(Math.random());
+        console.log(response);
+        if(response.status!=200)
+        Swal.fire(
+          'the item not deleted',
+          'oopss',
+          'failed'
+        )
+      })
+      
+    
+    }
+  })
+ //ssssssssss
+.catch(error => {
+  console.error(error);
+});
+
+}
+
  function deleteMe(e){
   console.log(e.target.getAttribute('value'));
 
@@ -157,7 +185,7 @@ console.log("run")
                         data = cell.value !== "accept" ? 
   
                             <div className="flex gap-2 items-center">
-                            <button onClick={()=>onAccept(row.original.id)} className="bg-green-400 px-2 py-1 rounded-md dark:text-black">Accept</button>
+                            <button value={row.original.id} onClick={onAccept} className="bg-green-400 px-2 py-1 rounded-md dark:text-black">Accept</button>
                             <button className="bg-red-400 px-2 py-1 rounded-md dark:text-black">Reject</button>
                             </div>
                           : <p  className="text-sm font-medium text-green-600 ">{cell.value }</p>

@@ -70,7 +70,6 @@ export default function NewOrders({GetNewItem}) {
       axios.post(API, newData)
         .then(response => {
           GetNewItem(Math.random());
-          if(response.status==201){
             console.log(response.status)
             console.log("add")
             Swal.fire({
@@ -80,11 +79,16 @@ export default function NewOrders({GetNewItem}) {
               showConfirmButton: true,
               timer: 1500
             })
-          }
+          
         
         })
         .catch(error => {
-          console.error('Error:', error);
+          Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: 'there is another error',
+            showConfirmButton: true,
+          })
         });
     };
     PostData();
@@ -206,10 +210,11 @@ export default function NewOrders({GetNewItem}) {
                         {memoizedItemNames && memoizedItemNames.map((name)=>{
                           return(
                           <option value={name}>{name}</option>
-                          )
+                           )
                         })}
                       </select>
                     </div>
+{/* /*                     
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
@@ -233,8 +238,8 @@ export default function NewOrders({GetNewItem}) {
                         
                       </select>
                     </div>
-                  
-                    {/*footer*/}
+                   */  }
+                    
                     <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start' } rounded-b pt-5`}  >
                   <button
                     className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"

@@ -19,7 +19,6 @@ export default function NewBuilding({GetNewItem}) {
       axios.post(API, {...data,level:"0"})
         .then(response => {
           GetNewItem(Math.random())
-          if(response.status==201){
             console.log(response.status)
             console.log("add")
             Swal.fire({
@@ -29,13 +28,20 @@ export default function NewBuilding({GetNewItem}) {
               showConfirmButton: true,
               timer: 1500
             })
-          }
-        
-          
-          
+           
+             
         })
         .catch(error => {
-          console.error('Error:', error);
+
+          Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: 'it seems there is an error',
+            showConfirmButton: true,
+            timer: 1500
+          })
+        
+
         });
     };
     PostData();
@@ -104,7 +110,7 @@ export default function NewBuilding({GetNewItem}) {
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
                         id="number_of_floor"
                         name="number_of_floor"
-                        type="text"
+                        type="number"
                         placeholder="Enter number of floors"
                         {...register("number_of_floor", { required: true })}
                       />
@@ -120,7 +126,7 @@ export default function NewBuilding({GetNewItem}) {
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
                         id="apartment_per_floor"
                         name="apartment_per_floor"
-                        type="text"
+                        type="number"
                         placeholder="Enter number of apartments per each floor"
                         {...register("apartment_per_floor", { required: true })}
                       />

@@ -98,7 +98,25 @@ export default function NewNeed({GetNewItem}) {
         
         )
         .catch(error => {
-          console.error('Error:', error);
+          console.log("resp",error.response.status);
+          let respp=error.response.status;
+          console.log(typeof respp);
+          if(respp===400){
+            Swal.fire({
+              position: 'top-center',
+              icon: 'error',
+              title: 'your needs is greater than remaing amount in items table',
+              showConfirmButton: true,
+            })
+          }else if(respp==500){
+            Swal.fire({
+              position: 'top-center',
+              icon: 'error',
+              title: 'there is another error',
+              showConfirmButton: true,
+            })
+          }
+         
         });
     };
     PostData();

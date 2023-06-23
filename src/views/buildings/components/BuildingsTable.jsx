@@ -76,12 +76,14 @@ const BuildingsTable = (props) => {
           // setDeleted(true);
           GetNewItem(Math.random());
           console.log(response);
-          if(response.status!=200)
+         
+        }).catch(error=>{
           Swal.fire(
             'the item not deleted',
             'oopss',
             'failed'
           )
+
         })
         
       

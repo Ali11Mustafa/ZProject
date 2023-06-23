@@ -20,12 +20,8 @@ export default function NewItem({GetNewItem}) {
     await  axios.post(API, {...data,user_id:"1"})
         .then(response => {
 
-          console.log(response.data)
-
          GetNewItem(Math.random());
-         if(response.status==201){
           console.log(response.status)
-          console.log("add")
           Swal.fire({
             position: 'top-center',
             icon: 'success',
@@ -33,13 +29,21 @@ export default function NewItem({GetNewItem}) {
             showConfirmButton: true,
             timer: 1500
           })
-        }
+        
       
          
   
         })
         .catch(error => {
-          console.error('Error:', error);
+                
+            Swal.fire({
+              position: 'top-center',
+              icon: 'error',
+              title: 'there is another error',
+              showConfirmButton: true,
+            })
+          
+         
         });
     };
   

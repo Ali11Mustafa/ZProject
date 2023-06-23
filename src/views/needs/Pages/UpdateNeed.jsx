@@ -4,11 +4,13 @@ import Card from 'components/card'
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLanguageStore } from 'App';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import useFetchItems from 'hooks/useFetchItems';
 import { useMemo,useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 function UpdateNeed() {
   const [showModal, setShowModal] = React.useState(false);
@@ -19,7 +21,7 @@ function UpdateNeed() {
   const [buildingName,setBuildingNames]=useState([]);
   const {needId}=useParams();
 
-
+  const navigate=useNavigate();
    const {Data}=useFetchItems();
    //get Items
    useEffect(() => {
@@ -61,6 +63,16 @@ function UpdateNeed() {
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = (data) => {
     console.log("data",data);
+    let itemName = data.item_name;
+    let itemId;
+
+    if(Data){
+      Data.map(item=>{
+        if(item.name === itemName){
+         itemId = item.id
+        }
+      })
+    }
 
     const API = `https://api.hirari-iq.com/api/needs/${needId}`;
   
@@ -70,14 +82,31 @@ function UpdateNeed() {
         description:data.description,
         user_id:"1",
         block_id:buildingID,
-        item_id:itemID
+        item_id:itemId
       }
       axios.put(API, newData)
         .then(response => {
+          Swal.fire({
+            position: 'top-center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: true,
+            timer: 1500
+          })
+          navigate("/needs");
+  
 
         })
         .catch(error => {
           console.error('Error:', error);
+          Swal.fire({
+            position: 'top-center',
+            icon: 'failed',
+            title: 'failed to save',
+            showConfirmButton: true,
+            timer: 1500
+          })
+  
         });
     };
     PostData();
@@ -203,13 +232,13 @@ function UpdateNeed() {
                   
                     {/*footer*/}
                     <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start' } rounded-b pt-5`}  >
-                  <button
+                  <Link to="/needs"
                     className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
                     type="button"
                     onClick={() => setShowModal(false)}
                   >
                     {t("formButtons.close")}
-                  </button>
+                  </Link>
                   <button
                    className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                   >

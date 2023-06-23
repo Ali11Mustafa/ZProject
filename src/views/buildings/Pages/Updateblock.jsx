@@ -9,6 +9,8 @@ import useFetchItems from 'hooks/useFetchItems';
 import axios from 'axios';
 import { updateBlock } from '../index';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+
 
 
 
@@ -20,12 +22,40 @@ function UpdateBlock() {
 
 
   const onSubmit = (data) => {
-    updateBlock(buildingId,0,data);
-    navigate("/");
-
+    const API = `https://api.hirari-iq.com/api/blocks/${buildingId}`;
   
+    const PostData = () => {
+      axios.put(API, {...data,user:1})
+        .then(response => {
+          Swal.fire({
+            position: 'top-center',
+            icon: 'success',
+            title: 'Your work has been saved',
+            showConfirmButton: true,
+            timer: 1500
+          })
+          navigate("/");
+
+
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.fire({
+            position: 'top-center',
+            icon: 'error',
+            title: 'there is an error',
+            showConfirmButton: true,
+            timer: 1500
+          })
+        });
+    };
+  
+    PostData();
     reset();
   };
+
+  
+  
 
   const {t} = useTranslation()
   const language = useLanguageStore(state=>state.language)
@@ -33,7 +63,7 @@ function UpdateBlock() {
   return (
     <Layout>
         <Card extra={"w-full h-full sm:overflow-auto px-5 p-5"}>
-        <h1 className='font-bold text-xl mb-10'>Update Item</h1>
+        <h1 className='font-bold text-xl mb-10'>Update Block</h1>
         <form className="mb-4 rounded bg-white px-8 pt-6 pb-8"  onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">
                       <label
