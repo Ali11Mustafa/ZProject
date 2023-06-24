@@ -28,7 +28,7 @@ export default function SignIn({ userCredentials }) {
       }
     });
   }
-
+//
   const [errors, setErrors] = useState({});
 
 
@@ -58,7 +58,6 @@ export default function SignIn({ userCredentials }) {
       console.log(req);
       if (req.status == 200) {
         console.log(req.data.user_id);
-
         const req_detail = await api.get(`/users/${req.data.user_id}`, {
           headers: {
             Authorization: 'Bearer 19|R0gLlLmLBQQBajLPEjHEvA07lOnkvY9rQSyxxoNB',

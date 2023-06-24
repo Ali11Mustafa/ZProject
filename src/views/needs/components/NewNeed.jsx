@@ -15,6 +15,7 @@ export default function NewNeed({GetNewItem}) {
   const [itemTypes,setTypes]=useState([]);
   const [buildingID,setBuildingId]=useState(null);
   const [itemID,setItemID]=useState(null);
+  const [user,setUser]=useState(null);
 
   const [buildingName,setBuildingNames]=useState([]);
 
@@ -71,12 +72,20 @@ export default function NewNeed({GetNewItem}) {
       })
     }
     const API = 'https://api.hirari-iq.com/api/needs';
-  
+
+    let usr = JSON.parse(sessionStorage.getItem('user'));
+    let userName = usr?.fullname;
+    let email = usr?.email;
+    let image = usr?.img;
+    let usrId = usr?.id;
+    let token = usr?.token;
+
+    console.log("usrIdddddd",usrId);
     const PostData = () => {
       let newData={
         need_amount:data.need_amount,
         description:data.description,
-        user_id:"1",
+        user_id:usrId,
         block_id:buildingID,
         item_id:itemId
       }
