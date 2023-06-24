@@ -18,7 +18,7 @@ import { MdDeleteOutline } from "react-icons/md";
 
 const NeedsTable = (props) => {
   const { columnsData, tableData ,GetNewItem }=props;
-  console.log(tableData);
+  console.log("response "+tableData);
 
   const columns = useMemo(() => columnsData, [columnsData]);
   
@@ -69,12 +69,7 @@ const NeedsTable = (props) => {
         // setDeleted(true);
         GetNewItem(Math.random());
         console.log(response);
-        if(response.status!=200)
-        Swal.fire(
-          'the item not deleted',
-          'oopss',
-          'failed'
-        )
+        
       })
       
     
@@ -82,7 +77,11 @@ const NeedsTable = (props) => {
   })
  //ssssssssss
 .catch(error => {
-  console.error(error);
+  Swal.fire(
+    'the item not deleted',
+    'oopss',
+    'failed'
+  )
 });
 
 }
