@@ -57,13 +57,18 @@ export default function NewOrders({GetNewItem}) {
     console.log("data",data);
 
     const API = 'https://api.hirari-iq.com/api/orders';
-  
+    let usr = JSON.parse(sessionStorage.getItem('user'));
+    let userName = usr?.fullname;
+    let email = usr?.email;
+    let image = usr?.img;
+    let usrId = usr?.id;
+    let token = usr?.token;
     const PostData = () => {
       let newData={
         amount:data.amount,
         unit:data.unit,
         price:data.price,
-        user_id:"1",
+        user_id:usrId,
         item_id:itemId
       }
       console.log("New Data",newData);
