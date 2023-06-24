@@ -258,7 +258,7 @@ const OrdersTable = (props) => {
                                   {t("actions.delete")}
                                 </p>
                               </button>
-                          <Link
+                          <Link 
                           to={`/orders/update/${row.original.id}`}
                             className="flex items-center gap-1 text-green-600"
                           >

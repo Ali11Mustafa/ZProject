@@ -50,7 +50,31 @@ const resources = {
       }
       }
       ,
-      itemsTable:{
+      usersTable:{ 
+        "title":"Items",
+        columns:{
+          "name":'UserName',
+          "email":'Email',
+          "Role":'Role',
+          "actions":'ACTIONS',
+          "remainingAmount":'REMAINING AMOUNT',
+          "totalPrice":'TOTAL PRICE',
+          "pricePerBuilding":'PRICE PER BUILDING',
+          "actions":'ACTIONS',
+      },
+      },
+      usersUpdate:{ 
+     
+          "name":'User Name',
+          "email":'Email',
+          "Role":'Role',
+          "actions":'ACTIONS',
+          "remainingAmount":'REMAINING AMOUNT',
+          "totalPrice":'TOTAL PRICE',
+          "pricePerBuilding":'PRICE PER BUILDING',
+          "actions":'ACTIONS',
+      },
+      itemsTable:{ 
         "title":"Items",
         columns:{
           "name":'NAME',

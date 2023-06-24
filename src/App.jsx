@@ -14,6 +14,7 @@ import Orders from "pages/Orders";
 import Users from "pages/Users";
 import UpdateNeed from "./views/needs/Pages/UpdateNeed"
 import UpdateOrder from "./views/orders/pages/UpdateOrder"
+import UpdateUser from "./views/users/pages/UpdateUser"
 
 export const useSearchStore = create((set) => ({
   searchText: '',
@@ -44,9 +45,9 @@ export const useItemsStore = create((set) => ({
 
 const App = () => {
 
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isAuthenticated = useAuthStore((state) => sessionStorage.getItem('user') != null ? true
+    : state.isAuthenticated);
   const language = useLanguageStore((state)=>state.language)
-
   const {i18n} = useTranslation()
 
   useEffect(()=>{
@@ -56,9 +57,9 @@ const App = () => {
   
 
 
- /*  if(!isAuthenticated){
+  if(!isAuthenticated){
     return <Auth/>
-  } */
+  } 
 
   return (
     <Routes> 
@@ -71,7 +72,8 @@ const App = () => {
       <Route path="/items/delete/:itemId" element={<DeleteItem />} /> 
       <Route path="/orders" element={<Orders />} /> 
       <Route path="/users" element={<Users/>} /> 
-      <Route path="/needs/update/:needId" element={<UpdateNeed/>} /> 
+      <Route path="/needs/update/:needId" element={<UpdateNeed/>} />
+      <Route path="/users/update/:useId" element={<UpdateUser/>} /> 
       <Route path="/orders/update/:orderId" element={<UpdateOrder/>} /> 
 
 

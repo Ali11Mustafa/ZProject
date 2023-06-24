@@ -3,10 +3,12 @@ import { useLanguageStore } from "App";
 import React from "react";
 
 function InputField(props) {
-  const { label, id, extra, type,name, placeholder, variant, state, disabled, register, value } =
+  const { label, id, extra, type,name, placeholder, variant, state, disabled, register, value ,Onchanged } =
     props;
 
     const language = useLanguageStore((state) => state.language);
+   
+  
 
 
   return (
@@ -19,13 +21,14 @@ function InputField(props) {
       >
         {label}
       </label>
-      <input
-        disabled={disabled}
+      <input 
+        onChange={Onchanged}
+        // disabled={disabled}
         type={type}
         name={name}
         id={id}
         placeholder={placeholder}
-        value={value}
+        // value={value}
         className={`mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none ${
           disabled === true
             ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"

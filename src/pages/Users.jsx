@@ -1,11 +1,12 @@
 import Layout from 'Layout'
 import React from 'react'
+import UsersData from 'views/users'
 
 
 function Users() {
   return (
     <Layout>
-        <h1 className='text-center py-5 font-bold text-2xl'>Soon....</h1>
+      <UsersData />
     </Layout>
   )
 }

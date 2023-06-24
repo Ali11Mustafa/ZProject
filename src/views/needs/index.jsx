@@ -27,7 +27,7 @@ const NeedsDashboard = () => {
     axios.get(API)
   .then(response => {
 
-
+    console.log("resppppp " +response);
     let arrayNotDeleted = []
     response.data.data.map((item)=>{
       if(item.is_deleted!==1){

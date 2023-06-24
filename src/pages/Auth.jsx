@@ -17,8 +17,8 @@ export default function Auth() {
               <div className=" my-auto lg:max-w-[48%] lg:pl-0 xl:max-w-full">
                 <SignIn userCredentials={userCredentials}/>
               </div>
-            </div>
-          </div>
+            </div> 
+          </div> 
         </main>
       </div>
     </div>
