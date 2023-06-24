@@ -94,12 +94,7 @@ const OrdersTable = (props) => {
           // setDeleted(true);
           GetNewItem(Math.random());
           console.log(response);
-          if(response.status!=200)
-          Swal.fire(
-            'the item not deleted',
-            'oopss',
-            'failed'
-          )
+          
         })
         
       
@@ -107,7 +102,11 @@ const OrdersTable = (props) => {
     })
    //ssssssssss
   .catch(error => {
-    console.error(error);
+    Swal.fire(
+      'the item not deleted',
+      'oopss',
+      'failed'
+    )
   });
   
   }
