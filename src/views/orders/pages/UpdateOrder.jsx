@@ -164,7 +164,7 @@ function UpdateOrder() {
                         })}
                       </select>
                     </div>
-                    <div className="mb-4">
+                   {/*  <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
                         for="type"
@@ -187,7 +187,7 @@ function UpdateOrder() {
                         
                       </select>
                     </div>
-                  
+                   */}
                     {/*footer*/}
                     <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start' } rounded-b pt-5`}  >
                   <Link to="/orders"

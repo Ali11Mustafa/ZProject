@@ -58,18 +58,7 @@ const OrdersTable = (props) => {
   //initialState.pageSize = 11;
 
   const {t} = useTranslation()
-  function onAccept(e){
-    console.log(e.target.getAttribute('value'));
 
-    console.log("run")
-       axios.put(`https://api.hirari-iq.com/api/orders/accept/${e.target.getAttribute('value')}}`).then((response)=>{
-        console.log(response);
-        
-      }).catch((error)=>{
-        console.log(error);
-      }) 
-    
-     }
      
   function deleteMe(e){
     console.log(e.target.getAttribute('value'));
@@ -132,11 +121,7 @@ const OrdersTable = (props) => {
           // setDeleted(true);
           GetNewItem(Math.random());
           console.log(response);
-          Swal.fire(
-            'the item not deleted',
-            'oopss',
-            'failed'
-          )
+      
         })
         
       
