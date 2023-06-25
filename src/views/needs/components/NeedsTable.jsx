@@ -299,7 +299,11 @@ const NeedsTable = (props) => {
   
 
 
-      <ReactPaginate
+    
+
+
+        </table>
+        <ReactPaginate
         breakLabel={<span className="mr-4">...</span>}
         nextLabel={
           showNextButton ? (
@@ -322,10 +326,6 @@ const NeedsTable = (props) => {
         pageClassName="block border- border-solid border-lightGray hover:bg-lightGray w-10 h-10 flex items-center justify-center rounded-md mr-4"
         activeClassName="bg-lightGrayy text-black"
         />
-
-
-        </table>
-      
       </div>
     </Card>
   );
