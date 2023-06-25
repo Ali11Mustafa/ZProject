@@ -97,7 +97,7 @@ const ItemsTable = (props) => {
     <Card extra={"w-full h-full sm:overflow-auto px-5"}>
       <header className="relative flex items-center justify-between pt-4">
       <div className="text-xl font-semibold text-navy-700 dark:text-white">
-          {t("itemsTable.title")}
+          {t("usersTable.title")}
         </div>
         <NewItem GetNewItem={GetNewItem}/>
       </header>
@@ -154,6 +154,13 @@ const ItemsTable = (props) => {
                     }
                    
                     else if (cell.column.id === "role") {
+                      data = (
+                        <p  className="text-sm font-medium text-black dark:text-white">
+                        {cell.value}
+                      </p>
+                      );
+                    }
+                    else if (cell.column.id === "salary") {
                       data = (
                         <p  className="text-sm font-medium text-black dark:text-white">
                         {cell.value}

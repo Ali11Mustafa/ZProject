@@ -18,6 +18,10 @@ export default function useItemsTableColumns() {
       Header: t("usersTable.columns.Role"),
       accessor: "role",
     },
+    {
+      Header: t("usersTable.columns.salary"),
+      accessor: "salary",
+    },
     { 
       Header: t("usersTable.columns.actions"),
       accessor: "actions",

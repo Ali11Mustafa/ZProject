@@ -79,7 +79,7 @@ export default function NewItem({GetNewItem}) {
                 {/*header*/}
                 <div className="border-slate-200 flex items-center justify-between rounded-t border-b border-solid p-5">
                   <h3 className="text-xl font-semibold dark:text-indigo-900">
-                  {t("newItem.title")}
+                  {t("usersTable.title1")}
                   </h3>
                   <button
                     className={`bg-transparent text-red-500 ${language !== 'en' ? 'float-left mr-auto' : 'float-right ml-auto'} border-0 p-1 text-3xl font-semibold`}
@@ -172,7 +172,7 @@ export default function NewItem({GetNewItem}) {
                         type="text"
                         {...register("role", { required: true })}
                       >
-                        <option value="">Select a unit</option>
+                        <option value="">Select a Role</option>
                         <option value="admin">admin</option>
                         <option value="only_read">only red</option>
                         <option value="officer_eng">officer Eng</option>

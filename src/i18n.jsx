@@ -51,11 +51,13 @@ const resources = {
       }
       ,
       usersTable:{ 
-        "title":"Items",
+        "title":"Users",
+        "title1":"Add New User",
         columns:{
           "name":'UserName',
           "email":'Email',
           "Role":'Role',
+          "salary":"salary",
           "actions":'ACTIONS',
           "remainingAmount":'REMAINING AMOUNT',
           "totalPrice":'TOTAL PRICE',
@@ -246,6 +248,21 @@ const resources = {
           "totalPrice":'کۆی گشتی نرخ',
           "pricePerBuilding":'نرخی هەر بینایەک',
           "actions":'کردارەکان',
+      },
+      },
+      usersTable:{ 
+        "title":"Users",
+        "title1":"Add New User",
+        columns:{
+          "name":'UserName',
+          "email":'Email',
+          "Role":'Role',
+          "salary":"salary",
+          "actions":'ACTIONS',
+          "remainingAmount":'REMAINING AMOUNT',
+          "totalPrice":'TOTAL PRICE',
+          "pricePerBuilding":'PRICE PER BUILDING',
+          "actions":'ACTIONS',
       },
       },
       ordersTable:{
