@@ -14,10 +14,11 @@ export default function NewItem({GetNewItem}) {
 
 
   const onSubmit = (data) => {
-    const API = 'https://api.hirari-iq.com/api/items';
+    const API = 'https://api.hirari-iq.com/api/users';
   
     const PostData = async() => {
-    await  axios.post(API, {...data,user_id:"1"})
+      console.log("Data",data);
+    await  axios.post(API, data)
         .then(response => {
 
          GetNewItem(Math.random());
@@ -112,30 +113,71 @@ export default function NewItem({GetNewItem}) {
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="no_of_floors"
+                        for="email"
                       >
-                                 {t("newItem.type")}
+                                 {t("email")}
+                      </label>
+                      <input
+                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        id="email"
+                        type="text"
+                        placeholder="Enter name"
+                        name="email"
+                        {...register("email", { required: true })}
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label
+                        className="mb-2 block font-medium text-gray-700"
+                        for="password"
+                      >
+                                 {t("Password")}
+                      </label>
+                      <input
+                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        id="password"
+                        type="text"
+                        placeholder="Enter name"
+                        name="password"
+                        {...register("password", { required: true })}
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label
+                        className="mb-2 block font-medium text-gray-700"
+                        for="salary"
+                      >
+                                 {"salary"}
+                      </label>
+                      <input
+                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        id="salary"
+                        type="text"
+                        placeholder="Enter name"
+                        name="salry"
+                        {...register("salary", { required: true })}
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label
+                        className="mb-2 block font-medium text-gray-700"
+                        for="role"
+                      >
+                                 {"role"}
                       </label>
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="type"
-                        name="type"
-                        type="string"
-                        {...register("type", { required: true })}
+                        id="role"
+                        name="role"
+                        type="text"
+                        {...register("role", { required: true })}
                       >
                         <option value="">Select a unit</option>
-                        <option value="10mm">10mm</option>
-                        <option value="12mm">12mm</option>
-                        <option value="20mm">20mm</option>
-                        <option value="25mm">25mm</option>
-                        <option value="flat">flat</option>
-                        <option value="slab">slab</option>
-                        <option value="column">column</option>
-                        <option value="barrel">barrel</option>
-                        <option value="tie">tie</option>
-
-
-
+                        <option value="admin">admin</option>
+                        <option value="only_read">only red</option>
+                        <option value="officer_eng">officer Eng</option>
+                        <option value="engineer">engineer</option>
+                        <option value="accountant">accountant</option>
                       </select>
                     </div>
                   

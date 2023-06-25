@@ -28,6 +28,7 @@ const OrdersDashboard = () => {
    const FetchData=()=>{
     axios.get(API)
   .then(response => {
+    console.log("responseee",response.data.data);
 
     let arrayNotDeleted = []
     response.data.data.map((item)=>{

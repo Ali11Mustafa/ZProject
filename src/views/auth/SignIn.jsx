@@ -81,7 +81,6 @@ export default function SignIn({ userCredentials }) {
           sessionStorage.setItem("user", JSON.stringify(sessStorage));
           login();
           navigate('/', { replace: true });
-
           return;
         } 
       }
@@ -106,8 +105,6 @@ export default function SignIn({ userCredentials }) {
     // }
 
   };
-
-
   return (
     <div className="flex h-full w-full items-center justify-center px-2">
       {/* Sign in section */}
@@ -116,7 +113,6 @@ export default function SignIn({ userCredentials }) {
           {t('signin.title')}
         </h4>
 
-        {/* Email */}
         <InputField
           // Onchanged={handleChange}
           variant="auth"
@@ -128,10 +124,7 @@ export default function SignIn({ userCredentials }) {
           name={"email"}
           state={errors.email ? 'error' : ''}
           register={register("email", { required: true })}
-
-
         />
-
         {/* Password */}
         <InputField
           // Onchanged={handleChange}
@@ -150,8 +143,6 @@ export default function SignIn({ userCredentials }) {
           {t('signin.button')}
         </button>
       </form>
-
-
       <div className="absolute top-5 right-5 ">
         <LangSelector />
       </div>

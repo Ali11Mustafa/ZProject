@@ -2,6 +2,12 @@ import React, { useMemo} from "react";
 import Card from "components/card";
 import axios from "axios";
 import Swal from 'sweetalert2'
+import Pagination from "react-js-pagination";
+import ReactPaginate from "react-paginate";
+import { motion } from 'framer-motion';
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+
+
 
 import {
   useGlobalFilter,
@@ -17,8 +23,14 @@ import { Link } from "react-router-dom";
 import { MdDeleteOutline } from "react-icons/md";
 
 const NeedsTable = (props) => {
-  const { columnsData, tableData ,GetNewItem }=props;
-  console.log("response "+tableData);
+  const { columnsData, tableData ,GetNewItem,total,currentPage,perpage,setPageNumber,Paginationn,HandleFetch}=props;
+  console.log("test",currentPage);
+
+
+    const renderActiveLinkClass = (pageNum, currentPage) => {
+      return pageNum === currentPage ? 'bg-blue-500 text-white' : 'text-gray-600 hover:text-blue-500';
+    };
+  
 
   const columns = useMemo(() => columnsData, [columnsData]);
   
@@ -86,6 +98,7 @@ const NeedsTable = (props) => {
 
 }
 
+
  function deleteMe(e){
   console.log(e.target.getAttribute('value'));
 
@@ -123,6 +136,34 @@ const NeedsTable = (props) => {
 }
 
  const {t} =  useTranslation()
+
+
+ const handlePageclick=(data)=>{
+  HandleFetch(data.selected+1);
+ }
+ const showNextButton = currentPage !== total - 1;
+ const showPrevButton = currentPage !== 0;
+
+ const paginationVariants = {
+  hidden: {
+    opacity: 0,
+    y: 200,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 260,
+      damping: 20,
+      duration: 2,
+    },
+  },
+};
+
+
+
+
 
   return (
     <Card extra={"w-full h-full sm:overflow-auto px-5"}>
@@ -276,7 +317,42 @@ const NeedsTable = (props) => {
               );
             })}
           </tbody>
+  
+
+<motion.div
+      variants={paginationVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <ReactPaginate
+        breakLabel={<span className="mr-4">...</span>}
+        nextLabel={
+          showNextButton ? (
+            <span className="w-10 h-10 flex items-center justify-center bg-lightGray rounded-md">
+              <BsChevronRight />
+            </span>
+          ) : null
+        }
+        onPageChange={handlePageclick}
+        pageRangeDisplayed={3}
+        pageCount={Math.ceil(total/10)}
+        previousLabel={
+          showPrevButton ? (
+            <span className="w-10 h-10 flex items-center justify-center bg-lightGray rounded-md mr-4">
+              <BsChevronLeft />
+            </span>
+          ) : null
+        }
+        containerClassName="flex items-center justify-center mt-8 mb-4"
+        pageClassName="block border- border-solid border-lightGray hover:bg-lightGray w-10 h-10 flex items-center justify-center rounded-md mr-4"
+        activeClassName="bg-lightGrayy text-black"
+        />
+    </motion.div>
+
+
+
         </table>
+      
       </div>
     </Card>
   );

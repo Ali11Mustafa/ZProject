@@ -89,7 +89,7 @@ export default function NewNeed({GetNewItem}) {
         block_id:buildingID,
         item_id:itemId
       }
-      console.log(itemID);
+     // console.log(itemID);
       axios.post(API, newData)
         .then(response => {
           GetNewItem(Math.random());

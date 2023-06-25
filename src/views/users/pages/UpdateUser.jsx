@@ -16,6 +16,8 @@ function UpdateItem() {
   const { useId } = useParams();
 
   const [Data, setData] = useState([]);
+
+  console.log("Data", Data)
  
 
   // useEffect(()=>{
@@ -29,7 +31,6 @@ function UpdateItem() {
   const FetchData = () => {
     axios.get(`https://api.hirari-iq.com/api/users/${useId}`)
       .then(response => {
-        console.log(response.data.data);
         setData(response.data.data);
 
       })
@@ -44,14 +45,23 @@ function UpdateItem() {
 
 
 
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset,setValue } = useForm();
+
+  useEffect(()=>{
+    if(Data){
+    setValue('name',Data.name)
+    setValue('role',Data.role)
+    setValue('email',Data.email)
+    setValue('salary',Data.salary)
+    }
+  },[setValue,Data])
 
 
   const onSubmit = (data) => {
     const API = `https://api.hirari-iq.com/api/users/${useId}`;
 
     const PostData = () => {
-      axios.put(API, { ...data, user: 1 })
+      axios.put(API, data)
         .then(response => {
           Swal.fire({
             position: 'top-center',
@@ -60,7 +70,7 @@ function UpdateItem() {
             showConfirmButton: true,
             timer: 1500
           })
-          navigate("/items")
+          navigate("/users")
 
         })
         .catch(error => {
@@ -88,67 +98,102 @@ function UpdateItem() {
       <Card extra={"w-full h-full sm:overflow-auto px-5 p-5"}>
         <h1 className='font-bold text-xl mb-10'>Update Users</h1>
         <form
-          className="mb-4 rounded bg-white px-8 pt-6 pb-8"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div className="mb-4">
-            <label
-              className="mb-2 block font-medium text-gray-700"
-              for="name"
-            >
-              {t("usersUpdate.name")}
-            </label>
-            <input
-              className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-              id="name"
-              type="text"
-              placeholder="Name"
-              name="name"
-              value={Data.name}
-              {...register("name", { required: true })}
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              className="mb-2 block font-medium text-gray-700"
-              for="no_of_floors"
-            >
-              {t("usersUpdate.email")}
-            </label>
-            <select
-              className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-              id="type"
-              name="type"
-              type="string"
-              {...register("type", { required: true })}
-            >
-              <option value="">Select a unit</option>
-              <option value="10mm">10mm</option>
-              <option value="15mm">15mm</option>
-              <option value="20mm">20mm</option>
-              <option value="25mm">25mm</option>
-            </select>
-          </div>
+                    className="mb-4 rounded bg-white px-8 pt-6 pb-8"
+                    onSubmit={handleSubmit(onSubmit)}
+                  >
+                      <div className="mb-4">
+                      <label
+                        className="mb-2 block font-medium text-gray-700"
+                        for="name"
+                      >
+                                 {t("newItem.name")}
+                      </label>
+                      <input
+                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        id="name"
+                        type="text"
+                        placeholder="Enter name"
+                        name="name"
+                        {...register("name", { required: true })}
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label
+                        className="mb-2 block font-medium text-gray-700"
+                        for="email"
+                      >
+                                 {t("email")}
+                      </label>
+                      <input
+                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        id="email"
+                        type="text"
+                        placeholder="Enter name"
+                        name="email"
 
+                        {...register("email", { required: true })}
+                      />
+                    </div>
+                   
+                    <div className="mb-4">
+                      <label
+                        className="mb-2 block font-medium text-gray-700"
+                        for="salary"
+                      >
+                                 {"salary"}
+                      </label>
+                      <input
+                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        id="salary"
+                        type="text"
+                        placeholder="Enter name"
+                        name="salry"
 
+                        {...register("salary", { required: true })}
+                      />
+                    </div>
+                    <div className="mb-4">
+                      <label
+                        className="mb-2 block font-medium text-gray-700"
+                        for="role"
+                      >
+                                 {"role"}
+                      </label>
+                      <select
+                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        id="role"
+                        name="role"
+                        type="text"
 
-
-
-          {/*footer*/}
-
-          <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start'} rounded-b pt-5`}  >
-            <Link to={'/users'}
-              className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
-            >
-              {t("formButtons.cancel")}
-            </Link>
-            <button
-              className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
-            >
-              {t("formButtons.create")}
-            </button>
-          </div>
-        </form>
+                        {...register("role", { required: true })}
+                      >
+                        <option value="">Select a unit</option>
+                        <option value="admin">admin</option>
+                        <option value="only_read">only red</option>
+                        <option value="officer_eng">officer Eng</option>
+                        <option value="engineer">engineer</option>
+                        <option value="accountant">accountant</option>
+                      </select>
+                    </div>
+                  
+                   
+                   
+                  
+                    {/*footer*/}
+                    <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start' } rounded-b pt-5`}  >
+                  <Link to="/users"
+                    className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                    type="button"
+                  >
+                    {t("formButtons.cancel")}
+                  </Link>
+                  <button
+                    className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-3 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                  >
+                     {t("formButtons.create")}
+                  </button>
+                </div>
+                  </form>
       </Card>
     </Layout>
   )

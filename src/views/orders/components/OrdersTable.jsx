@@ -33,7 +33,7 @@ const OrdersTable = (props) => {
     {
       columns,
       data,
-      initialState: { pageIndex: pageIndex, pageSize: 11 },
+      initialState: { pageIndex: pageIndex, pageSize: 10 },
 
 
     },
