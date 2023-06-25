@@ -144,24 +144,6 @@ const NeedsTable = (props) => {
  const showNextButton = currentPage !== total - 1;
  const showPrevButton = currentPage !== 0;
 
- const paginationVariants = {
-  hidden: {
-    opacity: 0,
-    y: 200,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 260,
-      damping: 20,
-      duration: 2,
-    },
-  },
-};
-
-
 
 
 
@@ -319,11 +301,7 @@ const NeedsTable = (props) => {
           </tbody>
   
 
-<motion.div
-      variants={paginationVariants}
-      initial="hidden"
-      animate="visible"
-    >
+
       <ReactPaginate
         breakLabel={<span className="mr-4">...</span>}
         nextLabel={
@@ -347,8 +325,6 @@ const NeedsTable = (props) => {
         pageClassName="block border- border-solid border-lightGray hover:bg-lightGray w-10 h-10 flex items-center justify-center rounded-md mr-4"
         activeClassName="bg-lightGrayy text-black"
         />
-    </motion.div>
-
 
 
         </table>
