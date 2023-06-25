@@ -27,11 +27,7 @@ const NeedsTable = (props) => {
   console.log("test",currentPage);
 
 
-    const renderActiveLinkClass = (pageNum, currentPage) => {
-      return pageNum === currentPage ? 'bg-blue-500 text-white' : 'text-gray-600 hover:text-blue-500';
-    };
-  
-
+   
   const columns = useMemo(() => columnsData, [columnsData]);
   
   const data = useMemo(() => tableData, [tableData]);
@@ -139,6 +135,7 @@ const NeedsTable = (props) => {
 
 
  const handlePageclick=(data)=>{
+  console.log("data", data.selected)
   HandleFetch(data.selected+1);
  }
  const showNextButton = currentPage !== total - 1;

@@ -15,9 +15,17 @@ export default function NewItem({GetNewItem}) {
 
   const onSubmit = (data) => {
     const API = 'https://api.hirari-iq.com/api/items';
-  
+    let usr = JSON.parse(sessionStorage.getItem('user'));
+    let userName = usr?.fullname;
+    let email = usr?.email;
+    let image = usr?.img;
+    let usrId = usr?.id;
+    let token = usr?.token;
+
+
+
     const PostData = async() => {
-    await  axios.post(API, {...data,user_id:"1"})
+    await  axios.post(API, {...data,user_id:usrId})
         .then(response => {
 
          GetNewItem(Math.random());

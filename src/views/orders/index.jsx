@@ -11,6 +11,10 @@ import { useItemsStore } from "App";
 const OrdersDashboard = () => {
   const {itemsTableColumns} = useItemsTableColumns();
   const [newItem, setNewItem] = useState("");
+  const [total,setTotal]=useState(0);
+  const [perPage,setPerPage]=useState(0);
+  const [currentPage,setCurrentPage]=useState(0);
+  const [pageNumber,setPageNumber]=useState(1);
 
 
   const GetNewItem = (item) =>  {
@@ -19,16 +23,21 @@ const OrdersDashboard = () => {
   }
   
  const [orders,setOrders]=useState([]);
- const API="https://api.hirari-iq.com/api/orders";
    useEffect(()=>{
      FetchData();
    },[newItem]);
  
     
-   const FetchData=()=>{
+   const FetchData=(pageNumber=1)=>{
+    const API=`https://api.hirari-iq.com/api/orders?page=${pageNumber}`;
+
     axios.get(API)
   .then(response => {
     console.log("responseee",response.data.data);
+    setTotal(response.data.meta.total);
+    setCurrentPage(response.data.meta.currentPage);
+    setPerPage(response.data.meta.perPage);
+
 
     let arrayNotDeleted = []
     response.data.data.map((item)=>{
@@ -45,7 +54,11 @@ const OrdersDashboard = () => {
     console.error(error);
   });
   }
+const HandleFetch=(pageNumber)=>{
+  FetchData(pageNumber);
+   
 
+  }
 
 
   return (
@@ -58,6 +71,11 @@ const OrdersDashboard = () => {
             columnsData={itemsTableColumns}
             tableData={orders}
             GetNewItem={GetNewItem}
+            setPageNumber={setPageNumber}
+            total={total}
+            currentPage={currentPage}
+            perPage={perPage}
+            HandleFetch={HandleFetch}
             
           />
         </div>

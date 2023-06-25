@@ -2,6 +2,9 @@ import React, { useMemo } from "react";
 import Card from "components/card";
 import Swal from 'sweetalert2'
 import { useState } from "react";
+import ReactPaginate from "react-paginate";
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+
 
 import {
   useGlobalFilter,
@@ -19,7 +22,7 @@ import axios from "axios";
 
 
 const OrdersTable = (props) => {
-  const { columnsData, tableData,GetNewItem } = props;
+  const { columnsData, tableData,GetNewItem,currentPage,perpage,setPageNumber,total,HandleFetch} = props;
   const [pageIndex, setPageIndex] = useState(0);
 
   
@@ -136,6 +139,13 @@ const OrdersTable = (props) => {
   
   }
  const language = useLanguageStore(state=>state.language)
+ const handlePageclick=(data)=>{
+  console.log("data", data.selected)
+  HandleFetch(data.selected+1);
+ }
+ const showNextButton = currentPage !== total - 1;
+ const showPrevButton = currentPage !== 0;
+
 
   return (
     <Card extra={"w-full h-full sm:overflow-auto px-5"}>
@@ -295,16 +305,32 @@ const OrdersTable = (props) => {
               );
             })}
           </tbody>
+          <ReactPaginate
+        breakLabel={<span className="mr-4">...</span>}
+        nextLabel={
+          showNextButton ? (
+            <span className="w-10 h-10 flex items-center justify-center bg-lightGray rounded-md">
+              <BsChevronRight />
+            </span>
+          ) : null
+        }
+        onPageChange={handlePageclick}
+        pageRangeDisplayed={3}
+        pageCount={Math.ceil(total/10)}
+        previousLabel={
+          showPrevButton ? (
+            <span className="w-10 h-10 flex items-center justify-center bg-lightGray rounded-md mr-4">
+              <BsChevronLeft />
+            </span>
+          ) : null
+        }
+        containerClassName="flex items-center justify-center mt-8 mb-4"
+        pageClassName="block border- border-solid border-lightGray hover:bg-lightGray w-10 h-10 flex items-center justify-center rounded-md mr-4"
+        activeClassName="bg-lightGrayy text-black"
+        />
         </table>
       </div>
-      <div className="flex gap-5 justify-end  mt-4 p-2">
-        <button onClick={() => previousPage()} disabled={!canPreviousPage} className="bg-blue-500 text-white px-4 py-2 rounded-md" >
-          Previous
-        </button>
-        <button onClick={() => nextPage()} disabled={!canNextPage} className="bg-blue-500 text-white px-4 py-2 rounded-md">
-          Next
-        </button>
-      </div>
+   
     </Card>
     
   );

@@ -62,7 +62,6 @@ const NeedsDashboard = () => {
     fetchData(pageNumber);
    
 
-
   }
  
 
@@ -78,6 +77,7 @@ const NeedsDashboard = () => {
             GetNewItem={GetNewItem}
             setPageNumber={setPageNumber}
             total={total}
+            pageNumber={pageNumber}
             currentPage={currentPage}
             perPage={perPage}
             HandleFetch={HandleFetch}
