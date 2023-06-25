@@ -26,15 +26,15 @@ function UpdateBlock() {
   
     const PostData = () => {
       axios.put(API, {...data,user:1})
-        .then(response => {
-          Swal.fire({
-            position: 'top-center',
-            icon: 'success',
-            title: 'Your work has been saved',
-            showConfirmButton: true,
-            timer: 1500
-          })
-          navigate("/");
+      .then(response => {
+        Swal.fire({
+          position: 'top-center',
+          icon: 'success',
+          title: 'Your work has been saved',
+          showConfirmButton: true,
+          timer: 1500
+        })
+        navigate("/");
 
 
         })
