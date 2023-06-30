@@ -38,6 +38,7 @@ export default function SignIn({ userCredentials }) {
 
 
   const handleLogin = async (data) => {
+    console.log("Data", data)
     setErrors({});
     // data.preventDefault();
 
@@ -55,15 +56,18 @@ export default function SignIn({ userCredentials }) {
           }
         }
       );
-      console.log(req);
       if (req.status == 200) {
+        const { token } = req.data;
+        console.log("token", token);
         console.log(req.data.user_id);
         const req_detail = await api.get(`/users/${req.data.user_id}`, {
-          headers: {
-            Authorization: 'Bearer 19|R0gLlLmLBQQBajLPEjHEvA07lOnkvY9rQSyxxoNB',
+          
+        headers: {
+            Authorization: `Bearer 19|${token}`, // Use the extracted token
             // 'Accept-Language': lang
           }
         });
+
         
         if (req_detail.status == 200) {
           console.log(req_detail);

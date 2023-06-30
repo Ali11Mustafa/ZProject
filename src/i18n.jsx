@@ -50,21 +50,6 @@ const resources = {
       }
       }
       ,
-      usersTable:{ 
-        "title":"Users",
-        "title1":"Add New User",
-        columns:{
-          "name":'UserName',
-          "email":'Email',
-          "Role":'Role',
-          "salary":"salary",
-          "actions":'ACTIONS',
-          "remainingAmount":'REMAINING AMOUNT',
-          "totalPrice":'TOTAL PRICE',
-          "pricePerBuilding":'PRICE PER BUILDING',
-          "actions":'ACTIONS',
-      },
-      },
       usersUpdate:{ 
      
           "name":'User Name',
@@ -100,6 +85,16 @@ const resources = {
           "item_name":'ITEM NAME',
           "item_type":'ITEM TYPE',
           "username":'USERNAME',  
+          "actions":'ACTIONS',
+      },
+      },
+     usersTable:{
+        "title":"Users",
+        columns:{
+          "username":'USERNAME',
+          "email":'EMAIL',
+          "role":'ROLE',
+          "salary":'SALARY',  
           "actions":'ACTIONS',
       },
       },
@@ -145,6 +140,14 @@ const resources = {
         "order_price":"Order Price", 
         "item_name":"Item Name",
         "item_type":"Item Type",
+        
+      }, newUser:{
+        "title":"Add New User",
+        "username":"Name",
+        "email":"Email",
+        "password":"Password",
+        "role":"Role", 
+        "salary":"Salary",
         
       }
       ,
@@ -250,21 +253,6 @@ const resources = {
           "actions":'کردارەکان',
       },
       },
-      usersTable:{ 
-        "title":"Users",
-        "title1":"Add New User",
-        columns:{
-          "name":'UserName',
-          "email":'Email',
-          "Role":'Role',
-          "salary":"salary",
-          "actions":'ACTIONS',
-          "remainingAmount":'REMAINING AMOUNT',
-          "totalPrice":'TOTAL PRICE',
-          "pricePerBuilding":'PRICE PER BUILDING',
-          "actions":'ACTIONS',
-      },
-      },
       ordersTable:{
         "title":"داواکاریەکان",
         columns:{
@@ -292,6 +280,16 @@ const resources = {
             "description":'باسکردن',
             "actions":'کردارەکان',
         }
+      },
+      usersTable:{
+        "title":"بەکارهێنەرەکان",
+        columns:{
+          "username":'ناوی بەکارهێنەر',
+          "email":'ئیمەیڵ',
+          "role":'ڕۆڵ',
+          "salary":'موچە',  
+          "actions":'کردارەکان',
+      },
       },
       newBuilding:{
         "title":"باڵەخانەی نوێ زیاد بکە",
@@ -336,6 +334,15 @@ const resources = {
         "order_type":"جۆری داواکاری",
         "item_name":"ناوی کەرەستە",
         "item_type":"جۆری کەرەستە",
+        
+      },
+       newUser:{
+        "title":"بەکارهێنەری نوێ زیاد بکە",
+        "username":'ناوی بەکارهێنەر',
+          "email":'ئیمەیڵ',
+          "role":'ڕۆڵ',
+          "password":"تێپەڕە ووشه",
+          "salary":'موچە',  
         
       },
       actions:{
@@ -456,6 +463,24 @@ const resources = {
             "description":'وصف',
             "actions":'أجراءات',
         }
+      },
+      usersTable:{
+        "title":"المستعملون",
+        columns:{
+          "username":'اسم المستخدم',
+          "email":'البريد الإلكتروني',
+          "role":'دور',
+          "salary":'راتب',  
+          "actions":'الاجراءات',
+      },
+      },
+      newUser:{
+        "title":"إضافة مستخدم جديد",
+        "username":'اسم المستخدم',
+        "email":'البريد الإلكتروني',
+        "role":'دور',
+        "password":'كلمة المرور',
+        "salary":'راتب',  
       },
       newBuilding:{
         "title":"أضف مبنى جديد",

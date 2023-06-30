@@ -8,6 +8,20 @@ const [deleted,setDeleted]=useState(false);
 
 const {itemId}=useParams();
 console.log(itemId)
+
+let usr = JSON.parse(sessionStorage.getItem('user'));
+let userName = usr?.fullname;
+let email = usr?.email;
+let image = usr?.img;
+let usrId = usr?.id;
+let token = usr?.token;
+
+const config = {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+};
+
 const API=`https://api.hirari-iq.com/api/items/${itemId}`;
   const navigate=useNavigate();
   useEffect(()=>{
@@ -15,7 +29,7 @@ const API=`https://api.hirari-iq.com/api/items/${itemId}`;
     navigate("/items")
   },[]);
    const DeleteItem=()=>{
-    axios.delete(API)
+    axios.delete(API,config)
   .then(response => {
     setDeleted(true);
     console.log(response);

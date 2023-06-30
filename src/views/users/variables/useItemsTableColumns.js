@@ -7,7 +7,7 @@ export default function useItemsTableColumns() {
 
   const itemsTableColumns = [
     {
-      Header: t("usersTable.columns.name"),
+      Header: t("usersTable.columns.username"),
       accessor: "name",
     },  
     { 
@@ -15,7 +15,7 @@ export default function useItemsTableColumns() {
       accessor: "email", 
     },
     {
-      Header: t("usersTable.columns.Role"),
+      Header: t("usersTable.columns.role"),
       accessor: "role",
     },
     {

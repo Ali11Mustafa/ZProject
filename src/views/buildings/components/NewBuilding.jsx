@@ -13,10 +13,23 @@ export default function NewBuilding({GetNewItem}) {
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = data =>{
+    let usr = JSON.parse(sessionStorage.getItem('user'));
+    let userName = usr?.fullname;
+    let email = usr?.email;
+    let image = usr?.img;
+    let usrId = usr?.id;
+    let token = usr?.token;
     const API = 'https://api.hirari-iq.com/api/blocks';
+
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+
   console.log(data);
     const PostData = () => {
-      axios.post(API, {...data,level:"0"})
+      axios.post(API, {...data,level:"0",config})
         .then(response => {
           GetNewItem(Math.random())
             console.log(response.status)

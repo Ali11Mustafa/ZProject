@@ -23,14 +23,24 @@ const NeedsDashboard = () => {
   useEffect(() => {
     fetchData();
   }, [newItem]);
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let image = usr?.img;
+  let usrId = usr?.id;
+  let token = usr?.token;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
 
   const fetchData=(pageNumber=1)=>{
     console.log("page number ",pageNumber);
     const API = `https://api.hirari-iq.com/api/needs?page=${pageNumber}`;
 
-    axios.get(API,{headers: {
-      'Access-Control-Allow-Origin': '*'
-  }})
+    axios.get(API,config)
   .then(response => {
   
     setTotal(response.data.meta.total);

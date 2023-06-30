@@ -70,7 +70,19 @@ const ItemsTable = (props) => {
         'Your file has been deleted.',
         'success'
       )
-      const res= axios.delete(`https://api.hirari-iq.com/api/users/${e.target.getAttribute('value')}`)
+      let usr = JSON.parse(sessionStorage.getItem('user'));
+      let userName = usr?.fullname;
+      let email = usr?.email;
+      let image = usr?.img;
+      let usrId = usr?.id;
+      let token = usr?.token;
+    
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      };
+      const res= axios.delete(`https://api.hirari-iq.com/api/users/${e.target.getAttribute('value')}`,config)
       .then(response => {
         // setDeleted(true);
         GetNewItem(Math.random());

@@ -14,18 +14,23 @@ export default function NewItem({GetNewItem}) {
 
 
   const onSubmit = (data) => {
-    const API = 'https://api.hirari-iq.com/api/items';
     let usr = JSON.parse(sessionStorage.getItem('user'));
     let userName = usr?.fullname;
     let email = usr?.email;
     let image = usr?.img;
     let usrId = usr?.id;
     let token = usr?.token;
-
-
+  
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    
 
     const PostData = async() => {
-    await  axios.post(API, {...data,user_id:usrId})
+      const API = 'https://api.hirari-iq.com/api/items';
+    await  axios.post(API, {...data,user_id:usrId,config})
         .then(response => {
 
          GetNewItem(Math.random());
@@ -146,10 +151,6 @@ export default function NewItem({GetNewItem}) {
 
                       </select>
                     </div>
-                  
-                   
-                   
-                  
                     {/*footer*/}
                     <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start' } rounded-b pt-5`}  >
                   <button

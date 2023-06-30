@@ -9,9 +9,21 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const updateBlock = (BlockId, deleted, data) => {
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let image = usr?.img;
+  let usrId = usr?.id;
+  let token = usr?.token;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
   const API = `https://api.hirari-iq.com/api/blocks/${BlockId}`;
   axios
-    .put(API, { ...data, is_deleted: deleted })
+    .put(API, { ...data, is_deleted: deleted,config})
     .then((response) => {
       // Handle the response if needed
     })
@@ -36,9 +48,20 @@ const BuildingDashboard = () => {
   useEffect(() => {
     fetchData();
   }, [newItem]);
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let image = usr?.img;
+  let usrId = usr?.id;
+  let token = usr?.token;
 
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
   const fetchData=()=>{
-    axios.get(API)
+    axios.get(API,config)
   .then(response => {
 
     let arrayNotDeleted = []
@@ -58,9 +81,22 @@ const BuildingDashboard = () => {
   }
 
   const onDeleteBuilding = (BlockId) => {
+    let usr = JSON.parse(sessionStorage.getItem('user'));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let image = usr?.img;
+  let usrId = usr?.id;
+  let token = usr?.token;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+    
     const API = `https://api.hirari-iq.com/api/blocks/${BlockId}`;
     axios
-      .delete(API)
+      .delete(API,config)
       .then((response) => {
         // Handle the response if needed
       })

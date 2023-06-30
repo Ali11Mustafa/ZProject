@@ -29,9 +29,20 @@ const ItemsDashboard = () => {
     useEffect(()=>{
       FetchData();
     },[newItem]); 
-  
+    let usr = JSON.parse(sessionStorage.getItem('user'));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let image = usr?.img;
+  let usrId = usr?.id;
+  let token = usr?.token;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
      const FetchData=()=>{
-      axios.get(API)
+      axios.get(API,config)
     .then(response => {
       console.log(response.data)
       let arrayNotDeleted = []

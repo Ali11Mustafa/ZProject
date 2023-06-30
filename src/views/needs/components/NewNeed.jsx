@@ -36,9 +36,22 @@ export default function NewNeed({GetNewItem}) {
     fetchData();
   }, [Data]);
   const API = "https://api.hirari-iq.com/api/blocks";
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let image = usr?.img;
+  let usrId = usr?.id;
+  let token = usr?.token;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
   const fetchData = () => {
     axios
-      .get(API)
+      .get(API,config)
       .then((response) => {
         const newBuildingNames = [];
         response.data.data.forEach((block) => {
@@ -79,6 +92,13 @@ export default function NewNeed({GetNewItem}) {
     let image = usr?.img;
     let usrId = usr?.id;
     let token = usr?.token;
+  
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+  
 
     console.log("usrIdddddd",usrId);
     const PostData = () => {
@@ -90,7 +110,7 @@ export default function NewNeed({GetNewItem}) {
         item_id:itemId
       }
      // console.log(itemID);
-      axios.post(API, newData)
+      axios.post(API, newData,config)
         .then(response => {
           GetNewItem(Math.random());
           

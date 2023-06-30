@@ -8,6 +8,7 @@ import Swal from 'sweetalert2'
 
 import { useItemsStore } from "App";
 import useFetchItems from "hooks/useFetchItems";
+import { config } from "tailwindcss-rtl";
 
 export default function NewOrders({GetNewItem}) {
   const [showModal, setShowModal] = React.useState(false);
@@ -72,7 +73,7 @@ export default function NewOrders({GetNewItem}) {
         item_id:itemId
       }
       console.log("New Data",newData);
-      axios.post(API, newData)
+      axios.post(API, newData,config)
         .then(response => {
           GetNewItem(Math.random());
             console.log(response.status)

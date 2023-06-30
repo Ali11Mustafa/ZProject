@@ -11,14 +11,25 @@ export default function NewItem({GetNewItem}) {
   const [showModal, setShowModal] = React.useState(false);
 
   const { register, handleSubmit, reset } = useForm();
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let image = usr?.img;
+  let usrId = usr?.id;
+  let token = usr?.token;
 
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  };
 
   const onSubmit = (data) => {
     const API = 'https://api.hirari-iq.com/api/users';
   
     const PostData = async() => {
       console.log("Data",data);
-    await  axios.post(API, data)
+    await  axios.post(API, data,config)
         .then(response => {
 
          GetNewItem(Math.random());

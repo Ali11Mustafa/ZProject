@@ -27,11 +27,22 @@ const OrdersDashboard = () => {
      FetchData();
    },[newItem]);
  
-    
+   let usr = JSON.parse(sessionStorage.getItem('user'));
+   let userName = usr?.fullname;
+   let email = usr?.email;
+   let image = usr?.img;
+   let usrId = usr?.id;
+   let token = usr?.token;
+ 
+   const config = {
+     headers: {
+       'Authorization': `Bearer ${token}`
+     }
+   };
    const FetchData=(pageNumber=1)=>{
     const API=`https://api.hirari-iq.com/api/orders?page=${pageNumber}`;
 
-    axios.get(API)
+    axios.get(API,config)
   .then(response => {
     console.log("responseee",response.data.data);
     setTotal(response.data.meta.total);
