@@ -63,7 +63,7 @@ export default function SignIn({ userCredentials }) {
         const req_detail = await api.get(`/users/${req.data.user_id}`, {
           
         headers: {
-            Authorization: `Bearer 19|${token}`, // Use the extracted token
+            Authorization: `Bearer ${token}`, // Use the extracted token
             // 'Accept-Language': lang
           }
         });
