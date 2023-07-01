@@ -8,7 +8,6 @@ import Swal from 'sweetalert2'
 
 import { useItemsStore } from "App";
 import useFetchItems from "hooks/useFetchItems";
-import { config } from "tailwindcss-rtl";
 
 export default function NewOrders({GetNewItem}) {
   const [showModal, setShowModal] = React.useState(false);
@@ -18,7 +17,21 @@ export default function NewOrders({GetNewItem}) {
   const [itemID,setItemID]=useState(null);
 
   const [buildingName,setBuildingNames]=useState([]);
+  const API = 'https://api.hirari-iq.com/api/orders';
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+        let userName = usr?.fullname;
+        let email = usr?.email;
+        let role = usr?.role;
+        let usrId = usr?.id;
+        let token = usr?.token;
 
+        console.log("ROLE", role)
+      
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        };
 
    const {Data}=useFetchItems();
    console.log(Data);
@@ -55,15 +68,7 @@ export default function NewOrders({GetNewItem}) {
         }
       })
     }
-    console.log("data",data);
-
-    const API = 'https://api.hirari-iq.com/api/orders';
-    let usr = JSON.parse(sessionStorage.getItem('user'));
-    let userName = usr?.fullname;
-    let email = usr?.email;
-    let image = usr?.img;
-    let usrId = usr?.id;
-    let token = usr?.token;
+    
     const PostData = () => {
       let newData={
         amount:data.amount,
@@ -108,44 +113,52 @@ export default function NewOrders({GetNewItem}) {
   const memoizedItemTypes = useMemo(() => itemTypes, [itemTypes]);
   const memoizedBuildingName = useMemo(() => buildingName, [buildingName]);
 
-
+  
   return (
     <>
-      <button
-        className="rounded-xs bg-gray-200 dark:bg-white dark:text-blue-800 rounded-md "
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        <BsPlus fontSize={32} />
-      </button>
-      {showModal ? (
+      {usr.role === "admin" && (
+        <button
+          className="rounded-xs bg-gray-200 dark:bg-white dark:text-blue-800 rounded-md"
+          type="button"
+          onClick={() => setShowModal(true)}
+        >
+          <BsPlus fontSize={32} />
+        </button>
+      )}
+      {showModal && (
         <>
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">
-            <div className="relative  my-6 mx-auto w-[90%] max-w-xl">
-              {/*content*/}
+            <div className="relative my-6 mx-auto w-[90%] max-w-xl">
+              {/* Content */}
               <div className="relative flex w-full flex-col rounded-lg border-0 bg-white outline-none focus:outline-none">
-                {/*header*/}
+                {/* Header */}
                 <div className="border-slate-200 flex items-center justify-between rounded-t border-b border-solid p-5">
-                  <h3 className="text-xl font-semibold dark:text-indigo-900"> {t("newOrder.title")}</h3>
+                  <h3 className="text-xl font-semibold dark:text-indigo-900">
+                    {t("newOrder.title")}
+                  </h3>
                   <button
-                    className={`bg-transparent text-red-500 ${language !== 'en' ? 'float-left mr-auto' : 'float-right ml-auto'} border-0 p-1 text-xl font-semibold`}
+                    className={`bg-transparent text-red-500 ${
+                      language !== "en"
+                        ? "float-left mr-auto"
+                        : "float-right ml-auto"
+                    } border-0 p-1 text-xl font-semibold`}
                     onClick={() => setShowModal(false)}
                   >
-                
-                      ×
-             
+                    ×
                   </button>
                 </div>
-                {/*body*/}
+                {/* Body */}
                 <div>
-                  <form className="mb-4 rounded bg-white px-8 pt-6 pb-8"  onSubmit={handleSubmit(onSubmit)}>
-                  
-                  <div className="mb-4">
+                  <form
+                    className="mb-4 rounded bg-white px-8 pt-6 pb-8"
+                    onSubmit={handleSubmit(onSubmit)}
+                  >
+                    <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="amount"
+                        htmlFor="amount"
                       >
-                    {t("newOrder.order_amount")}
+                        {t("newOrder.order_amount")}
                       </label>
                       <input
                         className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
@@ -159,7 +172,7 @@ export default function NewOrders({GetNewItem}) {
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="unit"
+                        htmlFor="unit"
                       >
                         {t("newOrder.order_unit")}
                       </label>
@@ -169,22 +182,18 @@ export default function NewOrders({GetNewItem}) {
                         name="unit"
                         {...register("unit", { required: true })}
                       >
-                       <option value="">Select a unit</option>
-
-                       <option value="ton">ton</option>
-                       <option value="m">m</option>
-                       <option value="m2">m2</option>
-                       <option value="m3">m3</option>
-                       <option value="barrel">barrel</option>
-                          
-                        
-                        
+                        <option value="">Select a unit</option>
+                        <option value="ton">ton</option>
+                        <option value="m">m</option>
+                        <option value="m2">m2</option>
+                        <option value="m3">m3</option>
+                        <option value="barrel">barrel</option>
                       </select>
                     </div>
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="price"
+                        htmlFor="price"
                       >
                         {t("newOrder.order_price")}
                       </label>
@@ -197,10 +206,10 @@ export default function NewOrders({GetNewItem}) {
                         {...register("price", { required: true })}
                       />
                     </div>
-                  <div className="mb-4">
+                    <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="name"
+                        htmlFor="name"
                       >
                         {t("newOrder.item_name")}
                       </label>
@@ -211,55 +220,29 @@ export default function NewOrders({GetNewItem}) {
                         type="string"
                         {...register("item_name", { required: true })}
                       >
-                             <option value="">Select a name</option>
-
-                        {memoizedItemNames && memoizedItemNames.map((name)=>{
-                          return(
-                          <option value={name}>{name}</option>
-                           )
-                        })}
+                        <option value="">Select a name</option>
+                        {memoizedItemNames &&
+                          memoizedItemNames.map((name) => (
+                            <option key={name} value={name}>
+                              {name}
+                            </option>
+                          ))}
                       </select>
                     </div>
-{/* /*                     
-                    <div className="mb-4">
-                      <label
-                        className="mb-2 block font-medium text-gray-700"
-                        for="type"
+                    <div className="border-slate-200 flex items-center">
+                      <button
+                        className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                        type="button"
+                        onClick={() => setShowModal(false)}
                       >
-                        {t("newOrder.item_type")}
-                      </label>
-                      <select
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="type"
-                        name="type"
-                        {...register("type", { required: true })}
+                        {t("formButtons.close")}
+                      </button>
+                      <button
+                        className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                       >
-                       <option value="">Select a type</option>
-
-                         {memoizedItemTypes && memoizedItemTypes.map((type)=>{
-                          return(
-                          <option value={type}>{type}</option>
-                          )
-                        })}
-                        
-                      </select>
+                        {t("formButtons.create")}
+                      </button>
                     </div>
-                   */  }
-                    
-                    <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start' } rounded-b pt-5`}  >
-                  <button
-                    className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    {t("formButtons.close")}
-                  </button>
-                  <button
-                   className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
-                  >
-                     {t("formButtons.create")}
-                  </button>
-                </div>
                   </form>
                 </div>
               </div>
@@ -267,7 +250,11 @@ export default function NewOrders({GetNewItem}) {
           </div>
           <div className="fixed inset-0 z-40 bg-black dark:bg-black opacity-30"></div>
         </>
-      ) : null}
+      )}
     </>
   );
+  
+  
+    
+   
 }

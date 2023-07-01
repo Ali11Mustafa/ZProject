@@ -14,7 +14,7 @@ export default function NewItem({GetNewItem}) {
   let usr = JSON.parse(sessionStorage.getItem('user'));
   let userName = usr?.fullname;
   let email = usr?.email;
-  let image = usr?.img;
+  let role = usr?.role;
   let usrId = usr?.id;
   let token = usr?.token;
 
@@ -42,9 +42,7 @@ export default function NewItem({GetNewItem}) {
             timer: 1500
           })
         
-      
-         
-  
+    
         })
         .catch(error => {
                 
@@ -74,6 +72,7 @@ export default function NewItem({GetNewItem}) {
 
   return (
     <>
+    {usr.role==="admin" &&(
       <button
         className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800 "
         type="button"
@@ -81,6 +80,7 @@ export default function NewItem({GetNewItem}) {
       >
         <BsPlus fontSize={32} />
       </button>
+)}
       {showModal ? (
         <>
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">

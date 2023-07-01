@@ -16,14 +16,28 @@ import Users from "pages/Users";
 
 function useRoutes() { 
   const {t} = useTranslation()
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let role = usr?.role;
+  let usrId = usr?.id;
+  let token = usr?.token;
 
-  const routes = [
-    {
-      name: t("sidebarLinks.buildings"),
-      path: "/",
-      icon: <BsFillBuildingFill className="h-4 w-4" />,
-      component: <Buildings />,
-    },
+
+const routes=[];
+if(usr.role==="admin" || usr.role==="read-only"){
+  routes.push( {
+    name: t("sidebarLinks.buildings"),
+    path: "/",
+    icon: <BsFillBuildingFill className="h-4 w-4" />,
+    component: <Buildings />,
+  },
+  
+
+  )
+}
+  routes.push(
+
     {
       name: t("sidebarLinks.needs"),
       path: "/needs",
@@ -42,13 +56,25 @@ function useRoutes() {
       icon: <GoPackage  className="h-4 w-4" />,
       component: <Orders />,
     },
-    {
-      name: t("sidebarLinks.users"),
-      path: "/users",
-      icon: <TbUsers  className="h-4 w-4" />,
-      component:  <Users/>,
-    },
-  ];
+    
+   
+  )
+  if(usr.role==="admin" || usr.role==="read-only"){
+    routes.push(
+     {
+        name: t("sidebarLinks.users"),
+        path: "/users",
+        icon: <TbUsers  className="h-4 w-4" />,
+        component:  <Users/>,
+      },
+    
+    )
+  }
+  
+ 
+  
+
+
 
   return {routes}
 }

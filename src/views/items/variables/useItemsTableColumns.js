@@ -4,6 +4,13 @@ import { useTranslation } from "react-i18next";
 
 export default function useItemsTableColumns() {
   const {t} = useTranslation()
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let role = usr?.role;
+  let usrId = usr?.id;
+  let token = usr?.token;
+
 
   const itemsTableColumns = [
     {
@@ -17,13 +24,19 @@ export default function useItemsTableColumns() {
     {
       Header: t("itemsTable.columns.type"),
       accessor: "type",
-    },
-    {
-      Header: t("itemsTable.columns.actions"),
-      accessor: "actions",
-    },
+    }
    
   ];
+  if(usr.role==="admin"){
+    itemsTableColumns.push(  {
+      Header: t("itemsTable.columns.actions"),
+      accessor: "actions",
+      
+    },
+   )
+    
+  }
+  
   
 
   

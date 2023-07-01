@@ -6,6 +6,12 @@ import { useTranslation } from "react-i18next";
 
 export default function useNeedsTableColumns() {
   const {t} = useTranslation()
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+        let userName = usr?.fullname;
+        let email = usr?.email;
+        let role = usr?.role;
+        let usrId = usr?.id;
+        let token = usr?.token;
 
   const needsTableColumns = [
     {
@@ -40,16 +46,19 @@ export default function useNeedsTableColumns() {
       Header: t("needsTable.columns.building"),
       accessor: "block_info.name",
     },
-    {
+   
+
+  ];
+  if(usr.role==="admin"){
+    needsTableColumns.push(  {
       Header: t("itemsTable.columns.actions"),
       accessor: "actions",
+      
     },
-   
-   
+   )
     
-    
-   
-  ];
+  }
+  
   
 
   

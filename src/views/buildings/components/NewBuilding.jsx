@@ -11,14 +11,14 @@ export default function NewBuilding({GetNewItem}) {
 
 
   const { register, handleSubmit, reset } = useForm();
-
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let role = usr?.role;
+  let usrId = usr?.id;
+  let token = usr?.token;
   const onSubmit = data =>{
-    let usr = JSON.parse(sessionStorage.getItem('user'));
-    let userName = usr?.fullname;
-    let email = usr?.email;
-    let image = usr?.img;
-    let usrId = usr?.id;
-    let token = usr?.token;
+    
     const API = 'https://api.hirari-iq.com/api/blocks';
 
     const config = {
@@ -68,13 +68,16 @@ export default function NewBuilding({GetNewItem}) {
 
   return (
     <>
-      <button
-        className="rounded-xs bg-gray-200 dark:bg-white dark:text-blue-800 rounded-md "
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        <BsPlus fontSize={32} />
-      </button>
+      {usr.role === "admin" && (
+        <button
+          className="rounded-xs bg-gray-200 dark:bg-white dark:text-blue-800 rounded-md"
+          type="button"
+          onClick={() => setShowModal(true)}
+        >
+          <BsPlus fontSize={32} />
+        </button>
+      )}
+    
       {showModal ? (
         <>
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">

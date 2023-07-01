@@ -26,7 +26,20 @@ const OrdersTable = (props) => {
   const [pageIndex, setPageIndex] = useState(0);
 
   
+  let usr = JSON.parse(sessionStorage.getItem('user'));
+        let userName = usr?.fullname;
+        let email = usr?.email;
+        let role = usr?.role;
+        let usrId = usr?.id;
+        let token = usr?.token;
 
+        console.log("ROLE", role)
+      
+        const config = {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        };
   const columns = useMemo(() => columnsData, [columnsData]);
   
   const data = useMemo(() => tableData, [tableData]);
@@ -81,18 +94,7 @@ const OrdersTable = (props) => {
           'Your file has been deleted.',
           'success'
         )
-        let usr = JSON.parse(sessionStorage.getItem('user'));
-        let userName = usr?.fullname;
-        let email = usr?.email;
-        let image = usr?.img;
-        let usrId = usr?.id;
-        let token = usr?.token;
       
-        const config = {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        };
         const res= axios.delete(`https://api.hirari-iq.com/api/orders/${e.target.getAttribute('value')}`,config)
         .then(response => {
           // setDeleted(true);
@@ -132,6 +134,7 @@ const OrdersTable = (props) => {
           'Your file has been saved.',
           'success'
         )
+        
         
         const res=axios.put(`https://api.hirari-iq.com/api/orders/accept/${e.target.getAttribute('value')}}`,config).then((response)=>{
           // setDeleted(true);
@@ -179,11 +182,11 @@ const OrdersTable = (props) => {
         >
           <thead>
             {headerGroups.map((headerGroup, index) => {
-              
               return (
-              
+                
               <tr {...headerGroup.getHeaderGroupProps()} key={index}>
-                {headerGroup.headers.map((column, index) => (
+                {headerGroup.headers.map((column, index) =>{ 
+                return(
                   <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   className={`border-b border-gray-200  pb-[10px] text-start  dark:!border-navy-700 ${language !== 'en' ?'text-right pl-[40px] lg:pl-auto' : 'pr-[40px] lg:pr-auto'}`}
@@ -192,7 +195,7 @@ const OrdersTable = (props) => {
                     <div className="text-xs font-medium tracking-wide text-gray-600 lg:text-[14px]">{column.render("Header")}
                     </div>
                   </th>
-                ))}
+            )})}
               </tr>
             )})}
           </thead>
@@ -226,18 +229,26 @@ const OrdersTable = (props) => {
                       </p>
                       );
                     } else if (cell.column.id === "status") {
-                      data = 
-                        cell.value !== "accept" ? 
 
-                          <div className="flex gap-2 items-center">
-                          <button                               
-                          value={row.original.id}
- 
-                        onClick={onAccept} className="bg-green-400 px-2 py-1 rounded-md dark:text-black">Accept</button>
-                          <button className="bg-red-400 px-2 py-1 rounded-md dark:text-black">Reject</button>
-                          </div>
-                        : <p  className="text-sm font-medium text-green-600 ">{cell.value }</p>
-                        
+                      if(cell.value==="accept"){
+                        data=<p  className="text-lg font-medium text-green-600 ">{cell.value }</p>
+                        }else{
+                          if(usr.role=="admin" || usr.role==="accountant"){
+                            data = cell.value !== "accept"? 
+      
+                                <div className="flex gap-2 items-center">
+                                <button value={row.original.id} onClick={onAccept} className="bg-green-400 px-2 py-1 rounded-md dark:text-black">Accept</button>
+                                <button className="bg-red-400 px-2 py-1 rounded-md dark:text-black">Reject</button>
+                                  
+                              
+                                </div>
+                              : <p  className="text-sm font-medium text-green-600 ">{cell.value }</p>}else{
+                                data=<p  className="text-lg font-medium text-[#FFA500] ">Pending</p>
+                                
+    
+                              }
+
+                        }
                        
                     }else if (cell.column.id === "user_info.name") {
                       data = (
@@ -265,7 +276,7 @@ const OrdersTable = (props) => {
                       );
                     }
                     
-                    
+                  
                     else if (cell.column.id === "actions") {
                       data = (
                         <div className="flex items-center gap-4">
