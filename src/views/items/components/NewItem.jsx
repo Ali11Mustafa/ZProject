@@ -1,18 +1,19 @@
 import { useLanguageStore } from "App";
-import React,{useEffect} from "react";
+import axios from "axios";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
-import axios from "axios";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
-
-export default function NewItem({GetNewItem}) {
+export default function NewItem({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
 
   const { register, handleSubmit, reset } = useForm();
 
-  let usr = JSON.parse(sessionStorage.getItem('user'));
+  const { t } = useTranslation();
+
+  let usr = JSON.parse(sessionStorage.getItem("user"));
   let userName = usr?.fullname;
   let email = usr?.email;
   let role = usr?.role;
@@ -21,70 +22,54 @@ export default function NewItem({GetNewItem}) {
 
   const config = {
     headers: {
-      'Authorization': `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   };
   const onSubmit = (data) => {
- 
-    
-
- const PostData = async() => {
-      const API = 'https://api.hirari-iq.com/api/items';
-    await  axios.post(API, {...data,user_id:usrId,config})
-        .then(response => {
-
-         GetNewItem(Math.random());
-          console.log(response.status)
+    const PostData = async () => {
+      const API = "https://api.hirari-iq.com/api/items";
+      await axios
+        .post(API, { ...data, user_id: usrId }, config)
+        .then((response) => {
+          GetNewItem(Math.random());
+          console.log(response.status);
           Swal.fire({
-            position: 'top-center',
-            icon: 'success',
-            title: 'Your work has been saved',
+            position: "top-center",
+            icon: "success",
+            title: t("alerts.newItem.title"),
             showConfirmButton: true,
-            timer: 1500
-          })
-        
-      
-         
-  
+            timer: 1500,
+          });
         })
-        .catch(error => {
-                
-            Swal.fire({
-              position: 'top-center',
-              icon: 'error',
-              title: 'there is another error',
-              showConfirmButton: true,
-            })
-          
-         
+        .catch((error) => {
+          Swal.fire({
+            position: "top-center",
+            icon: "error",
+            title: t("alerts.newItem.fail"),
+            showConfirmButton: true,
+          });
         });
     };
-  
+
     PostData();
     setShowModal(false);
     reset();
   };
-  
-  
 
-  const {t} = useTranslation()
-
-  const language = useLanguageStore(state=>state.language)
-
-
+  const language = useLanguageStore((state) => state.language);
 
   return (
     <>
-        {usr.role === "admin" && (
+      {usr.role === "admin" && (
         <button
-          className="rounded-xs bg-gray-200 dark:bg-white dark:text-blue-800 rounded-md"
+          className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"
           onClick={() => setShowModal(true)}
         >
           <BsPlus fontSize={32} />
         </button>
       )}
-    
+
       {showModal ? (
         <>
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">
@@ -94,10 +79,14 @@ export default function NewItem({GetNewItem}) {
                 {/*header*/}
                 <div className="border-slate-200 flex items-center justify-between rounded-t border-b border-solid p-5">
                   <h3 className="text-xl font-semibold dark:text-indigo-900">
-                  {t("newItem.title")}
+                    {t("newItem.title")}
                   </h3>
                   <button
-                    className={`bg-transparent text-red-500 ${language !== 'en' ? 'float-left mr-auto' : 'float-right ml-auto'} border-0 p-1 text-3xl font-semibold`}
+                    className={`bg-transparent text-red-500 ${
+                      language !== "en"
+                        ? "float-left mr-auto"
+                        : "float-right ml-auto"
+                    } border-0 p-1 text-3xl font-semibold`}
                     onClick={() => setShowModal(false)}
                   >
                     ×
@@ -109,15 +98,15 @@ export default function NewItem({GetNewItem}) {
                     className="mb-4 rounded bg-white px-8 pt-6 pb-8"
                     onSubmit={handleSubmit(onSubmit)}
                   >
-                      <div className="mb-4">
+                    <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
                         for="name"
                       >
-                                 {t("newItem.name")}
+                        {t("newItem.name")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="name"
                         type="text"
                         placeholder="Enter name"
@@ -130,10 +119,10 @@ export default function NewItem({GetNewItem}) {
                         className="mb-2 block font-medium text-gray-700"
                         for="no_of_floors"
                       >
-                                 {t("newItem.type")}
+                        {t("newItem.type")}
                       </label>
                       <select
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="type"
                         name="type"
                         type="string"
@@ -149,32 +138,31 @@ export default function NewItem({GetNewItem}) {
                         <option value="column">column</option>
                         <option value="barrel">barrel</option>
                         <option value="tie">tie</option>
-
-
-
                       </select>
                     </div>
                     {/*footer*/}
-                    <div className={`border-slate-200 flex items-center ${language === 'en' ? 'justify-end' : 'justify-start' } rounded-b pt-5`}  >
-                  <button
-                    className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                  >
-                    {t("formButtons.close")}
-                  </button>
-                  <button
-                    className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-3 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
-                  >
-                     {t("formButtons.create")}
-                  </button>
-                </div>
+                    <div
+                      className={`border-slate-200 flex items-center ${
+                        language === "en" ? "justify-end" : "justify-start"
+                      } rounded-b pt-5`}
+                    >
+                      <button
+                        className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                        type="button"
+                        onClick={() => setShowModal(false)}
+                      >
+                        {t("formButtons.close")}
+                      </button>
+                      <button className="active:bg-emerald-600 mb-1 mr-1 rounded bg-indigo-700 px-6 py-3 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none">
+                        {t("formButtons.create")}
+                      </button>
+                    </div>
                   </form>
                 </div>
               </div>
             </div>
           </div>
-          <div className="fixed inset-0 z-40 bg-black dark:bg-black opacity-30"></div>
+          <div className="fixed inset-0 z-40 bg-black opacity-30 dark:bg-black"></div>
         </>
       ) : null}
     </>

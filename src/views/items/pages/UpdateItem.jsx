@@ -38,7 +38,7 @@ function UpdateItem() {
     const API = `https://api.hirari-iq.com/api/items/${itemId}`;
   
     const PostData = () => {
-      axios.put(API, {...data,user:usrId,config})
+      axios.put(API, {...data,user:usrId},config)
         .then(response => {
           Swal.fire({
             position: 'top-center',

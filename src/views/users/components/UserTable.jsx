@@ -1,8 +1,13 @@
-import React, { useMemo } from "react"; 
 import Card from "components/card";
-import Swal from 'sweetalert2'
+import { useMemo } from "react";
+import Swal from "sweetalert2";
 
-
+import { useLanguageStore } from "App";
+import axios from "axios";
+import { useTranslation } from "react-i18next";
+import { FiEdit } from "react-icons/fi";
+import { MdDeleteOutline } from "react-icons/md";
+import { Link } from "react-router-dom";
 import {
   useGlobalFilter,
   usePagination,
@@ -10,21 +15,11 @@ import {
   useTable,
 } from "react-table";
 import NewItem from "./NewUser";
-import { useLanguageStore } from "App";
-import { useTranslation } from "react-i18next";
-import { FiEdit } from "react-icons/fi";
-import { MdDeleteOutline } from "react-icons/md";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { Button } from "@chakra-ui/react";
-
-
 
 const ItemsTable = (props) => {
-  const { columnsData, tableData , GetNewItem} = props;
+  const { columnsData, tableData, GetNewItem } = props;
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
-
 
   const tableInstance = useTable(
     {
@@ -44,74 +39,77 @@ const ItemsTable = (props) => {
     prepareRow,
     initialState,
   } = tableInstance;
-  
+
   initialState.pageSize = 11;
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
+  const language = useLanguageStore((state) => state.language);
 
- const language = useLanguageStore(state=>state.language)
+  function deleteMe(e) {
+    console.log(e.target.getAttribute("value"));
 
- function deleteMe(e){
-  console.log(e.target.getAttribute('value'));
+    Swal.fire({
+      title: t("alerts.delete.sure"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      cancelButtonText: t("alerts.delete.cancel"),
+      confirmButtonText: t("alerts.delete.yes"),
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            t("alerts.delete.deleted"),
+            t("alerts.delete.fileDeleted"),
+            t("alerts.delete.success")
+          );
+          let usr = JSON.parse(sessionStorage.getItem("user"));
+          let userName = usr?.fullname;
+          let email = usr?.email;
+          let image = usr?.img;
+          let usrId = usr?.id;
+          let token = usr?.token;
 
-  Swal.fire({
-    title: 'Are you sure?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Delete'
-  }).then((result) => {
- 
-    if (result.isConfirmed) {
-      Swal.fire(
-        'Deleted!',
-        'Your file has been deleted.',
-        'success'
-      )
-      let usr = JSON.parse(sessionStorage.getItem('user'));
-      let userName = usr?.fullname;
-      let email = usr?.email;
-      let image = usr?.img;
-      let usrId = usr?.id;
-      let token = usr?.token;
-    
-      const config = {
-        headers: {
-          'Authorization': `Bearer ${token}`
+          const config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+          axios
+            .delete(
+              `https://api.hirari-iq.com/api/users/${e.target.getAttribute(
+                "value"
+              )}`,
+              config
+            )
+            .then((response) => {
+              // setDeleted(true);
+              GetNewItem(Math.random());
+              console.log(response);
+              if (response.status != 200)
+                Swal.fire(
+                  t("deleteError.title"),
+                  t("deleteError.oops"),
+                  t("deleteError.failed")
+                );
+            });
         }
-      };
-      const res= axios.delete(`https://api.hirari-iq.com/api/users/${e.target.getAttribute('value')}`,config)
-      .then(response => {
-        // setDeleted(true);
-        GetNewItem(Math.random());
-        console.log(response);
-        if(response.status!=200)
-        Swal.fire(
-          'the item not deleted',
-          'oopss',
-          'failed'
-        )
       })
-      
-    
-    }
-  })
- 
-.catch(error => {
-  console.error(error);
-});
 
-}
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
   return (
     <Card extra={"w-full h-full sm:overflow-auto px-5"}>
       <header className="relative flex items-center justify-between pt-4">
-      <div className="text-xl font-semibold text-navy-700 dark:text-white">
+        <div className="text-xl font-semibold text-navy-700 dark:text-white">
           {t("usersTable.title")}
         </div>
-        <NewItem GetNewItem={GetNewItem}/>
+        <NewItem GetNewItem={GetNewItem} />
       </header>
 
       <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
@@ -124,110 +122,105 @@ const ItemsTable = (props) => {
         >
           <thead>
             {headerGroups.map((headerGroup, index) => {
-              
               return (
-              
-              <tr {...headerGroup.getHeaderGroupProps()} key={index}>
-                {headerGroup.headers.map((column, index) => (
-                  <th 
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className={`border-b border-gray-200  pb-[10px] text-start  dark:!border-navy-700 ${language !== 'en' ?'text-right pl-[40px] lg:pl-auto' : 'pr-[40px] lg:pr-auto'}`}
-                  key={index}
-                  >
-                    <div className="text-xs font-medium tracking-wide text-gray-600 lg:text-[14px]">{column.render("Header")}
-                    {console.log(column.render("Header"))}
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            )})}
+                <tr {...headerGroup.getHeaderGroupProps()} key={index}>
+                  {headerGroup.headers.map((column, index) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      className={`border-b border-gray-200  pb-[10px] text-start  dark:!border-navy-700 ${
+                        language !== "en"
+                          ? "lg:pl-auto pl-[40px] text-right"
+                          : "lg:pr-auto pr-[40px]"
+                      }`}
+                      key={index}
+                    >
+                      <div className="text-xs font-medium tracking-wide text-gray-600 lg:text-[14px]">
+                        {column.render("Header")}
+                        {console.log(column.render("Header"))}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              );
+            })}
           </thead>
-          <tbody {...getTableBodyProps()} >
+          <tbody {...getTableBodyProps()}>
             {page.map((row, index) => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} key={index} >
+                <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
-                  
                     let data = "";
-                   if (cell.column.id === "name") {
+                    if (cell.column.id === "name") {
                       data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
+                        <p className="text-sm font-medium text-black dark:text-white">
                           {cell.value}
                         </p>
                       );
-                    }
-                    else if (cell.column.id === "email") {
+                    } else if (cell.column.id === "email") {
                       data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
+                        <p className="text-sm font-medium text-black dark:text-white">
                           {cell.value}
                         </p>
                       );
-                    }
-                   
-                    else if (cell.column.id === "role") {
+                    } else if (cell.column.id === "role") {
                       data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
-                        {cell.value}
-                      </p>
+                        <p className="text-sm font-medium text-black dark:text-white">
+                          {cell.value}
+                        </p>
                       );
-                    }
-                    else if (cell.column.id === "salary") {
+                    } else if (cell.column.id === "salary") {
                       data = (
-                        <p  className="text-sm font-medium text-black dark:text-white">
-                        {cell.value}
-                      </p>
+                        <p className="text-sm font-medium text-black dark:text-white">
+                          {cell.value}
+                        </p>
                       );
-                    }
-                    
-                    else if (cell.column.id === "actions") {
+                    } else if (cell.column.id === "actions") {
                       data = (
                         <div className="flex items-center gap-4">
                           <button
-                          value={row.original.id}
-                         onClick={deleteMe}
-                        className="flex items-center gap-1 text-red-600"
+                            value={row.original.id}
+                            onClick={deleteMe}
+                            className="flex items-center gap-1 text-red-600"
                           >
-                            <div   value={row.original.id} className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-xl   ">
-                              <MdDeleteOutline  value={row.original.id} />
+                            <div
+                              value={row.original.id}
+                              className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
+                            >
+                              <MdDeleteOutline value={row.original.id} />
                             </div>
-                            <p   value={row.original.id} className="text-start text-sm font-medium text-black dark:text-white">
+                            <p
+                              value={row.original.id}
+                              className="text-start text-sm font-medium text-black dark:text-white"
+                            >
                               {t("actions.delete")}
                             </p>
                           </button>
                           <Link
-                          to={`/users/update/${row.original.id}`}
+                            to={`/users/update/${row.original.id}`}
                             className="flex items-center gap-1 text-green-600"
                           >
-                            <div className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-lg   ">
+                            <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
                               <FiEdit />
                             </div>
-                            <p className=" text-start text-sm font-medium text-black dark:text-white">
+                            <p className="text-start text-sm font-medium text-black dark:text-white">
                               {t("actions.update")}
-                            </p> 
-                          </Link> 
-
-                          
+                            </p>
+                          </Link>
                         </div>
                       );
                     }
-                    
+
                     return (
-                     
                       <td
                         {...cell.getCellProps()}
                         key={index}
                         className="pt-[14px] pb-[16px] sm:text-[14px]"
                       >
                         {data}
-                        
                       </td>
-                      
                     );
-
-                    
                   })}
-                 
                 </tr>
               );
             })}

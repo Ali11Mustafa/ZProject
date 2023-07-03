@@ -23,6 +23,13 @@ function UpdateNeed() {
 
   const navigate=useNavigate();
    const {Data}=useFetchItems();
+
+   let usr = JSON.parse(sessionStorage.getItem('user'));
+   let userName = usr?.fullname;
+   let email = usr?.email;
+   let role = usr?.role;
+   let usrId = usr?.id;
+   let token = usr?.token;
    //get Items
    useEffect(() => {
     if (Data) {
@@ -76,6 +83,11 @@ function UpdateNeed() {
     
 
     const API = `https://api.hirari-iq.com/api/needs/${needId}`;
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
   
     const PostData = () => {
       let newData={
@@ -85,7 +97,7 @@ function UpdateNeed() {
         block_id:buildingID,
         item_id:itemId
       }
-      axios.put(API, newData)
+      axios.put(API, newData,config)
         .then(response => {
           Swal.fire({
             position: 'top-center',

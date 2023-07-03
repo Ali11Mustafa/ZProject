@@ -1,124 +1,113 @@
 import { useLanguageStore } from "App";
-import React,{useState,useEffect,useMemo}from "react";
+import axios from "axios";
+import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
-import axios from "axios";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
-import { useItemsStore } from "App";
 import useFetchItems from "hooks/useFetchItems";
 
-export default function NewOrders({GetNewItem}) {
+export default function NewOrders({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
-  const [itemNames,setNames]=useState([]);
-  const [itemTypes,setTypes]=useState([]);
-  const [buildingID,setBuildingId]=useState(null);
-  const [itemID,setItemID]=useState(null);
+  const [itemNames, setNames] = useState([]);
+  const [itemTypes, setTypes] = useState([]);
+  const [buildingID, setBuildingId] = useState(null);
+  const [itemID, setItemID] = useState(null);
 
-  const [buildingName,setBuildingNames]=useState([]);
-  const API = 'https://api.hirari-iq.com/api/orders';
-  let usr = JSON.parse(sessionStorage.getItem('user'));
-        let userName = usr?.fullname;
-        let email = usr?.email;
-        let role = usr?.role;
-        let usrId = usr?.id;
-        let token = usr?.token;
+  const [buildingName, setBuildingNames] = useState([]);
+  const API = "https://api.hirari-iq.com/api/orders";
+  let usr = JSON.parse(sessionStorage.getItem("user"));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let role = usr?.role;
+  let usrId = usr?.id;
+  let token = usr?.token;
 
-        console.log("ROLE", role)
-      
-        const config = {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        };
+  console.log("ROLE", role);
 
-   const {Data}=useFetchItems();
-   console.log(Data);
-   //get Items
-   useEffect(() => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { Data } = useFetchItems();
+  //get Items
+  useEffect(() => {
     if (Data) {
-      
       Data.forEach((item) => {
-        
-      
+        console.log(Data);
         if (item.is_deleted !== 1) {
-          
           setNames((previousNames) => [...previousNames, item.name]);
           setTypes((previousTypes) => [...previousTypes, item.type]);
           setItemID(item.id);
-          
         }
       });
     }
   }, [Data]);
-  
-
-
 
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = (data) => {
     let itemName = data.item_name;
     let itemId;
 
-    if(Data){
-      Data.map(item=>{
-        if(item.name === itemName){
-         itemId = item.id
+    if (Data) {
+      Data.map((item) => {
+        if (item.name === itemName) {
+          itemId = item.id;
         }
-      })
+      });
     }
-    
+
     const PostData = () => {
-      let newData={
-        amount:data.amount,
-        unit:data.unit,
-        price:data.price,
-        user_id:usrId,
-        item_id:itemId
-      }
-      console.log("New Data",newData);
-      axios.post(API, newData,config)
-        .then(response => {
+      let newData = {
+        amount: data.amount,
+        unit: data.unit,
+        price: data.price,
+        user_id: usrId,
+        item_id: itemId,
+      };
+      console.log("New Data", newData);
+      axios
+        .post(API, newData, config)
+        .then((response) => {
           GetNewItem(Math.random());
-            console.log(response.status)
-            console.log("add")
-            Swal.fire({
-              position: 'top-center',
-              icon: 'success',
-              title: 'Your work has been saved',
-              showConfirmButton: true,
-              timer: 1500
-            })
-          
-        
-        })
-        .catch(error => {
+          console.log(response.status);
+          console.log("add");
           Swal.fire({
-            position: 'top-center',
-            icon: 'error',
-            title: 'there is another error',
+            position: "top-center",
+            icon: "success",
+            title: t("alerts.newItem.title"),
             showConfirmButton: true,
-          })
+            timer: 1500,
+          });
+        })
+        .catch((error) => {
+          Swal.fire({
+            position: "top-center",
+            icon: "error",
+            title: t("alerts.newItem.fail"),
+            showConfirmButton: true,
+          });
         });
     };
     PostData();
     setShowModal(false);
     reset();
   };
-  const {t} = useTranslation()
+  const { t } = useTranslation();
 
-  const language = useLanguageStore(state=>state.language)
+  const language = useLanguageStore((state) => state.language);
   const memoizedItemNames = useMemo(() => itemNames, [itemNames]);
   const memoizedItemTypes = useMemo(() => itemTypes, [itemTypes]);
   const memoizedBuildingName = useMemo(() => buildingName, [buildingName]);
 
-  
   return (
     <>
       {usr.role === "admin" && (
         <button
-          className="rounded-xs bg-gray-200 dark:bg-white dark:text-blue-800 rounded-md"
+          className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"
           onClick={() => setShowModal(true)}
         >
@@ -161,7 +150,7 @@ export default function NewOrders({GetNewItem}) {
                         {t("newOrder.order_amount")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="amount"
                         name="amount"
                         type="number"
@@ -177,7 +166,7 @@ export default function NewOrders({GetNewItem}) {
                         {t("newOrder.order_unit")}
                       </label>
                       <select
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="unit"
                         name="unit"
                         {...register("unit", { required: true })}
@@ -198,7 +187,7 @@ export default function NewOrders({GetNewItem}) {
                         {t("newOrder.order_price")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="price"
                         name="price"
                         type="number"
@@ -214,7 +203,7 @@ export default function NewOrders({GetNewItem}) {
                         {t("newOrder.item_name")}
                       </label>
                       <select
-                        className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="item_name"
                         name="item_name"
                         type="string"
@@ -231,15 +220,13 @@ export default function NewOrders({GetNewItem}) {
                     </div>
                     <div className="border-slate-200 flex items-center">
                       <button
-                        className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                        className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
                         type="button"
                         onClick={() => setShowModal(false)}
                       >
                         {t("formButtons.close")}
                       </button>
-                      <button
-                        className="active:bg-emerald-600 mr-1 mb-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
-                      >
+                      <button className="active:bg-emerald-600 mb-1 mr-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none">
                         {t("formButtons.create")}
                       </button>
                     </div>
@@ -248,13 +235,9 @@ export default function NewOrders({GetNewItem}) {
               </div>
             </div>
           </div>
-          <div className="fixed inset-0 z-40 bg-black dark:bg-black opacity-30"></div>
+          <div className="fixed inset-0 z-40 bg-black opacity-30 dark:bg-black"></div>
         </>
       )}
     </>
   );
-  
-  
-    
-   
 }
