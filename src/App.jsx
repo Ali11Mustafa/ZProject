@@ -3,7 +3,7 @@ import { Routes, Route  } from "react-router-dom";
 import Apartments from "pages/Apartments";
 import { create } from "zustand";
 import Buildings from "pages/Buildings";
-import Auth from "pages/Auth";
+import Auth from "pages/Auth"; 
 import Needs from "pages/Needs";
 import Items from "pages/Items";
 import { useTranslation } from "react-i18next";
@@ -54,14 +54,12 @@ const App = () => {
     i18n.changeLanguage(language)
   }, [language, i18n])
 
-  
-
 
   // if(!isAuthenticated){
   //   return <Auth/>
   // } 
 
-  return (
+  return ( 
     <Routes>  
       <Route path="/" element={<Buildings />} /> 
       <Route path="/Login" element={<Auth />} /> 
@@ -76,8 +74,6 @@ const App = () => {
       <Route path="/needs/update/:needId" element={<UpdateNeed/>} />
       <Route path="/users/update/:useId" element={<UpdateUser/>} /> 
       <Route path="/orders/update/:orderId" element={<UpdateOrder/>} /> 
-
-
     </Routes>
   );
 };

@@ -5,7 +5,7 @@ import { MdBarChart, MdOutlineApartment } from "react-icons/md";
 import { IoDocuments } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 import { BsFillBuildingsFill } from "react-icons/bs";
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; 
 import axios from "axios";
 
 const updateBlock = (BlockId, deleted, data) => {
@@ -117,7 +117,7 @@ const BuildingDashboard = () => {
           icon={<MdOutlineApartment className="h-6 w-6" />}
           title={t("widgets.numberOfApartments")}
           subtitle={6}
-        />
+        /> 
       </div>
       <div className="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-1">
         <div>

@@ -62,7 +62,7 @@ export default function NewItem({ GetNewItem }) {
 
   return (
     <>
-      {usr.role === "admin" && (
+      {role === "admin" && (
         <button
           className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800 "
           type="button"

@@ -56,7 +56,7 @@ const ItemsDashboard = () => {
       })
       
     setData(arrayNotDeleted);
-
+ 
     })
     .catch(error => {
       console.error(error);
