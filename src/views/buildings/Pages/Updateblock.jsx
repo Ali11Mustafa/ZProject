@@ -1,5 +1,5 @@
 import Layout from 'Layout'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Card from 'components/card'
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,7 @@ import axios from 'axios';
 import { updateBlock } from '../index';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
+import { useState } from 'react';
 
 
 
@@ -17,8 +18,10 @@ import Swal from 'sweetalert2'
 function UpdateBlock() {
   const {buildingId} = useParams()
   const navigate=useNavigate();
+  const [Data, setData] = useState([]);
 
-  const { register, handleSubmit, reset } = useForm();
+
+  const { register, handleSubmit, reset,setValue } = useForm();
   let usr = JSON.parse(sessionStorage.getItem('user'));
   let userName = usr?.fullname;
   let email = usr?.email;
@@ -36,12 +39,12 @@ function UpdateBlock() {
     const API = `https://api.hirari-iq.com/api/blocks/${buildingId}`;
   
     const PostData = () => {
-      axios.put(API, {...data,usrId,config})
+      axios.put(API, {...data,usrId},config)
       .then(response => {
         Swal.fire({
           position: 'top-center',
           icon: 'success',
-          title: 'Your work has been saved',
+          title: 'Block updated successfully',
           showConfirmButton: true,
           timer: 1500
         })
@@ -64,6 +67,39 @@ function UpdateBlock() {
     PostData();
     reset();
   };
+  useEffect(() => {
+    FetchData();
+  }, [buildingId]);
+
+  const FetchData = () => {
+    axios.get(`https://api.hirari-iq.com/api/blocks`,config)
+      .then(response => {
+        setData(response.data.data);
+        console.log(response.data.data)
+
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  useEffect(()=>{
+    console.log("Data",Data)
+    if(Data){
+      const block= Data.filter((Block)=>
+      Block.id===buildingId
+      )
+      console.log("block",[block])
+      if(block[0]){
+    setValue('name',block[0].name)
+    setValue('number_of_floor',block[0].number_of_floor)
+    setValue('apartment_per_floor',block[0].apartment_per_floor)
+    setValue('description',block[0].description)
+      }
+    }
+  },[setValue,Data,buildingId])
+
+
 
   
   

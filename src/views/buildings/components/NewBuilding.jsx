@@ -1,6 +1,6 @@
 import { useLanguageStore } from "App";
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 export default function NewBuilding({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
   const { t } = useTranslation();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset,setValue } = useForm();
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
   const onSubmit = (data) => {
@@ -48,6 +48,11 @@ export default function NewBuilding({ GetNewItem }) {
     setShowModal(false);
     reset();
   };
+  useEffect(()=>{
+    setValue('number_of_floor',0)
+    setValue('apartment_per_floor',0)
+
+  })
 
   const language = useLanguageStore((state) => state.language);
 
@@ -80,7 +85,7 @@ export default function NewBuilding({ GetNewItem }) {
                       language !== "en"
                         ? "float-left mr-auto"
                         : "float-right ml-auto"
-                    } border-0 p-1 text-xl font-semibold`}
+                    } border-0 p-1 text-3xl font-semibold`}
                     onClick={() => setShowModal(false)}
                   >
                     ×
@@ -103,7 +108,6 @@ export default function NewBuilding({ GetNewItem }) {
                         className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="name"
                         type="text"
-                        placeholder= {t("newBuilding.name")}
 
                         name="name"
                         {...register("name", { required: true })}
@@ -121,7 +125,6 @@ export default function NewBuilding({ GetNewItem }) {
                         id="number_of_floor"
                         name="number_of_floor"
                         type="number"
-                        placeholder={t("newBuilding.numberOfFloors")}
 
                         {...register("number_of_floor", { required: true })}
                       />
@@ -138,7 +141,6 @@ export default function NewBuilding({ GetNewItem }) {
                         id="apartment_per_floor"
                         name="apartment_per_floor"
                         type="number"
-                        placeholder={t("newBuilding.numberOfApartmentsPerFloor")}
                         {...register("apartment_per_floor", { required: true })}
                       />
                     </div>
@@ -154,7 +156,7 @@ export default function NewBuilding({ GetNewItem }) {
                         id="description"
                         name="description"
                         type="text"
-                        placeholder={t("newBuilding.description")}
+                        
                         {...register("description", { required: true })}
                       />
                     </div>
@@ -165,7 +167,7 @@ export default function NewBuilding({ GetNewItem }) {
                       } rounded-b pt-5`}
                     >
                       <button
-                        className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                        className="background-transparent mb-1 mr-1 px-6 py-2 text-md font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
                         type="button"
                         onClick={() => setShowModal(false)}
                       >

@@ -189,16 +189,16 @@ const resources = {
           yes: "Yes",
           cancel: "Cancel",
           deleted: "Deleted!",
-          fileDeleted: "The item has been deleted!",
+          fileDeleted: "deleted Successfuly",
           success: "Success",
         },
         deleteError: {
           oops: "oops",
           failed: "Failed",
-          title: "The Item was not deleted!",
+          title: "delete failed!",
         },
         newItem: {
-          title: "The item has been saved",
+          title: "Added successfuly",
           fail: "it seems there is an error",
         },
         status: {
