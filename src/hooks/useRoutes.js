@@ -24,10 +24,10 @@ function useRoutes() {
   let usrId = usr?.id;
   let token = usr?.token;
 
-  const routes = [];
+  const routes = []; 
 
   const navigate = useNavigate();
-  if (usr?.role)
+  if (!usr)
     navigate('/Login');
 
   if (usr?.role === "admin" || usr?.role === "read-only") {

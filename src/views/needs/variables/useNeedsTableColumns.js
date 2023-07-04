@@ -49,7 +49,7 @@ export default function useNeedsTableColumns() {
    
 
   ];
-  if(usr.role==="admin"){
+  if(role==="admin"){
     needsTableColumns.push(  {
       Header: t("itemsTable.columns.actions"),
       accessor: "actions",

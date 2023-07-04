@@ -33,10 +33,12 @@ export default function NewNeed({ GetNewItem }) {
     fetchData();
   }, [Data]);
   const API = "https://api.hirari-iq.com/api/blocks";
+
+
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let userName = usr?.fullname;
   let email = usr?.email;
-  let image = usr?.img;
+  let role = usr?.role;
   let usrId = usr?.id;
   let token = usr?.token;
 
@@ -152,7 +154,7 @@ export default function NewNeed({ GetNewItem }) {
   const memoizedBuildingName = useMemo(() => buildingName, [buildingName]);
   return (
     <>
-      {usr.role === "admin" && (
+      { role === "admin" && (
         <button
           className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"

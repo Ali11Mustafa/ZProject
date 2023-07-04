@@ -37,7 +37,7 @@ export default function useBuildingsTableColumns() {
     
   ];
 
-  if(usr.role==="admin"){
+  if(role==="admin"){
     buildingsTableColumns.push(  {
       Header: t("buildingsTable.columns.actions"),
       accessor: "actions",

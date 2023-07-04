@@ -246,7 +246,7 @@ const OrdersTable = (props) => {
                           </p>
                         );
                       } else {
-                        if (usr.role == "admin" || usr.role === "accountant") {
+                        if (role == "admin" || role === "accountant") {
                           data =
                             cell.value !== "accept" ? (
                               <div className="flex items-center gap-2">

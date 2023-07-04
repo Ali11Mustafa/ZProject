@@ -58,9 +58,9 @@ const App = () => {
   // if(!isAuthenticated){
   //   return <Auth/>
   // } 
-
+  let usr = JSON.parse(sessionStorage.getItem('user'));
   return ( 
-    <Routes>  
+    <Routes> 
       <Route path="/" element={<Buildings />} /> 
       <Route path="/Login" element={<Auth />} /> 
       <Route path="/buildings/update/:buildingId" element={<Updateblock />} /> 

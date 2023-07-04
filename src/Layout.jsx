@@ -3,9 +3,10 @@ import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
 import Footer from "components/footer/Footer";
 import { useLanguageStore } from "App";
+import { useNavigate } from "react-router-dom";
 
 export default function Layout({children}) {
-  
+ 
   const [open, setOpen] = React.useState(true); 
 
   // Navbar
@@ -26,6 +27,7 @@ export default function Layout({children}) {
     document.documentElement.dir = "rtl";
 
   }
+
 
 
   return (

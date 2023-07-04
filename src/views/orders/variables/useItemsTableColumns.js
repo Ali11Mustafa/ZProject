@@ -46,7 +46,7 @@ export default function useItemsTableColumns() {
     
   
   ];
-  if(usr.role==="admin"){
+  if(role==="admin"){
     itemsTableColumns.push(  {
       Header: t("ordersTable.columns.actions"),
       accessor: "actions",
