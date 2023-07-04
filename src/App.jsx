@@ -57,13 +57,14 @@ const App = () => {
   
 
 
-  if(!isAuthenticated){
-    return <Auth/>
-  } 
+  // if(!isAuthenticated){
+  //   return <Auth/>
+  // } 
 
   return (
-    <Routes> 
+    <Routes>  
       <Route path="/" element={<Buildings />} /> 
+      <Route path="/Login" element={<Auth />} /> 
       <Route path="/buildings/update/:buildingId" element={<Updateblock />} /> 
       <Route path="/apartments/:buildingId" element={<Apartments />} /> 
       <Route path="/needs" element={<Needs />} /> 

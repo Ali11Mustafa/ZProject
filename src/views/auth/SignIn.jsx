@@ -7,11 +7,31 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
+import { TbVariablePlus } from "react-icons/tb";
 
 export default function SignIn({ userCredentials }) {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
   const logout = useAuthStore((state) => state.logout);
+
+  let [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    console.log(value);
+    setInputs(items => {
+      return {
+        ...items,
+        [name]: value
+      }
+    })
+
+
+  }
+
 
   const [errors, setErrors] = useState({});
 
@@ -24,8 +44,8 @@ export default function SignIn({ userCredentials }) {
 
     let formdata = new FormData();
 
-    formdata.append("email", data.email);
-    formdata.append("password", data.password);
+    formdata.append("email", inputs.email);
+    formdata.append("password", inputs.password);
 
     try {
       const req = await api.post("/login", formdata, {
@@ -33,36 +53,24 @@ export default function SignIn({ userCredentials }) {
           Accept: "application/json",
         },
       });
-      if (req.status === 200) {
-        const { token } = req.data;
-        console.log("token", token);
-        console.log(req.data.user_id);
-        const req_detail = await api.get(`/users/${req.data.user_id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const { token } = req.data;
+      console.log("token", token);
+      console.log(req.data.user_id);
 
-        if (req_detail.status === 200) {
-          console.log(req_detail);
-          const { email, name, salary, role, id } = req_detail.data.data;
 
-          const sessStorage = {
-            id: id,
-            email: email,
-            name: name,
-            salary: salary,
-            role: role,
-            token: req.data.token,
-          };
+      const sessStorage = {
+        id: req.data.id,
+        email: req.data.email,
+        name: req.data.name,
+        role: req.data.role,
+        token: req.data.token,
+      };
 
-          sessionStorage.setItem("user", JSON.stringify(sessStorage));
-          login();
-          navigate("/", { replace: true });
-          return;
-        }
-      }
-      throw Error("The Auth faild");
+      sessionStorage.setItem("user", JSON.stringify(sessStorage));
+      navigate("/", { replace: true });
+      return;
+
+
     } catch (e) {
       console.log(e);
     }
@@ -80,20 +88,20 @@ export default function SignIn({ userCredentials }) {
         </h4>
 
         <InputField
-          // Onchanged={handleChange}
+          Onchanged={handleChange}
           variant="auth"
           extra="mb-3"
           label={t("signin.email")}
-          placeholder="mail@simmmple.com"
+          placeholder="Email"
           id="email"
           type="text"
-          name={"email"}
+          name="email"
           state={errors.email ? "error" : ""}
-          register={register("email", { required: true })}
+        // register={register("email", { required: true })}
         />
         {/* Password */}
         <InputField
-          // Onchanged={handleChange}
+          Onchanged={handleChange}
           variant="auth"
           extra="mb-3"
           label={t("signin.password")}
@@ -102,11 +110,11 @@ export default function SignIn({ userCredentials }) {
           type="password"
           name="password"
           state={errors.password ? "error" : ""}
-          register={register("password", { required: true })}
+          // register={register("password", { required: true })}
           value="admin"
         />
         <button
-          onClick={handleLogin}
+
           className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
         >
           {t("signin.button")}
