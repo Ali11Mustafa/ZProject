@@ -25,18 +25,10 @@ const NeedsTable = (props) => {
     GetNewItem,
     total,
     currentPage,
-    perpage,
-    setPageNumber,
-    Paginationn,
     HandleFetch,
   } = props;
-  console.log("test", currentPage);
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let userName = usr?.fullname;
-  let email = usr?.email;
-  let image = usr?.img;
-  let usrId = usr?.id;
   let token = usr?.token;
 
   const columns = useMemo(() => columnsData, [columnsData]);
@@ -65,87 +57,64 @@ const NeedsTable = (props) => {
   initialState.pageSize = 11;
 
   const language = useLanguageStore((state) => state.language);
-  function onAccept(e) {
-    console.log(e.target.getAttribute("value"));
-
+  function onAccept(needId) {
     Swal.fire({
-      title: t("alerts.delete.sure"),
+      title: t("alerts.needs.acceptAlerts.confirmation"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#10b981",
-      cancelButtonColor: "#d33",
-      confirmButtonText: t("alerts.status.accept"),
-      cancelButtonText: t("alerts.status.cancel"),
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            t("alerts.status.accepted"),
-            t("alerts.status.title"),
-            t("alerts.status.success")
-          );
-          let usr = JSON.parse(sessionStorage.getItem("user"));
-          let userName = usr?.fullname;
-          let email = usr?.email;
-          let image = usr?.img;
-          let usrId = usr?.id;
-          let token = usr?.token;
-
-          const config = {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          };
-
-          const res = axios
-            .put(
-              `https://api.hirari-iq.com/api/needs/accept/${e.target.getAttribute(
-                "value"
-              )}}`,
-              config
-            )
-            .then((response) => {
-              // setDeleted(true);
-              GetNewItem(Math.random());
-              console.log(response);
-            });
-        }
-      })
-      //ssssssssss
-      .catch((error) => {
-        Swal.fire(
-          t("alerts.status.error.title"),
-          t("alerts.status.error.oops"),
-          t("alerts.status.error.failed")
-        );
-      });
-  }
-
-  function deleteMe(e) {
-    console.log(e.target.getAttribute("value"));
-
-    Swal.fire({
-      title: t("alerts.delete.sure"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      cancelButtonText: t("alerts.delete.cancel"),
-      confirmButtonText: t("alerts.delete.yes"),
+      cancelButtonColor: "#339cdd",
+      confirmButtonText: t("alerts.needs.acceptAlerts.confirmButtonText"),
+      cancelButtonText: t("alerts.needs.acceptAlerts.cancelButtonText"),
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire(
-          t("alerts.delete.deleted"),
-          t("alerts.delete.fileDeleted"),
-          t("alerts.delete.success")
-        );
+        let usr = JSON.parse(sessionStorage.getItem("user"));
+        let token = usr?.token;
 
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
-        const res = axios
+
+        axios
+          .put(`https://api.hirari-iq.com/api/needs/accept/${needId}`, config)
+          .then(() => {
+            Swal.fire(
+              t("alerts.needs.acceptAlerts.success.title"),
+              t("alerts.needs.acceptAlerts.success.message"),
+              "success"
+            );
+            GetNewItem(Math.random());
+          })
+          .catch((error) => {
+            Swal.fire(
+              t("alerts.needs.acceptAlerts.error.title"),
+              t("alerts.needs.acceptAlerts.error.message"),
+              "error"
+            );
+          });
+      }
+    });
+  }
+
+  function deleteMe(e) {
+    Swal.fire({
+      title: t("alerts.needs.deleteAlerts.confirmation"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      cancelButtonText: t("alerts.needs.deleteAlerts.cancelButtonText"),
+      confirmButtonText: t("alerts.needs.deleteAlerts.confirmButtonText"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        axios
           .delete(
             `https://api.hirari-iq.com/api/needs/${e.target.getAttribute(
               "value"
@@ -153,15 +122,19 @@ const NeedsTable = (props) => {
             config
           )
           .then((response) => {
-            // setDeleted(true);
+            Swal.fire(
+              t("alerts.needs.deleteAlerts.success.title"),
+              t("alerts.needs.deleteAlerts.success.message"),
+              "success"
+            );
             GetNewItem(Math.random());
-            console.log(response);
-            if (response.status != 200)
-              Swal.fire(
-                t("deleteError.title"),
-                t("deleteError.oops"),
-                t("deleteError.failed")
-              );
+          })
+          .catch((error) => {
+            Swal.fire(
+              t("alerts.needs.deleteAlerts.error.title"),
+              t("alerts.needs.deleteAlerts.error.message"),
+              "error"
+            );
           });
       }
     });
@@ -170,7 +143,6 @@ const NeedsTable = (props) => {
   const { t } = useTranslation();
 
   const handlePageclick = (data) => {
-    console.log("data", data.selected);
     HandleFetch(data.selected + 1);
   };
   const showNextButton = currentPage !== total - 1;
@@ -246,21 +218,24 @@ const NeedsTable = (props) => {
                         );
                       } else {
                         if (
-                          usr.role == "admin" ||
+                          usr.role === "admin" ||
                           usr.role === "officer_engineer"
                         ) {
                           data =
                             cell.value !== "accept" ? (
                               <div className="flex items-center gap-2">
                                 <button
-                                  value={row.original.id}
-                                  onClick={onAccept}
+                                  onClick={() => onAccept(row.original.id)}
                                   className="rounded-md bg-green-400 px-2 py-1 dark:text-black"
                                 >
-                                  {t("alerts.status.accept")}
+                                  {t(
+                                    "alerts.needs.acceptAlerts.buttons.accept"
+                                  )}
                                 </button>
                                 <button className="rounded-md bg-red-400 px-2 py-1 dark:text-black">
-                                  {t("alerts.status.reject")}
+                                  {t(
+                                    "alerts.needs.acceptAlerts.buttons.reject"
+                                  )}
                                 </button>
                               </div>
                             ) : (

@@ -47,60 +47,47 @@ const ItemsTable = (props) => {
   const language = useLanguageStore((state) => state.language);
 
   function deleteMe(e) {
-    console.log(e.target.getAttribute("value"));
-
     Swal.fire({
-      title: t("alerts.delete.sure"),
+      title: t("alerts.users.deleteAlerts.confirmation"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      cancelButtonText: t("alerts.delete.cancel"),
-      confirmButtonText: t("alerts.delete.yes"),
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            t("alerts.delete.deleted"),
-            t("alerts.delete.fileDeleted"),
-            t("alerts.delete.success")
-          );
-          let usr = JSON.parse(sessionStorage.getItem("user"));
-          let userName = usr?.fullname;
-          let email = usr?.email;
-          let image = usr?.img;
-          let usrId = usr?.id;
-          let token = usr?.token;
-
-          const config = {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          };
-          axios
-            .delete(
-              `https://api.hirari-iq.com/api/users/${e.target.getAttribute(
-                "value"
-              )}`,
-              config
-            )
-            .then((response) => {
-              // setDeleted(true);
-              GetNewItem(Math.random());
-              console.log(response);
-              if (response.status != 200)
-                Swal.fire(
-                  t("deleteError.title"),
-                  t("deleteError.oops"),
-                  t("deleteError.failed")
-                );
-            });
-        }
-      })
-
-      .catch((error) => {
-        console.error(error);
-      });
+      cancelButtonText: t("alerts.users.deleteAlerts.cancelButtonText"),
+      confirmButtonText: t("alerts.users.deleteAlerts.confirmButtonText"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let usr = JSON.parse(sessionStorage.getItem("user"));
+        let token = usr?.token;
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        axios
+          .delete(
+            `https://api.hirari-iq.com/api/users/${e.target.getAttribute(
+              "value"
+            )}`,
+            config
+          )
+          .then((response) => {
+            Swal.fire(
+              t("alerts.users.deleteAlerts.success.title"),
+              t("alerts.users.deleteAlerts.success.message"),
+              "success"
+            );
+            GetNewItem(Math.random());
+          })
+          .catch((error) => {
+            Swal.fire(
+              t("alerts.users.deleteAlerts.error.title"),
+              t("alerts.users.deleteAlerts.error.message"),
+              "error"
+            );
+          });
+      }
+    });
   }
 
   return (
@@ -136,7 +123,6 @@ const ItemsTable = (props) => {
                     >
                       <div className="text-xs font-medium tracking-wide text-gray-600 lg:text-[14px]">
                         {column.render("Header")}
-                        {console.log(column.render("Header"))}
                       </div>
                     </th>
                   ))}

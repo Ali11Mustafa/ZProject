@@ -24,21 +24,15 @@ const OrdersTable = (props) => {
     tableData,
     GetNewItem,
     currentPage,
-    perpage,
-    setPageNumber,
     total,
     HandleFetch,
   } = props;
   const [pageIndex, setPageIndex] = useState(0);
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let userName = usr?.fullname;
-  let email = usr?.email;
-  let role = usr?.role;
-  let usrId = usr?.id;
-  let token = usr?.token;
 
-  console.log("ROLE", role);
+  let role = usr?.role;
+  let token = usr?.token;
 
   const config = {
     headers: {
@@ -60,110 +54,81 @@ const OrdersTable = (props) => {
     usePagination
   );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    page,
-    prepareRow,
-    nextPage,
-    previousPage,
-    canNextPage,
-    canPreviousPage,
-  } = tableInstance;
-
-  //initialState.pageSize = 11;
+  const { getTableProps, getTableBodyProps, headerGroups, page, prepareRow } =
+    tableInstance;
 
   const { t } = useTranslation();
 
   function deleteMe(e) {
-    console.log(e.target.getAttribute("value"));
-
     Swal.fire({
-      title: t("alerts.delete.sure"),
+      title: t("alerts.orders.deleteAlerts.confirmation"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      cancelButtonText: t("alerts.delete.cancel"),
-      confirmButtonText: t("alerts.delete.yes"),
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            t("alerts.delete.deleted"),
-            t("alerts.delete.fileDeleted"),
-            t("alerts.delete.success")
-          );
-
-          const res = axios
-            .delete(
-              `https://api.hirari-iq.com/api/orders/${e.target.getAttribute(
-                "value"
-              )}`,
-              config
-            )
-            .then((response) => {
-              // setDeleted(true);
-              GetNewItem(Math.random());
-              console.log(response);
-            });
-        }
-      })
-      //ssssssssss
-      .catch((error) => {
-        Swal.fire(
-          t("deleteError.title"),
-          t("deleteError.oops"),
-          t("deleteError.failed")
-        );
-      });
+      confirmButtonText: t("alerts.orders.deleteAlerts.confirmButtonText"),
+      cancelButtonText: t("alerts.orders.deleteAlerts.cancelButtonText"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(
+            `https://api.hirari-iq.com/api/orders/${e.target.getAttribute(
+              "value"
+            )}`,
+            config
+          )
+          .then((response) => {
+            Swal.fire(
+              t("alerts.orders.deleteAlerts.success.title"),
+              t("alerts.orders.deleteAlerts.success.message"),
+              "success"
+            );
+            GetNewItem(Math.random());
+          })
+          .catch((error) => {
+            Swal.fire(
+              t("alerts.orders.deleteAlerts.error.title"),
+              t("alerts.orders.deleteAlerts.error.message"),
+              "error"
+            );
+          });
+      }
+    });
   }
-  function onAccept(e) {
-    console.log(e.target.getAttribute("value"));
-
+  function onAccept(orderId) {
     Swal.fire({
-      title: "Are you sure?",
+      title: t("alerts.orders.acceptAlerts.confirmation"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#10b981",
       cancelButtonColor: "#d33",
-      confirmButtonText: t("alerts.status.accept"),
-      cancelButtonText: t("alerts.status.cancel"),
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire(
-            t("alerts.status.accepted"),
-            t("alerts.status.title"),
-            t("alerts.status.success")
-          );
 
-          const res = axios
-            .put(
-              `https://api.hirari-iq.com/api/orders/accept/${e.target.getAttribute(
-                "value"
-              )}}`,
-              config
-            )
-            .then((response) => {
-              // setDeleted(true);
-              GetNewItem(Math.random());
-              console.log(response);
-            });
-        }
-      })
-      .catch((error) => {
-        Swal.fire(
-          t("alerts.status.error.title"),
-          t("alerts.status.error.oops"),
-          t("alerts.status.error.failed")
-        );
-      });
+      confirmButtonText: t("alerts.orders.acceptAlerts.confirmButtonText"),
+      cancelButtonText: t("alerts.orders.acceptAlerts.cancelButtonText"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(`https://api.hirari-iq.com/api/orders/accept/${orderId}`, config)
+          .then(() => {
+            Swal.fire(
+              t("alerts.orders.acceptAlerts.success.title"),
+              t("alerts.orders.acceptAlerts.success.message"),
+              "success"
+            );
+            GetNewItem(Math.random());
+          })
+          .catch((error) => {
+            Swal.fire(
+              t("alerts.orders.acceptAlerts.error.title"),
+              t("alerts.orders.acceptAlerts.error.message"),
+              "error"
+            );
+          });
+      }
+    });
   }
   const language = useLanguageStore((state) => state.language);
   const handlePageclick = (data) => {
-    console.log("data", data.selected);
     HandleFetch(data.selected + 1);
   };
   const showNextButton = currentPage !== total - 1;
@@ -251,14 +216,17 @@ const OrdersTable = (props) => {
                             cell.value !== "accept" ? (
                               <div className="flex items-center gap-2">
                                 <button
-                                  value={row.original.id}
-                                  onClick={onAccept}
+                                  onClick={() => onAccept(row.original.id)}
                                   className="rounded-md bg-green-400 px-2 py-1 dark:text-black"
                                 >
-                                  {t("alerts.status.accept")}
+                                  {t(
+                                    "alerts.orders.acceptAlerts.buttons.accept"
+                                  )}
                                 </button>
                                 <button className="rounded-md bg-red-400 px-2 py-1 dark:text-black">
-                                  {t("alerts.status.reject")}
+                                  {t(
+                                    "alerts.orders.acceptAlerts.buttons.reject"
+                                  )}
                                 </button>
                               </div>
                             ) : (

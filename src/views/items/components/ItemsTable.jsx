@@ -49,29 +49,18 @@ const ItemsTable = (props) => {
   const language = useLanguageStore((state) => state.language);
 
   function deleteMe(e) {
-    console.log(e.target.getAttribute("value"));
-
     Swal.fire({
-      title: t("alerts.delete.sure"),
+      title: t("alerts.items.deleteAlerts.confirmation"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      cancelButtonText: t("alerts.delete.cancel"),
-      confirmButtonText: t("alerts.delete.yes"),
+      cancelButtonText: t("alerts.items.deleteAlerts.cancelButtonText"),
+      confirmButtonText: t("alerts.items.deleteAlerts.confirmButtonText"),
     })
       .then((result) => {
         if (result.isConfirmed) {
-          Swal.fire(
-            t("alerts.delete.deleted"),
-            t("alerts.delete.fileDeleted"),
-            t("alerts.delete.success")
-          );
           let usr = JSON.parse(sessionStorage.getItem("user"));
-          let userName = usr?.fullname;
-          let email = usr?.email;
-          let image = usr?.img;
-          let usrId = usr?.id;
           let token = usr?.token;
 
           const config = {
@@ -80,7 +69,7 @@ const ItemsTable = (props) => {
             },
           };
 
-          const res = axios
+          axios
             .delete(
               `https://api.hirari-iq.com/api/items/${e.target.getAttribute(
                 "value"
@@ -88,15 +77,19 @@ const ItemsTable = (props) => {
               config
             )
             .then((response) => {
-              // setDeleted(true);
               GetNewItem(Math.random());
-              console.log(response);
-              if (response.status != 200)
-                Swal.fire(
-                  t("deleteError.title"),
-                  t("deleteError.oops"),
-                  t("deleteError.failed")
-                );
+              Swal.fire(
+                t("alerts.items.deleteAlerts.success.title"),
+                t("alerts.items.deleteAlerts.success.message"),
+                "success"
+              );
+            })
+            .catch((error) => {
+              Swal.fire(
+                t("alerts.items.deleteAlerts.error.title"),
+                t("alerts.items.deleteAlerts.error.message"),
+                "error"
+              );
             });
         }
       })

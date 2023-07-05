@@ -184,34 +184,193 @@ const resources = {
         orders: "Update Order",
       },
       alerts: {
-        delete: {
-          sure: "Are you sure?",
-          yes: "Yes",
-          cancel: "Cancel",
-          deleted: "Deleted!",
-          fileDeleted: "deleted Successfuly",
-          success: "Success",
+        buildings: {
+          deleteAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Deleted!",
+              message: "Building has been deleted.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "Building was not deleted.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "New Building has been created.",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "The building has been updated",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
         },
-        deleteError: {
-          oops: "oops",
-          failed: "Failed",
-          title: "delete failed!",
+        items: {
+          deleteAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Deleted!",
+              message: "Item has been deleted.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "Item was not deleted.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "New item has been created.",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "The item has been updated",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
         },
-        newItem: {
-          title: "Added successfuly",
-          fail: "it seems there is an error",
+        needs: {
+          deleteAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Deleted!",
+              message: "Need has been deleted.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "Need was not deleted.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "New need has been created.",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "The need has been updated",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+          acceptAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Accept",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Accepted!",
+              message: "Need has been accepted.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "Need was not accepted.",
+            },
+            buttons: {
+              accept: "Accept",
+              reject: "Reject",
+            },
+          },
         },
-        status: {
-          accept: "Accept",
-          reject: "Reject",
-          cancel: "Cancel",
-          accepted: "Accepted!",
-          title: "Your file has been saved",
-          success: "Success",
-          error: {
-            title: "Error",
-            oops: "oops",
-            failed: "Failed",
+        orders: {
+          deleteAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Deleted!",
+              message: "Order has been deleted.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "Order was not deleted.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "New order has been created.",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "The order has been updated",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+          acceptAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Accept",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Accepted!",
+              message: "Order has been accepted.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "Order was not accepted.",
+            },
+            buttons: {
+              accept: "Accept",
+              reject: "Reject",
+            },
+          },
+        },
+        users: {
+          deleteAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Deleted!",
+              message: "User has been deleted.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "User was not deleted.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "New user has been created.",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "The user has been updated",
+            },
+            error: {
+              title: "Something went wrong",
+            },
           },
         },
       },
@@ -389,34 +548,193 @@ const resources = {
         orders: "نوێکردنەوەی داواکاری",
       },
       alerts: {
-        delete: {
-          sure: "دڵنیای؟",
-          yes: "بەڵێ",
-          cancel: "هەڵوەشاندنەوە",
-          deleted: "سڕایەوە!",
-          fileDeleted: "کردارەکە سەرکەوتوو بوو",
-          success: "سەرکەوتووبوو",
+        buildings: {
+          deleteAlerts: {
+            confirmation: "دڵنیایی؟",
+            confirmButtonText: "سڕینەوە",
+            cancelButtonText: "پەشیمانبوونەوە",
+            success: {
+              title: "سڕایەوە",
+              message: "باڵەخانەکە سڕایەوە",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا",
+              message: "باڵەخانە نەسڕایەوە",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "باڵەخانە نوێکە زیادکرا",
+            },
+            error: {
+              title: "کێشیەک ڕوویدا",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "باڵەخانەکە نوێکرایەوە",
+            },
+            error: {
+              title: "کێشیەک ڕوویدا",
+            },
+          },
         },
-        deleteError: {
-          oops: "ببورە",
-          failed: "سەرکەوتوو نەبوو",
-          title: "کردارەکە سەرکەوتوو نەبوو",
+        items: {
+          deleteAlerts: {
+            confirmation: "دڵنیایی؟",
+            confirmButtonText: "سڕینەوە",
+            cancelButtonText: "پەشیمانبوونەوە",
+            success: {
+              title: "سڕایەوە!",
+              message: "کەرەستەکە سڕایەوە",
+            },
+            error: {
+              title: "هەڵەیەک ڕوویدا",
+              message: "کەرەستەکە نەسڕایەوە.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "کەرەستەی نوێ زیادکرا",
+            },
+            error: {
+              title: "هەڵەیەک ڕوویدا",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "کەرەستەکە نوێ کرایەوە",
+            },
+            error: {
+              title: "هەڵەیەک ڕوویدا",
+            },
+          },
         },
-        newItem: {
-          title: "فایلەکە خەزن کرا",
-          fail: "پێدەچێت کێشیەک ڕوویدابێت",
+        needs: {
+          deleteAlerts: {
+            confirmation: "دڵنیایی؟",
+            confirmButtonText: "سڕینەوە",
+            cancelButtonText: "پەشیمانبوونەوە",
+            success: {
+              title: "سڕایەوە!",
+              message: "پێویستیەکە سڕایەوە",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+              message: "پێویستیەکە نەسڕایەوە.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "پێویستیە نوێیەکە زیادکرا",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "پێویستیەکە نوێکرایەوە",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+            },
+          },
+          acceptAlerts: {
+            confirmation: "دڵنیایی؟",
+            confirmButtonText: "قبوڵکردن",
+            cancelButtonText: "پەشیمانبوونەوە",
+            success: {
+              title: "قبوڵکرا",
+              message: "پێویستیەکە قبوڵکرا",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+              message: "پێویستیەکە قبوڵنەکرا",
+            },
+            buttons: {
+              accept: "قبوڵکردن",
+              reject: "ڕەتکردنەوە",
+            },
+          },
         },
-        status: {
-          accept: "قبوڵکردن",
-          reject: "ڕەتکردنەوە",
-          cancel: "هەڵوەشاندنەوە",
-          accepted: "قبوڵکرا!",
-          title: "کردارەکە سەرکەوتوو بوو",
-          success: "سەرکەوتووبوو",
-          error: {
-            title: "هەڵە",
-            oops: "ببورە",
-            failed: "سەرکەوتوو نەبوو",
+        orders: {
+          deleteAlerts: {
+            confirmation: "دڵنیایی؟",
+            confirmButtonText: "سڕینەوە",
+            cancelButtonText: "پەشیمانبوونەوە",
+            success: {
+              title: "سڕایەوە!",
+              message: "داواکاریەکە سڕایەوە",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+              message: "داواکاریەکە نەسڕایەوە",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "داواکاریە نوێکە زیاد بوو",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "داواکاریەکە نوێکرایەوە",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+            },
+          },
+          acceptAlerts: {
+            confirmation: "دڵنیایی؟",
+            confirmButtonText: "قبوڵکردن",
+            cancelButtonText: "پەشیمانبوونەوە",
+            success: {
+              title: "قبوڵکرا",
+              message: "داواکاریەکە قبوڵکرا",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+              message: "داواکاریەکە قبوڵ نەکرا",
+            },
+            buttons: {
+              accept: "قبوڵکردن",
+              reject: "ڕەتکردنەوە",
+            },
+          },
+        },
+        users: {
+          deleteAlerts: {
+            confirmation: "دڵنیایی؟",
+            confirmButtonText: "سڕینەوە",
+            cancelButtonText: "پەشیمانبوونەوە",
+            success: {
+              title: "سڕایەوە",
+              message: "بەکارهێنەرەکە سڕایەوە",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+              message: "بەکارهێنەرەکە نەسڕایەوە",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "بەکارهێنەری نوێ زیاد بوو",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "بەکارهێنەرەکە نوێکرایەوە",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+            },
           },
         },
       },
@@ -595,34 +913,193 @@ const resources = {
         orders: "تحديث الطلب",
       },
       alerts: {
-        delete: {
-          sure: "هل أنت متأكد؟",
-          yes: "نعم",
-          cancel: "إلغاء الأمر",
-          deleted: "محذوف!",
-          fileDeleted: "العملية ناجحة",
-          success: "نجاح",
+        buildings: {
+          deleteAlerts: {
+            confirmation: "هل أنت متأكد؟",
+            confirmButtonText: "حذف",
+            cancelButtonText: "إلغاء",
+            success: {
+              title: "تم الحذف!",
+              message: "تم حذف المبنى.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+              message: "لم يتم حذف المبنى.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "تم إنشاء مبنى جديد.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "تم تحديث المبنى",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
         },
-        deleteError: {
-          oops: "عفوا",
-          failed: "فشل",
-          title: "فشلت العملية",
+        items: {
+          deleteAlerts: {
+            confirmation: "هل أنت متأكد؟",
+            confirmButtonText: "حذف",
+            cancelButtonText: "إلغاء",
+            success: {
+              title: "تم الحذف!",
+              message: "تم حذف العنصر.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+              message: "لم يتم حذف العنصر.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "تم إنشاء عنصر جديد.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "تم تحديث العنصر",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
         },
-        newItem: {
-          title: "العملية ناجحة",
-          fail: "يبدو أن هناك خطأ",
+        needs: {
+          deleteAlerts: {
+            confirmation: "هل أنت متأكد؟",
+            confirmButtonText: "حذف",
+            cancelButtonText: "إلغاء",
+            success: {
+              title: "تم الحذف!",
+              message: "تم حذف الحاجة.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+              message: "لم يتم حذف الحاجة.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "تم إنشاء حاجة جديدة.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "تم تحديث الحاجة",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+          acceptAlerts: {
+            confirmation: "هل أنت متأكد؟",
+            confirmButtonText: "قبول",
+            cancelButtonText: "إلغاء",
+            success: {
+              title: "تم قبوله!",
+              message: "تم قبول الحاجة.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+              message: "لم يتم قبول الحاجة.",
+            },
+            buttons: {
+              accept: "قبول",
+              reject: "رفض",
+            },
+          },
         },
-        status: {
-          accept: "تقبل",
-          reject: "رفض",
-          cancel: "إلغاء الأمر",
-          accepted: "قبلت!",
-          title: "العملية ناجحة",
-          success: "نجاح",
-          error: {
-            title: "خطأ",
-            oops: "عفوا",
-            failed: "فشل",
+        orders: {
+          deleteAlerts: {
+            confirmation: "هل أنت متأكد؟",
+            confirmButtonText: "حذف",
+            cancelButtonText: "إلغاء",
+            success: {
+              title: "تم الحذف!",
+              message: "تم حذف الطلب.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+              message: "لم يتم حذف الطلب.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "تم إنشاء طلب جديد.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "تم تحديث الطلب",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+          acceptAlerts: {
+            confirmation: "هل أنت متأكد؟",
+            confirmButtonText: "قبول",
+            cancelButtonText: "إلغاء",
+            success: {
+              title: "تم قبوله!",
+              message: "تم قبول الطلب.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+              message: "لم يتم قبول الطلب.",
+            },
+            buttons: {
+              accept: "قبول",
+              reject: "رفض",
+            },
+          },
+        },
+        users: {
+          deleteAlerts: {
+            confirmation: "هل أنت متأكد؟",
+            confirmButtonText: "حذف",
+            cancelButtonText: "إلغاء",
+            success: {
+              title: "تم الحذف!",
+              message: "تم حذف المستخدم.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+              message: "لم يتم حذف المستخدم.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "تم إنشاء مستخدم جديد.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "تم تحديث المستخدم",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
           },
         },
       },

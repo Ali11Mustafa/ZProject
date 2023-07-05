@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 export default function NewBuilding({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
   const { t } = useTranslation();
-  const { register, handleSubmit, reset,setValue } = useForm();
+  const { register, handleSubmit, reset, setValue } = useForm();
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
   const onSubmit = (data) => {
@@ -29,7 +29,7 @@ export default function NewBuilding({ GetNewItem }) {
           Swal.fire({
             position: "top-center",
             icon: "success",
-            title: t("alerts.newItem.title"),
+            title: t("alerts.buildings.addAlerts.success.title"),
             showConfirmButton: true,
             timer: 1500,
           });
@@ -38,7 +38,7 @@ export default function NewBuilding({ GetNewItem }) {
           Swal.fire({
             position: "top-center",
             icon: "error",
-            title: t("alerts.newItem.fail"),
+            title: t("alerts.buildings.addAlerts.error.title"),
             showConfirmButton: true,
             timer: 1500,
           });
@@ -48,17 +48,16 @@ export default function NewBuilding({ GetNewItem }) {
     setShowModal(false);
     reset();
   };
-  useEffect(()=>{
-    setValue('number_of_floor',0)
-    setValue('apartment_per_floor',0)
-
-  })
+  useEffect(() => {
+    setValue("number_of_floor", 0);
+    setValue("apartment_per_floor", 0);
+  });
 
   const language = useLanguageStore((state) => state.language);
 
   return (
     <>
-      {(
+      {
         <button
           className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"
@@ -66,7 +65,7 @@ export default function NewBuilding({ GetNewItem }) {
         >
           <BsPlus fontSize={32} />
         </button>
-      )}
+      }
 
       {showModal ? (
         <>
@@ -100,7 +99,7 @@ export default function NewBuilding({ GetNewItem }) {
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="name"
+                        htmlFor="name"
                       >
                         {t("newBuilding.name")}
                       </label>
@@ -108,7 +107,6 @@ export default function NewBuilding({ GetNewItem }) {
                         className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="name"
                         type="text"
-
                         name="name"
                         {...register("name", { required: true })}
                       />
@@ -116,7 +114,7 @@ export default function NewBuilding({ GetNewItem }) {
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="number_of_floor"
+                        htmlFor="number_of_floor"
                       >
                         {t("newBuilding.numberOfFloors")}
                       </label>
@@ -125,14 +123,13 @@ export default function NewBuilding({ GetNewItem }) {
                         id="number_of_floor"
                         name="number_of_floor"
                         type="number"
-
                         {...register("number_of_floor", { required: true })}
                       />
                     </div>
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="apt_per_floor"
+                        htmlFor="apt_per_floor"
                       >
                         {t("newBuilding.numberOfApartmentsPerFloor")}
                       </label>
@@ -147,7 +144,7 @@ export default function NewBuilding({ GetNewItem }) {
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="description"
+                        htmlFor="description"
                       >
                         {t("newBuilding.description")}
                       </label>
@@ -156,7 +153,6 @@ export default function NewBuilding({ GetNewItem }) {
                         id="description"
                         name="description"
                         type="text"
-                        
                         {...register("description", { required: true })}
                       />
                     </div>
@@ -167,7 +163,7 @@ export default function NewBuilding({ GetNewItem }) {
                       } rounded-b pt-5`}
                     >
                       <button
-                        className="background-transparent mb-1 mr-1 px-6 py-2 text-md font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                        className="background-transparent text-md mb-1 mr-1 px-6 py-2 font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
                         type="button"
                         onClick={() => setShowModal(false)}
                       >

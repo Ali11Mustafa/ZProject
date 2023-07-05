@@ -5,15 +5,13 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit, FiExternalLink } from "react-icons/fi";
 import NewBuilding from "./NewBuilding";
 import { Link } from "react-router-dom";
-import { useSearchStore } from "App";
+import { useSearchStore, useLanguageStore } from "App";
 import { useTranslation } from "react-i18next";
-import { useLanguageStore } from "App";
 import axios from "axios";
-import Swal from 'sweetalert2'
-
+import Swal from "sweetalert2";
 
 const BuildingsTable = (props) => {
-  const { columnsData, tableData, OnDeleteBuilding, OnUpdateBlock,GetNewItem } = props;
+  const { columnsData, tableData, GetNewItem } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
   const searchText = useSearchStore((state) => state.searchText);
@@ -46,64 +44,55 @@ const BuildingsTable = (props) => {
 
   initialState.pageSize = 11;
 
-  
-
-  function handleUpdate(rowId) {}
-
   const { t } = useTranslation();
 
   const language = useLanguageStore((state) => state.language);
-  function deleteMe(e){
-    console.log(e.target.getAttribute('value'));
-  
-    Swal.fire({
-      title: 'Are you sure?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Delete'
-    }).then((result) => {
-   
-      if (result.isConfirmed) {
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        )
-        let usr = JSON.parse(sessionStorage.getItem('user'));
-        let userName = usr?.fullname;
-        let email = usr?.email;
-        let image = usr?.img;
-        let usrId = usr?.id;
-        let token = usr?.token;
-      
-        const config = {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        };
-        const res= axios.delete(`https://api.hirari-iq.com/api/blocks/${e.target.getAttribute('value')}`,config)
-        .then(response => {
-          // setDeleted(true);
-          GetNewItem(Math.random());
-          console.log(response);
-         
-        }).catch(error=>{
-          Swal.fire(
-            'the item not deleted',
-            'oopss',
-            'failed'
-          )
 
-        })
-        
-      
+  let usr = JSON.parse(sessionStorage.getItem("user"));
+  let token = usr?.token;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  function deleteMe(e) {
+    Swal.fire({
+      title: t("alerts.buildings.deleteAlerts.confirmation"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: t("alerts.buildings.deleteAlerts.confirmButtonText"),
+      cancelButtonText: t("alerts.buildings.deleteAlerts.cancelButtonText"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(
+            `https://api.hirari-iq.com/api/blocks/${e.target.getAttribute(
+              "value"
+            )}`,
+            config
+          )
+          .then((response) => {
+            GetNewItem(Math.random());
+            Swal.fire(
+              t("alerts.buildings.deleteAlerts.success.title"),
+              t("alerts.buildings.deleteAlerts.success.message"),
+              "success"
+            );
+          })
+          .catch((error) => {
+            Swal.fire(
+              t("alerts.buildings.deleteAlerts.error.title"),
+              t("alerts.buildings.deleteAlerts.error.message"),
+              "error"
+            );
+          });
       }
-    })
+    });
   }
-  
-  
 
   return (
     <Card extra={"w-full h-full sm:overflow-auto px-5"}>
@@ -111,7 +100,7 @@ const BuildingsTable = (props) => {
         <div className="text-xl font-semibold text-navy-700 dark:text-white">
           {t("buildingsTable.title")}
         </div>
-        <NewBuilding GetNewItem={GetNewItem}/>
+        <NewBuilding GetNewItem={GetNewItem} />
       </header>
 
       <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
@@ -173,21 +162,26 @@ const BuildingsTable = (props) => {
                         data = (
                           <div className="flex items-center gap-4">
                             <button
-                          value={row.original.id}
-                         onClick={deleteMe}
-                        className="flex items-center gap-1 text-red-600"
-                          >
-                            <div   value={row.original.id} className="flex   items-center justify-center rounded-sm  from-brandLinear to-brand-500  text-xl   ">
-                              <MdDeleteOutline  value={row.original.id} />
-                            </div>
-                            <p   value={row.original.id} className="text-start text-sm font-medium text-black dark:text-white">
-                              {t("actions.delete")}
-                            </p>
-                          </button>
+                              value={row.original.id}
+                              onClick={deleteMe}
+                              className="flex items-center gap-1 text-red-600"
+                            >
+                              <div
+                                value={row.original.id}
+                                className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
+                              >
+                                <MdDeleteOutline value={row.original.id} />
+                              </div>
+                              <p
+                                value={row.original.id}
+                                className="text-start text-sm font-medium text-black dark:text-white"
+                              >
+                                {t("actions.delete")}
+                              </p>
+                            </button>
                             <Link
                               to={`/buildings/update/${row.original.id}`}
                               className="flex items-center gap-1 text-green-600"
-                              onClick={() => handleUpdate(row.id)}
                             >
                               <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg">
                                 <FiEdit />

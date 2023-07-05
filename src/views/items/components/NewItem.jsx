@@ -14,8 +14,6 @@ export default function NewItem({ GetNewItem }) {
   const { t } = useTranslation();
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let userName = usr?.fullname;
-  let email = usr?.email;
   let role = usr?.role;
   let usrId = usr?.id;
   let token = usr?.token;
@@ -32,11 +30,10 @@ export default function NewItem({ GetNewItem }) {
         .post(API, { ...data, user_id: usrId }, config)
         .then((response) => {
           GetNewItem(Math.random());
-          console.log(response.status);
           Swal.fire({
             position: "top-center",
             icon: "success",
-            title: t("alerts.newItem.title"),
+            title: t("alerts.items.addAlerts.success.title"),
             showConfirmButton: true,
             timer: 1500,
           });
@@ -45,7 +42,7 @@ export default function NewItem({ GetNewItem }) {
           Swal.fire({
             position: "top-center",
             icon: "error",
-            title: t("alerts.newItem.fail"),
+            title: t("alerts.items.addAlerts.error.title"),
             showConfirmButton: true,
           });
         });
@@ -101,7 +98,7 @@ export default function NewItem({ GetNewItem }) {
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="name"
+                        htmlFor="name"
                       >
                         {t("newItem.name")}
                       </label>
@@ -117,7 +114,7 @@ export default function NewItem({ GetNewItem }) {
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="no_of_floors"
+                        htmlFor="no_of_floors"
                       >
                         {t("newItem.type")}
                       </label>
