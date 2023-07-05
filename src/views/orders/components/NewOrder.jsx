@@ -11,20 +11,12 @@ import useFetchItems from "hooks/useFetchItems";
 export default function NewOrders({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
   const [itemNames, setNames] = useState([]);
-  const [itemTypes, setTypes] = useState([]);
-  const [buildingID, setBuildingId] = useState(null);
-  const [itemID, setItemID] = useState(null);
 
-  const [buildingName, setBuildingNames] = useState([]);
   const API = "https://api.hirari-iq.com/api/orders";
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let userName = usr?.fullname;
-  let email = usr?.email;
   let role = usr?.role;
   let usrId = usr?.id;
   let token = usr?.token;
-
-  console.log("ROLE", role);
 
   const config = {
     headers: {
@@ -37,11 +29,8 @@ export default function NewOrders({ GetNewItem }) {
   useEffect(() => {
     if (Data) {
       Data.forEach((item) => {
-        console.log(Data);
         if (item.is_deleted !== 1) {
           setNames((previousNames) => [...previousNames, item.name]);
-          setTypes((previousTypes) => [...previousTypes, item.type]);
-          setItemID(item.id);
         }
       });
     }
@@ -68,26 +57,25 @@ export default function NewOrders({ GetNewItem }) {
         user_id: usrId,
         item_id: itemId,
       };
-      console.log("New Data", newData);
       axios
         .post(API, newData, config)
         .then((response) => {
           GetNewItem(Math.random());
-          console.log(response.status);
-          console.log("add");
+
           Swal.fire({
             position: "top-center",
             icon: "success",
-            title: t("alerts.newItem.title"),
+            title: t("alerts.orders.addAlerts.success.title"),
             showConfirmButton: true,
             timer: 1500,
           });
         })
         .catch((error) => {
+          console.log(error);
           Swal.fire({
             position: "top-center",
             icon: "error",
-            title: t("alerts.newItem.fail"),
+            title: t("alerts.orders.addAlerts.success.error"),
             showConfirmButton: true,
           });
         });
@@ -100,12 +88,10 @@ export default function NewOrders({ GetNewItem }) {
 
   const language = useLanguageStore((state) => state.language);
   const memoizedItemNames = useMemo(() => itemNames, [itemNames]);
-  const memoizedItemTypes = useMemo(() => itemTypes, [itemTypes]);
-  const memoizedBuildingName = useMemo(() => buildingName, [buildingName]);
 
   return (
     <>
-      {role === "admin" && (
+      {role === "admin"||role==="engineer" ||role==="officer_eng"&& (
         <button
           className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"
@@ -130,7 +116,7 @@ export default function NewOrders({ GetNewItem }) {
                       language !== "en"
                         ? "float-left mr-auto"
                         : "float-right ml-auto"
-                    } border-0 p-1 text-xl font-semibold`}
+                    } border-0 p-1 text-3xl font-semibold`}
                     onClick={() => setShowModal(false)}
                   >
                     ×
@@ -154,7 +140,6 @@ export default function NewOrders({ GetNewItem }) {
                         id="amount"
                         name="amount"
                         type="number"
-                        placeholder="Enter amount"
                         {...register("amount", { required: true })}
                       />
                     </div>
@@ -171,7 +156,6 @@ export default function NewOrders({ GetNewItem }) {
                         name="unit"
                         {...register("unit", { required: true })}
                       >
-                        <option value="">Select a unit</option>
                         <option value="ton">ton</option>
                         <option value="m">m</option>
                         <option value="m2">m2</option>
@@ -191,7 +175,6 @@ export default function NewOrders({ GetNewItem }) {
                         id="price"
                         name="price"
                         type="number"
-                        placeholder="price"
                         {...register("price", { required: true })}
                       />
                     </div>
@@ -209,7 +192,6 @@ export default function NewOrders({ GetNewItem }) {
                         type="string"
                         {...register("item_name", { required: true })}
                       >
-                        <option value="">Select a name</option>
                         {memoizedItemNames &&
                           memoizedItemNames.map((name) => (
                             <option key={name} value={name}>
@@ -218,9 +200,13 @@ export default function NewOrders({ GetNewItem }) {
                           ))}
                       </select>
                     </div>
-                    <div className="border-slate-200 flex items-center">
+                    <div
+                      className={`border-slate-200 flex items-center ${
+                        language === "en" ? "justify-end" : "justify-start"
+                      } rounded-b pt-5`}
+                    >
                       <button
-                        className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                        className="background-transparent text-md mb-1 mr-1 px-6 py-2 font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
                         type="button"
                         onClick={() => setShowModal(false)}
                       >

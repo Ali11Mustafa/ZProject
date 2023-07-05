@@ -30,7 +30,7 @@ function useRoutes() {
   if (!usr)
     navigate('/Login');
 
-  if (usr?.role === "admin" || usr?.role === "read-only") {
+  if (role === "only_read"||role==="admin") {
     routes.push({
       name: t("sidebarLinks.buildings"),
       path: "/",
@@ -64,7 +64,7 @@ function useRoutes() {
 
 
   )
-  if (usr?.role === "admin" || usr?.role === "read-only") {
+  if (usr?.role === "admin" || usr?.role === "only_read") {
     routes.push(
       {
         name: t("sidebarLinks.users"),

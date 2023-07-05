@@ -11,10 +11,7 @@ import useFetchItems from "hooks/useFetchItems";
 export default function NewNeed({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
   const [itemNames, setNames] = useState([]);
-  const [itemTypes, setTypes] = useState([]);
   const [buildingID, setBuildingId] = useState(null);
-  const [itemID, setItemID] = useState(null);
-  const [user, setUser] = useState(null);
 
   const [buildingName, setBuildingNames] = useState([]);
 
@@ -25,8 +22,6 @@ export default function NewNeed({ GetNewItem }) {
       Data.forEach((item) => {
         if (item.is_deleted !== 1) {
           setNames((previousNames) => [...previousNames, item.name]);
-          setTypes((previousTypes) => [...previousTypes, item.type]);
-          setItemID(item.id);
         }
       });
     }
@@ -34,12 +29,8 @@ export default function NewNeed({ GetNewItem }) {
   }, [Data]);
   const API = "https://api.hirari-iq.com/api/blocks";
 
-
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let userName = usr?.fullname;
-  let email = usr?.email;
   let role = usr?.role;
-  let usrId = usr?.id;
   let token = usr?.token;
 
   const config = {
@@ -54,7 +45,6 @@ export default function NewNeed({ GetNewItem }) {
       .then((response) => {
         const newBuildingNames = [];
         response.data.data.forEach((block) => {
-          console.log("resp ", response.data.data);
           if (block.is_deleted !== 1) {
             newBuildingNames.push(block.name);
             setBuildingId(block.id);
@@ -71,7 +61,6 @@ export default function NewNeed({ GetNewItem }) {
 
   const { register, handleSubmit, reset } = useForm();
   const onSubmit = (data) => {
-    console.log("data", data);
     let itemName = data.item_name;
     let itemId;
 
@@ -85,9 +74,6 @@ export default function NewNeed({ GetNewItem }) {
     const API = "https://api.hirari-iq.com/api/needs";
 
     let usr = JSON.parse(sessionStorage.getItem("user"));
-    let userName = usr?.fullname;
-    let email = usr?.email;
-    let role = usr?.role;
     let usrId = usr?.id;
     let token = usr?.token;
 
@@ -97,7 +83,6 @@ export default function NewNeed({ GetNewItem }) {
       },
     };
 
-    console.log("usrIdddddd", usrId);
     const PostData = () => {
       let newData = {
         need_amount: data.need_amount,
@@ -106,38 +91,33 @@ export default function NewNeed({ GetNewItem }) {
         block_id: buildingID,
         item_id: itemId,
       };
-      // console.log(itemID);
       axios
         .post(API, newData, config)
         .then((response) => {
           GetNewItem(Math.random());
 
-          console.log(response.status);
-          console.log("add");
           Swal.fire({
             position: "top-center",
             icon: "success",
-            title: t("alerts.newItem.title"),
+            title: t("alerts.needs.addAlerts.success.title"),
             showConfirmButton: true,
             timer: 1500,
           });
         })
         .catch((error) => {
-          console.log("resp", error.response.status);
           let respp = error.response.status;
-          console.log(typeof respp);
           if (respp === 400) {
             Swal.fire({
               position: "top-center",
               icon: "error",
-              title: t("alerts.newItem.title"),
+              title: t("alerts.needs.addAlerts.error.title"),
               showConfirmButton: true,
             });
-          } else if (respp == 500) {
+          } else if (respp === 500) {
             Swal.fire({
               position: "top-center",
               icon: "error",
-              title: t("alerts.newItem.fail"),
+              title: t("alerts.needs.addAlerts.error.title"),
               showConfirmButton: true,
             });
           }
@@ -150,11 +130,10 @@ export default function NewNeed({ GetNewItem }) {
 
   const language = useLanguageStore((state) => state.language);
   const memoizedItemNames = useMemo(() => itemNames, [itemNames]);
-  const memoizedItemTypes = useMemo(() => itemTypes, [itemTypes]);
   const memoizedBuildingName = useMemo(() => buildingName, [buildingName]);
   return (
     <>
-      { role === "admin" && (
+      {role === "admin" || role==="engineer"|| role==="officer_eng"&& (
         <button
           className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"
@@ -180,7 +159,7 @@ export default function NewNeed({ GetNewItem }) {
                       language !== "en"
                         ? "float-left mr-auto"
                         : "float-right ml-auto"
-                    } border-0 p-1 text-xl font-semibold`}
+                    } border-0 p-1 text-3xl font-semibold`}
                     onClick={() => setShowModal(false)}
                   >
                     ×
@@ -195,7 +174,7 @@ export default function NewNeed({ GetNewItem }) {
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="need_amount"
+                        htmlFor="need_amount"
                       >
                         {t("newNeed.need_amount")}
                       </label>
@@ -204,14 +183,13 @@ export default function NewNeed({ GetNewItem }) {
                         id="need_amount"
                         name="need_amount"
                         type="text"
-                        placeholder="Enter used amount"
                         {...register("need_amount", { required: true })}
                       />
                     </div>
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="description"
+                        htmlFor="description"
                       >
                         {t("newNeed.description")}
                       </label>
@@ -220,17 +198,17 @@ export default function NewNeed({ GetNewItem }) {
                         id="description"
                         name="description"
                         type="text"
-                        placeholder="Write a description"
                         {...register("description", { required: true })}
                       />
                     </div>
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="name"
+                        htmlFor="name"
                       >
                         {t("newNeed.item_name")}
                       </label>
+                      
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="item_name"
@@ -238,11 +216,13 @@ export default function NewNeed({ GetNewItem }) {
                         type="string"
                         {...register("item_name", { required: true })}
                       >
-                        <option value="">Select a name</option>
-
                         {memoizedItemNames &&
-                          memoizedItemNames.map((name) => {
-                            return <option value={name}>{name}</option>;
+                          memoizedItemNames.map((name, index) => {
+                            return (
+                              <option value={name} key={index}>
+                                {name}
+                              </option>
+                            );
                           })}
                       </select>
                     </div>
@@ -250,7 +230,7 @@ export default function NewNeed({ GetNewItem }) {
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-gray-700"
-                        for="no_of_floors"
+                        htmlFor="no_of_floors"
                       >
                         {t("newNeed.building")}
                       </label>
@@ -261,10 +241,15 @@ export default function NewNeed({ GetNewItem }) {
                         type="string"
                         {...register("building", { required: true })}
                       >
-                        <option value="">Select a Building</option>
                         {memoizedBuildingName &&
-                          memoizedBuildingName.map((name) => {
-                            return <option value={name}>{name}</option>;
+                          memoizedBuildingName.map((name, index) => {
+                            console.log(name)
+
+                            return (
+                              <option value={name} key={index}>
+                                {name}
+                              </option>
+                            );
                           })}
                       </select>
                     </div>
@@ -276,7 +261,7 @@ export default function NewNeed({ GetNewItem }) {
                       } rounded-b pt-5`}
                     >
                       <button
-                        className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                        className="background-transparent text-md mb-1 mr-1 px-6 py-2 font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
                         type="button"
                         onClick={() => setShowModal(false)}
                       >

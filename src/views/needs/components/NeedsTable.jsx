@@ -30,6 +30,7 @@ const NeedsTable = (props) => {
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
+  console.log(usr.role);
 
   const columns = useMemo(() => columnsData, [columnsData]);
 
@@ -78,7 +79,7 @@ const NeedsTable = (props) => {
         };
 
         axios
-          .put(`https://api.hirari-iq.com/api/needs/accept/${needId}`, config)
+          .put(`https://api.hirari-iq.com/api/needs/accept/${needId}`,{}, config)
           .then(() => {
             Swal.fire(
               t("alerts.needs.acceptAlerts.success.title"),
@@ -219,7 +220,7 @@ const NeedsTable = (props) => {
                       } else {
                         if (
                           usr.role === "admin" ||
-                          usr.role === "officer_engineer"
+                          usr.role === "officer_eng"
                         ) {
                           data =
                             cell.value !== "accept" ? (

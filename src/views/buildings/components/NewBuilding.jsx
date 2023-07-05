@@ -12,6 +12,7 @@ export default function NewBuilding({ GetNewItem }) {
   const { register, handleSubmit, reset, setValue } = useForm();
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
+  let role=usr?.role;
   const onSubmit = (data) => {
     const API = "https://api.hirari-iq.com/api/blocks";
 
@@ -52,12 +53,14 @@ export default function NewBuilding({ GetNewItem }) {
     setValue("number_of_floor", 0);
     setValue("apartment_per_floor", 0);
   });
+  
 
   const language = useLanguageStore((state) => state.language);
 
   return (
     <>
-      {
+    {role === "admin" && (
+      
         <button
           className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"
@@ -65,7 +68,7 @@ export default function NewBuilding({ GetNewItem }) {
         >
           <BsPlus fontSize={32} />
         </button>
-      }
+    )}
 
       {showModal ? (
         <>

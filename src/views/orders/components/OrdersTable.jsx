@@ -108,7 +108,7 @@ const OrdersTable = (props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .put(`https://api.hirari-iq.com/api/orders/accept/${orderId}`, config)
+          .put(`https://api.hirari-iq.com/api/orders/accept/${orderId}`,{}, config)
           .then(() => {
             Swal.fire(
               t("alerts.orders.acceptAlerts.success.title"),
@@ -211,7 +211,7 @@ const OrdersTable = (props) => {
                           </p>
                         );
                       } else {
-                        if (role == "admin" || role === "accountant") {
+                        if (role == "admin" || role === "officer_eng") {
                           data =
                             cell.value !== "accept" ? (
                               <div className="flex items-center gap-2">

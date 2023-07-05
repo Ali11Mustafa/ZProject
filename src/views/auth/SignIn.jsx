@@ -67,7 +67,13 @@ export default function SignIn({ userCredentials }) {
       };
 
       sessionStorage.setItem("user", JSON.stringify(sessStorage));
-      navigate("/", { replace: true });
+      let usr = JSON.parse(sessionStorage.getItem("user"));
+      if(usr.role==="engineer"||usr.role==="officer_eng"){
+      navigate("/needs", { replace: true });
+      }else{
+        navigate("/", { replace: true });
+
+      }
       return;
 
 
