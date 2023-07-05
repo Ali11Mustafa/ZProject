@@ -30,7 +30,7 @@ function useRoutes() {
   if (!usr)
     navigate('/Login');
 
-  if (role === "only_read"||role==="admin") {
+  if (role === "only_read"||role==="admin"||role==="officer_eng") {
     routes.push({
       name: t("sidebarLinks.buildings"),
       path: "/",

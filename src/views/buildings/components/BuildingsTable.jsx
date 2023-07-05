@@ -73,6 +73,7 @@ const BuildingsTable = (props) => {
             `https://api.hirari-iq.com/api/blocks/${e.target.getAttribute(
               "value"
             )}`,
+            
             config
           )
           .then((response) => {

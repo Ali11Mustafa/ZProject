@@ -133,7 +133,7 @@ export default function NewNeed({ GetNewItem }) {
   const memoizedBuildingName = useMemo(() => buildingName, [buildingName]);
   return (
     <>
-      {role === "admin" || role==="engineer"|| role==="officer_eng"&& (
+      {(role === "admin" || role==="engineer"|| role==="officer_eng")&& (
         <button
           className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"
