@@ -30,7 +30,7 @@ export default function NewNeed({ GetNewItem }) {
   const API = "https://api.hirari-iq.com/api/blocks";
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let role = usr?.role;
+  let role = "engineer";
   let token = usr?.token;
 
   const config = {
@@ -127,7 +127,6 @@ export default function NewNeed({ GetNewItem }) {
     setShowModal(false);
     reset();
   };
-
   const language = useLanguageStore((state) => state.language);
   const memoizedItemNames = useMemo(() => itemNames, [itemNames]);
   const memoizedBuildingName = useMemo(() => buildingName, [buildingName]);

@@ -108,7 +108,11 @@ const OrdersTable = (props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .put(`https://api.hirari-iq.com/api/orders/accept/${orderId}`,{}, config)
+          .put(
+            `https://api.hirari-iq.com/api/orders/accept/${orderId}`,
+            {},
+            config
+          )
           .then(() => {
             Swal.fire(
               t("alerts.orders.acceptAlerts.success.title"),
@@ -321,7 +325,7 @@ const OrdersTable = (props) => {
           breakLabel={<span className="mr-4">...</span>}
           nextLabel={
             showNextButton ? (
-              <span className="flex h-10 w-10 items-center justify-center rounded-md bg-lightGray">
+              <span className="text-md flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
                 <BsChevronRight />
               </span>
             ) : null
@@ -331,14 +335,14 @@ const OrdersTable = (props) => {
           pageCount={Math.ceil(total / 10)}
           previousLabel={
             showPrevButton ? (
-              <span className="mr-4 flex h-10 w-10 items-center justify-center rounded-md bg-lightGray">
+              <span className="text-md mr-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
                 <BsChevronLeft />
               </span>
             ) : null
           }
           containerClassName="flex items-center justify-center mt-8 mb-4"
-          pageClassName="block border- border-solid border-lightGray hover:bg-lightGray w-10 h-10 flex items-center justify-center rounded-md mr-4"
-          activeClassName="bg-lightGrayy text-black"
+          pageClassName="block border- border-solid   w-10 h-10 flex items-center justify-center hover:bg-purple-700 rounded-md mr-4 "
+          activeClassName="bg-purple-700 text-white"
         />
       </div>
     </Card>

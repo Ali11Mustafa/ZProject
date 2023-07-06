@@ -12,6 +12,7 @@ const resources = {
         items: "Items",
         users: "Users",
         orders: "Orders",
+        dashboard: "Dashboard",
       },
       dashboard: "Dashboard",
       logout: "Logout",
@@ -293,6 +294,23 @@ const resources = {
               reject: "Reject",
             },
           },
+          rejectAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Reject",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Rejected!",
+              message: "Need has been Rejected.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "Need was not rejected.",
+            },
+            buttons: {
+              accept: "Accept",
+              reject: "Reject",
+            },
+          },
         },
         orders: {
           deleteAlerts: {
@@ -386,6 +404,7 @@ const resources = {
         items: "کەرەستەکان",
         users: "بەکارهێنەرەکان",
         orders: "داواکاریەکان",
+        dashboard: "داشبۆرد",
       },
       dashboard: "داشبۆرد",
       logout: "چوونە دەرەوە",
@@ -657,6 +676,23 @@ const resources = {
               reject: "ڕەتکردنەوە",
             },
           },
+          rejectAlerts: {
+            confirmation: "دڵنیایی؟",
+            confirmButtonText: "ڕەتکردنەوە",
+            cancelButtonText: "پەشیمانبوونەوە",
+            success: {
+              title: "ڕەتکراوە",
+              message: "پێویستیەکە ڕەتکرایەوە",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا!",
+              message: "پێویستیەکە ڕەتنەکرایەوە",
+            },
+            buttons: {
+              accept: "قبوڵکردن",
+              reject: "ڕەتکردنەوە",
+            },
+          },
         },
         orders: {
           deleteAlerts: {
@@ -750,6 +786,7 @@ const resources = {
         items: "أغراض",
         users: "المستعملون",
         orders: "اوامر",
+        dashboard: "داشبورد",
       },
       dashboard: "داشبورد",
       logout: "تسجيل خروج",
@@ -1016,6 +1053,23 @@ const resources = {
             error: {
               title: "حدث خطأ ما",
               message: "لم يتم قبول الحاجة.",
+            },
+            buttons: {
+              accept: "قبول",
+              reject: "رفض",
+            },
+          },
+          rejectAlerts: {
+            confirmation: "هل أنت متأكد؟",
+            confirmButtonText: "رفض",
+            cancelButtonText: "إلغاء",
+            success: {
+              title: "تم الرفض!",
+              message: "تم رفض الحاجة.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+              message: "لم يتم رفض الحاجة.",
             },
             buttons: {
               accept: "قبول",

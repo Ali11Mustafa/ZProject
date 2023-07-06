@@ -30,7 +30,12 @@ const NeedsTable = (props) => {
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
-  console.log(usr.role);
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
   const columns = useMemo(() => columnsData, [columnsData]);
 
@@ -58,6 +63,7 @@ const NeedsTable = (props) => {
   initialState.pageSize = 11;
 
   const language = useLanguageStore((state) => state.language);
+
   function onAccept(needId) {
     Swal.fire({
       title: t("alerts.needs.acceptAlerts.confirmation"),
@@ -69,17 +75,12 @@ const NeedsTable = (props) => {
       cancelButtonText: t("alerts.needs.acceptAlerts.cancelButtonText"),
     }).then((result) => {
       if (result.isConfirmed) {
-        let usr = JSON.parse(sessionStorage.getItem("user"));
-        let token = usr?.token;
-
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
         axios
-          .put(`https://api.hirari-iq.com/api/needs/accept/${needId}`,{}, config)
+          .put(
+            `https://api.hirari-iq.com/api/needs/accept/${needId}`,
+            {},
+            config
+          )
           .then(() => {
             Swal.fire(
               t("alerts.needs.acceptAlerts.success.title"),
@@ -98,6 +99,41 @@ const NeedsTable = (props) => {
       }
     });
   }
+  function onReject(needId) {
+    Swal.fire({
+      title: t("alerts.needs.rejectAlerts.confirmation"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#339cdd",
+      confirmButtonText: t("alerts.needs.rejectAlerts.confirmButtonText"),
+      cancelButtonText: t("alerts.needs.rejectAlerts.cancelButtonText"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(
+            `https://api.hirari-iq.com/api/needs/reject/${needId}`,
+            {},
+            config
+          )
+          .then(() => {
+            Swal.fire(
+              t("alerts.needs.rejectAlerts.success.title"),
+              t("alerts.needs.rejectAlerts.success.message"),
+              "success"
+            );
+            GetNewItem(Math.random());
+          })
+          .catch((error) => {
+            Swal.fire(
+              t("alerts.needs.rejectAlerts.error.title"),
+              t("alerts.needs.rejectAlerts.error.message"),
+              "error"
+            );
+          });
+      }
+    });
+  }
 
   function deleteMe(e) {
     Swal.fire({
@@ -110,11 +146,6 @@ const NeedsTable = (props) => {
       confirmButtonText: t("alerts.needs.deleteAlerts.confirmButtonText"),
     }).then((result) => {
       if (result.isConfirmed) {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
         axios
           .delete(
             `https://api.hirari-iq.com/api/needs/${e.target.getAttribute(
@@ -211,46 +242,46 @@ const NeedsTable = (props) => {
                         </p>
                       );
                     } else if (cell.column.id === "status") {
-                      if (cell.value === "accept") {
-                        data = (
-                          <p className="text-lg font-medium text-green-600 ">
-                            {cell.value}
-                          </p>
-                        );
-                      } else {
-                        if (
-                          usr.role === "admin" ||
-                          usr.role === "officer_eng"
-                        ) {
-                          data =
-                            cell.value !== "accept" ? (
-                              <div className="flex items-center gap-2">
-                                <button
-                                  onClick={() => onAccept(row.original.id)}
-                                  className="rounded-md bg-green-400 px-2 py-1 dark:text-black"
-                                >
-                                  {t(
-                                    "alerts.needs.acceptAlerts.buttons.accept"
-                                  )}
-                                </button>
-                                <button className="rounded-md bg-red-400 px-2 py-1 dark:text-black">
-                                  {t(
-                                    "alerts.needs.acceptAlerts.buttons.reject"
-                                  )}
-                                </button>
-                              </div>
-                            ) : (
-                              <p className="text-sm font-medium text-green-600 ">
-                                {cell.value}
-                              </p>
-                            );
-                        } else {
+                      if (cell.value === "accept" || cell.value === "reject") {
+                        if (cell.value === "accept") {
                           data = (
-                            <p className="text-lg font-medium text-[#FFA500] ">
-                              Pending
+                            <p className="text-md font-medium text-green-600">
+                              Accepted
+                            </p>
+                          );
+                        } else if (cell.value === "reject") {
+                          data = (
+                            <p className="text-md font-medium text-red-600">
+                              Rejected
                             </p>
                           );
                         }
+                      } else if (
+                        usr.role === "admin" ||
+                        usr.role === "officer_eng"
+                      ) {
+                        data = (
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => onAccept(row.original.id)}
+                              className="rounded-md bg-green-400 px-2 py-1 dark:text-black"
+                            >
+                              {t("alerts.needs.acceptAlerts.buttons.accept")}
+                            </button>
+                            <button
+                              onClick={() => onReject(row.original.id)}
+                              className="rounded-md bg-red-400 px-2 py-1 dark:text-black"
+                            >
+                              {t("alerts.needs.rejectAlerts.buttons.reject")}
+                            </button>
+                          </div>
+                        );
+                      } else {
+                        data = (
+                          <p className="text-lg font-medium text-[#FFA500]">
+                            Pending
+                          </p>
+                        );
                       }
                     } else if (cell.column.id === "user_info.name") {
                       data = (
@@ -337,7 +368,7 @@ const NeedsTable = (props) => {
           breakLabel={<span className="mr-4">...</span>}
           nextLabel={
             showNextButton ? (
-              <span className="flex h-10 w-10 items-center justify-center rounded-md bg-lightGray">
+              <span className="text-md flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
                 <BsChevronRight />
               </span>
             ) : null
@@ -347,14 +378,14 @@ const NeedsTable = (props) => {
           pageCount={Math.ceil(total / 10)}
           previousLabel={
             showPrevButton ? (
-              <span className="mr-4 flex h-10 w-10 items-center justify-center rounded-md bg-lightGray">
+              <span className="text-md mr-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
                 <BsChevronLeft />
               </span>
             ) : null
           }
           containerClassName="flex items-center justify-center mt-8 mb-4"
-          pageClassName="block border- border-solid border-lightGray hover:bg-lightGray w-10 h-10 flex items-center justify-center rounded-md mr-4"
-          activeClassName="bg-lightGrayy text-black"
+          pageClassName="block border- border-solid   w-10 h-10 flex items-center justify-center hover:bg-purple-700 rounded-md mr-4 "
+          activeClassName="bg-purple-700 text-white"
         />
       </div>
     </Card>
