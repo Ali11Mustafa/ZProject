@@ -41,10 +41,12 @@ export const useItemsStore = create((set) => ({
   setItemTypes: (types) => set(() => ({ types: types })),
 }));
 
+export const useDarkModeStore = create((set) => ({
+  darkMode: true,
+  toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
+}));
+
 const App = () => {
-  const isAuthenticated = useAuthStore((state) =>
-    sessionStorage.getItem("user") != null ? true : state.isAuthenticated
-  );
   const language = useLanguageStore((state) => state.language);
   const { i18n } = useTranslation();
 
@@ -52,10 +54,16 @@ const App = () => {
     i18n.changeLanguage(language);
   }, [language, i18n]);
 
-  // if(!isAuthenticated){
-  //   return <Auth/>
-  // }
-  let usr = JSON.parse(sessionStorage.getItem("user"));
+  const darkMode = useDarkModeStore((state) => state.darkMode);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [darkMode]);
+
   return (
     <Routes>
       <Route path="/" element={<DashboardPage />} />

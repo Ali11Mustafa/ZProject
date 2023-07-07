@@ -6,21 +6,14 @@ import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import { useSearchStore } from "App";
 import { useTranslation } from "react-i18next";
 import LangSelector from "components/langSelector/LangSelector";
+import { useDarkModeStore } from "App";
 
 const Navbar = (props) => {
   const { onOpenSidenav } = props;
-  const [darkmode, setDarkmode] = React.useState(localStorage.getItem("darkmode")==="true");
 
-  useEffect(() => {
-    if (darkmode) {
-      document.body.classList.add("dark");
-    } else {
-      document.body.classList.remove("dark");
-    }
-    localStorage.setItem("darkmode",darkmode)
-  }, [darkmode]);
+  const darkMode = useDarkModeStore((state) => state.darkMode);
+  const toggleDarkMode = useDarkModeStore((state) => state.toggleDarkMode);
 
-  // zustand
   const searchText = useSearchStore((state) => state.searchText);
   const setSearchText = useSearchStore((state) => state.setSearchText);
 
@@ -29,6 +22,10 @@ const Navbar = (props) => {
   };
 
   const { t } = useTranslation();
+
+  const handleDarkModeToggle = () => {
+    toggleDarkMode();
+  };
 
   return (
     <nav
@@ -57,14 +54,16 @@ const Navbar = (props) => {
         <LangSelector />
         <button
           className="cursor-pointer px-2 text-gray-600"
-          onClick={() => 
-            setDarkmode(!darkmode)
-          }
+          onClick={handleDarkModeToggle}
         >
-          {darkmode ? (
-            <RiSunFill className="h-4 w-4 text-gray-700 dark:text-white" />
+          {darkMode ? (
+            <RiSunFill
+              className={`h-4 w-4 ${darkMode ? "text-white" : "text-gray-700"}`}
+            />
           ) : (
-            <RiMoonFill className="h-4 w-4 text-gray-700 dark:text-white" />
+            <RiMoonFill
+              className={`h-4 w-4 ${darkMode ? "text-white" : "text-gray-700"}`}
+            />
           )}
         </button>
       </div>
