@@ -18,8 +18,9 @@ const OrdersDashboard = () => {
 
   const [orders, setOrders] = useState([]);
   useEffect(() => {
-    FetchData();
-  }, [newItem]);
+    const storedCurrentPage = currentPage;
+    FetchData(storedCurrentPage);
+  }, [newItem, currentPage]);
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
@@ -36,8 +37,8 @@ const OrdersDashboard = () => {
       .get(API, config)
       .then((response) => {
         setTotal(response.data.meta.total);
-        setCurrentPage(response.data.meta.currentPage);
-        setPerPage(response.data.meta.perPage);
+        setCurrentPage(pageNumber);
+        setPerPage(response.data.meta.per_page);
 
         let arrayNotDeleted = [];
         response.data.data.map((item) => {
@@ -66,6 +67,7 @@ const OrdersDashboard = () => {
             GetNewItem={GetNewItem}
             setPageNumber={setPageNumber}
             total={total}
+            pageNumber={pageNumber}
             currentPage={currentPage}
             perPage={perPage}
             HandleFetch={HandleFetch}

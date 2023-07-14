@@ -7,6 +7,10 @@ import axios from "axios";
 const ItemsDashboard = () => {
   const { itemsTableColumns } = useItemsTableColumns();
   const [newItem, setNewItem] = useState("");
+  const [total, setTotal] = useState(0);
+  const [perPage, setPerPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const GetNewItem = (item) => {
     setNewItem(item);
@@ -14,11 +18,11 @@ const ItemsDashboard = () => {
   };
 
   const [Data, setData] = useState([]);
-  const API = "https://api.hirari-iq.com/api/users";
 
   useEffect(() => {
-    FetchData();
-  }, [newItem]);
+    const storedCurrentPage = currentPage;
+    FetchData(storedCurrentPage);
+  }, [newItem, currentPage]);
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
@@ -28,10 +32,15 @@ const ItemsDashboard = () => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const FetchData = () => {
+  const FetchData = (pageNumber = 1) => {
+    const API = `https://api.hirari-iq.com/api/users?page=${pageNumber}`;
     axios
       .get(API, config)
       .then((response) => {
+        console.log(response.data.data);
+        setTotal(response.data.meta.total);
+        setCurrentPage(pageNumber);
+        setPerPage(response.data.meta.per_page);
         let arrayNotDeleted = [];
         response.data.data.map((item) => {
           arrayNotDeleted.push(item);
@@ -42,6 +51,10 @@ const ItemsDashboard = () => {
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  const HandleFetch = (pageNumber) => {
+    FetchData(pageNumber);
   };
 
   const setItemNames = useItemsStore((state) => state.setItemNames);
@@ -73,6 +86,12 @@ const ItemsDashboard = () => {
             columnsData={itemsTableColumns}
             tableData={Data}
             GetNewItem={GetNewItem}
+            setPageNumber={setPageNumber}
+            total={total}
+            pageNumber={pageNumber}
+            currentPage={currentPage}
+            perPage={perPage}
+            HandleFetch={HandleFetch}
           />
         </div>
       </div>

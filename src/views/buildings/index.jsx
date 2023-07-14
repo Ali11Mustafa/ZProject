@@ -1,19 +1,11 @@
 import BuildingsTable from "./components/BuildingsTable";
 import useBuildingsTableColumns from "./variables/useBuildingsTableColumns";
-import Widget from "components/widget/widget";
-import { MdBarChart, MdOutlineApartment } from "react-icons/md";
-import { IoDocuments } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
-import { BsFillBuildingsFill } from "react-icons/bs";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
 const updateBlock = (BlockId, deleted, data) => {
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let userName = usr?.fullname;
-  let email = usr?.email;
-  let image = usr?.img;
-  let usrId = usr?.id;
   let token = usr?.token;
 
   const config = {
@@ -34,6 +26,10 @@ const updateBlock = (BlockId, deleted, data) => {
 
 const BuildingDashboard = () => {
   const [newItem, setNewItem] = useState("");
+  const [total, setTotal] = useState(0);
+  const [perPage, setPerPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const GetNewItem = (item) => {
     setNewItem(item);
@@ -42,17 +38,13 @@ const BuildingDashboard = () => {
 
   const [BlockData, setBlockData] = useState([]);
   const { buildingsTableColumns } = useBuildingsTableColumns();
-  const { t } = useTranslation();
-  const API = "https://api.hirari-iq.com/api/blocks";
 
   useEffect(() => {
-    fetchData();
-  }, [newItem]);
+    const storedCurrentPage = currentPage;
+    fetchData(storedCurrentPage);
+  }, [newItem, currentPage]);
+
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let userName = usr?.fullname;
-  let email = usr?.email;
-  let image = usr?.img;
-  let usrId = usr?.id;
   let token = usr?.token;
 
   const config = {
@@ -60,10 +52,15 @@ const BuildingDashboard = () => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const fetchData = () => {
+  const fetchData = (pageNumber = 1) => {
+    const API = `https://api.hirari-iq.com/api/blocks?page=${pageNumber}`;
     axios
       .get(API, config)
       .then((response) => {
+        setTotal(response.data.meta.total);
+        setCurrentPage(pageNumber);
+        setPerPage(response.data.meta.per_page);
+
         let arrayNotDeleted = [];
         response.data.data.map((item) => {
           if (item.is_deleted !== 1) {
@@ -80,10 +77,6 @@ const BuildingDashboard = () => {
 
   const onDeleteBuilding = (BlockId) => {
     let usr = JSON.parse(sessionStorage.getItem("user"));
-    let userName = usr?.fullname;
-    let email = usr?.email;
-    let image = usr?.img;
-    let usrId = usr?.id;
     let token = usr?.token;
 
     const config = {
@@ -103,6 +96,10 @@ const BuildingDashboard = () => {
       });
   };
 
+  const HandleFetch = (pageNumber) => {
+    fetchData(pageNumber);
+  };
+
   return (
     <div>
       <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-6"></div>
@@ -114,6 +111,13 @@ const BuildingDashboard = () => {
             OnDeleteBuilding={onDeleteBuilding}
             OnUpdateBlock={updateBlock}
             GetNewItem={GetNewItem}
+            setPageNumber={setPageNumber}
+            total={total}
+            pageNumber={pageNumber}
+            currentPage={currentPage}
+            perPage={perPage}
+            HandleFetch={HandleFetch}
+            setCurrentPage={setCurrentPage}
           />
         </div>
       </div>

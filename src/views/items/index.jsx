@@ -8,6 +8,10 @@ import axios from "axios";
 const ItemsDashboard = () => {
   const { itemsTableColumns } = useItemsTableColumns();
   const [newItem, setNewItem] = useState("");
+  const [total, setTotal] = useState(0);
+  const [perPage, setPerPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const GetNewItem = (item) => {
     setNewItem(item);
@@ -17,8 +21,9 @@ const ItemsDashboard = () => {
   const [Data, setData] = useState([]);
 
   useEffect(() => {
-    FetchData();
-  }, [newItem]);
+    const storedCurrentPage = currentPage;
+    FetchData(storedCurrentPage);
+  }, [newItem, currentPage]);
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
 
@@ -28,12 +33,15 @@ const ItemsDashboard = () => {
     },
   };
 
-  const API = "https://api.hirari-iq.com/api/items";
-
-  const FetchData = () => {
+  const FetchData = (pageNumber = 1) => {
+    const API = `https://api.hirari-iq.com/api/items?page=${pageNumber}`;
     axios
       .get(API, config)
       .then((response) => {
+        setTotal(response.data.meta.total);
+        setCurrentPage(pageNumber);
+        setPerPage(response.data.meta.per_page);
+
         let arrayNotDeleted = [];
         response.data.data.map((item) => {
           if (item.is_deleted !== 1) {
@@ -48,6 +56,10 @@ const ItemsDashboard = () => {
       });
   };
 
+  const HandleFetch = (pageNumber) => {
+    FetchData(pageNumber);
+  };
+
   const setItemNames = useItemsStore((state) => state.setItemNames);
   const setItemTypes = useItemsStore((state) => state.setItemTypes);
 
@@ -57,7 +69,7 @@ const ItemsDashboard = () => {
       const names = [];
       const types = [];
 
-      Data.map((item) => {
+      Data.forEach((item) => {
         if (item.is_deleted !== 1) {
           names.push(item.name);
           types.push(item.type);
@@ -77,6 +89,12 @@ const ItemsDashboard = () => {
             columnsData={itemsTableColumns}
             tableData={Data}
             GetNewItem={GetNewItem}
+            setPageNumber={setPageNumber}
+            total={total}
+            pageNumber={pageNumber}
+            currentPage={currentPage}
+            perPage={perPage}
+            HandleFetch={HandleFetch}
           />
         </div>
       </div>

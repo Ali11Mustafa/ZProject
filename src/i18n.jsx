@@ -358,6 +358,40 @@ const resources = {
               accept: "Accept",
               reject: "Reject",
             },
+            acceptAlerts: {
+              confirmation: "Are you sure?",
+              confirmButtonText: "Accept",
+              cancelButtonText: "Cancel",
+              success: {
+                title: "Accepted!",
+                message: "order has been accepted.",
+              },
+              error: {
+                title: "Something went wrong",
+                message: "order was not accepted.",
+              },
+              buttons: {
+                accept: "Accept",
+                reject: "Reject",
+              },
+            },
+            rejectAlerts: {
+              confirmation: "Are you sure?",
+              confirmButtonText: "Reject",
+              cancelButtonText: "Cancel",
+              success: {
+                title: "Rejected!",
+                message: "order has been Rejected.",
+              },
+              error: {
+                title: "Something went wrong",
+                message: "order was not rejected.",
+              },
+              buttons: {
+                accept: "Accept",
+                reject: "Reject",
+              },
+            },
           },
         },
         users: {
@@ -722,6 +756,40 @@ const resources = {
             },
             error: {
               title: "کێشەیەک ڕوویدا!",
+            },
+            acceptAlerts: {
+              confirmation: "دڵنیایی؟",
+              confirmButtonText: "قبوڵکردن",
+              cancelButtonText: "پەشیمانبوونەوە",
+              success: {
+                title: "قبوڵکرا",
+                message: " داواکارییەکە قبوڵکرا",
+              },
+              error: {
+                title: "کێشەیەک ڕوویدا!",
+                message: " داواکارییەکە قبوڵنەکرا",
+              },
+              buttons: {
+                accept: "قبوڵکردن",
+                reject: "ڕەتکردنەوە",
+              },
+            },
+            rejectAlerts: {
+              confirmation: "دڵنیایی؟",
+              confirmButtonText: "ڕەتکردنەوە",
+              cancelButtonText: "پەشیمانبوونەوە",
+              success: {
+                title: "ڕەتکراوە",
+                message: " داواکارییەکە ڕەتکرایەوە",
+              },
+              error: {
+                title: "کێشەیەک ڕوویدا!",
+                message: " داواکارییەکە ڕەتنەکرایەوە",
+              },
+              buttons: {
+                accept: "قبوڵکردن",
+                reject: "ڕەتکردنەوە",
+              },
             },
           },
           acceptAlerts: {
@@ -1124,6 +1192,7 @@ const resources = {
               reject: "رفض",
             },
           },
+          
         },
         users: {
           deleteAlerts: {

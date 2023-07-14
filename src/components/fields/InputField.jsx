@@ -3,16 +3,25 @@ import { useLanguageStore } from "App";
 import React from "react";
 
 function InputField(props) {
-  const { label, id, extra, type,name, placeholder, variant, state, disabled, register, value ,Onchanged } =
-    props;
+  const {
+    label,
+    id,
+    extra,
+    type,
+    name,
+    placeholder,
+    variant,
+    state,
+    disabled,
+    register,
+    value,
+    Onchanged,
+  } = props;
 
-    const language = useLanguageStore((state) => state.language);
-   
-  
-
+  const language = useLanguageStore((state) => state.language);
 
   return (
-    <div className={`${extra} ${language !== 'en' && 'text-right'}`}>
+    <div className={`${extra} ${language !== "en" && "text-right"}`}>
       <label
         htmlFor={id}
         className={`text-sm text-navy-700 dark:text-white ${
@@ -21,9 +30,9 @@ function InputField(props) {
       >
         {label}
       </label>
-      <input 
+      <input
         onChange={Onchanged}
-        // disabled={disabled}
+        required={true}
         type={type}
         name={name}
         id={id}
@@ -37,7 +46,7 @@ function InputField(props) {
             : state === "success"
             ? "border-green-500 text-green-500 placeholder:text-green-500 dark:!border-green-400 dark:!text-green-400 dark:placeholder:!text-green-400"
             : "border-gray-200 dark:!border-white/10 dark:text-white"
-        } ${language === 'rtl' && 'text-right'}`}
+        } ${language === "rtl" && "text-right"}`}
         {...register}
       />
     </div>

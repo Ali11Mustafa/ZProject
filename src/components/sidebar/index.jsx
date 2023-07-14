@@ -41,6 +41,12 @@ const Sidebar = ({ open, onClose }) => {
       >
         <HiX />
       </span>
+      <span
+        className="absolute top-4 right-4 block cursor-pointer xl:hidden"
+        onClick={onClose}
+      >
+        test
+      </span>
 
       <div className={`mx-[56px]   flex items-center`}>
         <Link to='/' className="mt-1 ml-1 h-fit font-nunito text-[26px] font-bold uppercase text-navy-700 dark:text-white">

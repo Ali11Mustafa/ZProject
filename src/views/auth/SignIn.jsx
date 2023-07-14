@@ -1,18 +1,13 @@
 import InputField from "components/fields/InputField";
-
-import { useAuthStore } from "App";
 import LangSelector from "components/langSelector/LangSelector";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
-import { TbVariablePlus } from "react-icons/tb";
 
 export default function SignIn({ userCredentials }) {
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
-  const logout = useAuthStore((state) => state.logout);
 
   let [inputs, setInputs] = useState({
     email: "",
@@ -20,20 +15,18 @@ export default function SignIn({ userCredentials }) {
   });
 
   const handleChange = (event) => {
-    const { name, value } = event.target
-    console.log(value);
-    setInputs(items => {
+    const { name, value } = event.target;
+    setInputs((items) => {
       return {
         ...items,
-        [name]: value
-      }
-    })
-
-
-  }
-
+        [name]: value,
+      };
+    });
+  };
 
   const [errors, setErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit } = useForm();
 
@@ -41,6 +34,8 @@ export default function SignIn({ userCredentials }) {
 
   const handleLogin = async (data) => {
     setErrors({});
+    setErrorMessage("");
+    setLoading(true);
 
     let formdata = new FormData();
 
@@ -53,10 +48,6 @@ export default function SignIn({ userCredentials }) {
           Accept: "application/json",
         },
       });
-      const { token } = req.data;
-      console.log("token", token);
-      console.log(req.data.user_id);
-
 
       const sessStorage = {
         id: req.data.id,
@@ -68,23 +59,24 @@ export default function SignIn({ userCredentials }) {
 
       sessionStorage.setItem("user", JSON.stringify(sessStorage));
       let usr = JSON.parse(sessionStorage.getItem("user"));
-      if(usr.role==="engineer"||usr.role==="officer_eng"){
-      navigate("/needs", { replace: true });
-      }else{
+      if (usr.role === "engineer" || usr.role === "officer_eng") {
+        navigate("/needs", { replace: true });
+      } else {
         navigate("/", { replace: true });
-
       }
       return;
-
-
     } catch (e) {
       console.log(e);
+      setErrorMessage(
+        "Incorrect email or password. Please check your credentials."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex h-full w-full items-center justify-center px-2">
-      {/* Sign in section */}
       <form
         className=" w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]"
         onSubmit={handleSubmit(handleLogin)}
@@ -100,10 +92,9 @@ export default function SignIn({ userCredentials }) {
           label={t("signin.email")}
           placeholder="Email"
           id="email"
-          type="text"
+          type="email"
           name="email"
           state={errors.email ? "error" : ""}
-        // register={register("email", { required: true })}
         />
         {/* Password */}
         <InputField
@@ -116,14 +107,42 @@ export default function SignIn({ userCredentials }) {
           type="password"
           name="password"
           state={errors.password ? "error" : ""}
-          // register={register("password", { required: true })}
           value="admin"
         />
+        {errorMessage && (
+          <div className="my-4 text-red-500">{errorMessage}</div>
+        )}
         <button
-
           className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+          disabled={loading}
         >
-          {t("signin.button")}
+          {loading ? (
+            <span className="flex items-center justify-center">
+              <svg
+                className="mr-2 -ml-1 h-5 w-5 animate-spin text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Loading...
+            </span>
+          ) : (
+            t("signin.button")
+          )}
         </button>
       </form>
       <div className="absolute top-5 right-5 ">

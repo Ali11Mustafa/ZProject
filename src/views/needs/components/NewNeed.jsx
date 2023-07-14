@@ -132,7 +132,7 @@ export default function NewNeed({ GetNewItem }) {
   const memoizedBuildingName = useMemo(() => buildingName, [buildingName]);
   return (
     <>
-      {(role === "admin" || role==="engineer"|| role==="officer_eng")&& (
+      {(role === "admin" || role === "engineer" || role === "officer_eng") && (
         <button
           className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"
@@ -207,7 +207,7 @@ export default function NewNeed({ GetNewItem }) {
                       >
                         {t("newNeed.item_name")}
                       </label>
-                      
+
                       <select
                         className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="item_name"
@@ -242,8 +242,6 @@ export default function NewNeed({ GetNewItem }) {
                       >
                         {memoizedBuildingName &&
                           memoizedBuildingName.map((name, index) => {
-                            console.log(name)
-
                             return (
                               <option value={name} key={index}>
                                 {name}

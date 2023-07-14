@@ -1,12 +1,9 @@
 import React, { useEffect } from "react";
-import { FiAlignJustify } from "react-icons/fi";
-
-import { FiSearch } from "react-icons/fi";
+import { FiAlignJustify, FiSearch } from "react-icons/fi";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
-import { useSearchStore } from "App";
+import { useSearchStore, useDarkModeStore } from "App";
 import { useTranslation } from "react-i18next";
 import LangSelector from "components/langSelector/LangSelector";
-import { useDarkModeStore } from "App";
 
 const Navbar = (props) => {
   const { onOpenSidenav } = props;
@@ -26,11 +23,14 @@ const Navbar = (props) => {
   const handleDarkModeToggle = () => {
     toggleDarkMode();
   };
+  let usr = JSON.parse(sessionStorage.getItem("user"));
+  let username = usr?.name;
 
   return (
     <nav
-      className={`sticky top-4 z-40 rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]  `}
+      className={`sticky top-4 z-40 flex flex-col  items-center gap-2 rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d] md:flex-row `}
     >
+      <h1 className="text-2xl font-bold text-white">{username}</h1>
       <div className="relative ml-auto mt-[3px] flex h-[61px] w-fit flex-grow items-center justify-between gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500 dark:!bg-navy-800 dark:shadow-none md:flex-grow-0 md:gap-1 xl:gap-2">
         <div className="flex h-full flex-1 items-center rounded-full bg-lightPrimary text-navy-700 dark:bg-navy-900 dark:text-white">
           <p className="pl-3 pr-2 text-xl">

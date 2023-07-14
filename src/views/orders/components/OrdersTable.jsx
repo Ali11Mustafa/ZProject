@@ -26,6 +26,7 @@ const OrdersTable = (props) => {
     currentPage,
     total,
     HandleFetch,
+    perPage,
   } = props;
   const [pageIndex, setPageIndex] = useState(0);
 
@@ -131,12 +132,47 @@ const OrdersTable = (props) => {
       }
     });
   }
+  function onReject(orderId) {
+    Swal.fire({
+      title: t("alerts.needs.rejectAlerts.confirmation"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#339cdd",
+      confirmButtonText: t("alerts.needs.rejectAlerts.confirmButtonText"),
+      cancelButtonText: t("alerts.needs.rejectAlerts.cancelButtonText"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(
+            `https://api.hirari-iq.com/api/orders/reject/${orderId}`,
+            {},
+            config
+          )
+          .then(() => {
+            Swal.fire(
+              t("alerts.needs.rejectAlerts.success.title"),
+              t("alerts.needs.rejectAlerts.success.message"),
+              "success"
+            );
+            GetNewItem(Math.random());
+          })
+          .catch((error) => {
+            Swal.fire(
+              t("alerts.needs.rejectAlerts.error.title"),
+              t("alerts.needs.rejectAlerts.error.message"),
+              "error"
+            );
+          });
+      }
+    });
+  }
   const language = useLanguageStore((state) => state.language);
   const handlePageclick = (data) => {
     HandleFetch(data.selected + 1);
   };
   const showNextButton = currentPage !== total - 1;
-  const showPrevButton = currentPage !== 0;
+  const showPrevButton = currentPage !== 1 || currentPage !== 0;
 
   return (
     <Card extra={"w-full h-full sm:overflow-auto px-5"}>
@@ -208,44 +244,49 @@ const OrdersTable = (props) => {
                         </p>
                       );
                     } else if (cell.column.id === "status") {
-                      if (cell.value === "accept") {
-                        data = (
-                          <p className="text-lg font-medium text-green-600 ">
-                            {cell.value}
-                          </p>
-                        );
-                      } else {
-                        if (role == "admin" || role === "officer_eng") {
-                          data =
-                            cell.value !== "accept" ? (
-                              <div className="flex items-center gap-2">
-                                <button
-                                  onClick={() => onAccept(row.original.id)}
-                                  className="rounded-md bg-green-400 px-2 py-1 dark:text-black"
-                                >
-                                  {t(
-                                    "alerts.orders.acceptAlerts.buttons.accept"
-                                  )}
-                                </button>
-                                <button className="rounded-md bg-red-400 px-2 py-1 dark:text-black">
-                                  {t(
-                                    "alerts.orders.acceptAlerts.buttons.reject"
-                                  )}
-                                </button>
-                              </div>
-                            ) : (
-                              <p className="text-sm font-medium text-green-600 ">
-                                {cell.value}
-                              </p>
-                            );
-                        } else {
+                      if (cell.value === "accept" || cell.value === "reject") {
+                        if (cell.value === "accept") {
                           data = (
-                            <p className="text-lg font-medium text-[#FFA500] ">
-                              Pending
+                            <p className="text-md font-medium text-green-600">
+                              Accepted
+                            </p>
+                          );
+                        } else if (cell.value === "reject") {
+                          data = (
+                            <p className="text-md font-medium text-red-600">
+                              Rejected
                             </p>
                           );
                         }
+                      } else if (
+                        usr.role === "admin" ||
+                        usr.role === "officer_eng"
+                      ) {
+                        data = (
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => onAccept(row.original.id)}
+                              className="rounded-md bg-green-400 px-2 py-1 dark:text-black"
+                            >
+                              {t("alerts.needs.acceptAlerts.buttons.accept")}
+                            </button>
+                            <button
+                              onClick={() => onReject(row.original.id)}
+                              className="rounded-md bg-red-400 px-2 py-1 dark:text-black"
+                            >
+                              {t("alerts.needs.rejectAlerts.buttons.reject")}
+                            </button>
+                          </div>
+                        );
+                      } else {
+                        data = (
+                          <p className="text-lg font-medium text-[#FFA500]">
+                            Pending
+                          </p>
+                        );
                       }
+                    
+                       
                     } else if (cell.column.id === "user_info.name") {
                       data = (
                         <p className="text-sm font-medium text-black dark:text-white">
@@ -321,29 +362,102 @@ const OrdersTable = (props) => {
             })}
           </tbody>
         </table>
-        <ReactPaginate
-          breakLabel={<span className="mr-4">...</span>}
-          nextLabel={
-            showNextButton ? (
-              <span className="text-md flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
-                <BsChevronRight />
-              </span>
-            ) : null
-          }
-          onPageChange={handlePageclick}
-          pageRangeDisplayed={3}
-          pageCount={Math.ceil(total / 10)}
-          previousLabel={
-            showPrevButton ? (
-              <span className="text-md mr-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
-                <BsChevronLeft />
-              </span>
-            ) : null
-          }
-          containerClassName="flex items-center justify-center mt-8 mb-4"
-          pageClassName="block border- border-solid   w-10 h-10 flex items-center justify-center hover:bg-purple-700 rounded-md mr-4 "
-          activeClassName="bg-purple-700 text-white"
-        />
+        {tableData.length > 0 ? (
+          total > perPage && (
+            <ReactPaginate
+              breakLabel={<span className="mr-4">...</span>}
+              nextLabel={
+                showNextButton ? (
+                  <button className="text-md ml-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
+                    <BsChevronRight />
+                  </button>
+                ) : null
+              }
+              onPageChange={handlePageclick}
+              pageRangeDisplayed={3}
+              pageCount={Math.ceil(total / 10)}
+              previousLabel={
+                showPrevButton ? (
+                  <button className="text-md mr-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
+                    <BsChevronLeft />
+                  </button>
+                ) : null
+              }
+              containerClassName="flex items-center justify-center mt-8 mb-4"
+              pageClassName="block  border-solid h-10 w-10 hover:bg-indigo-700 rounded-md mx-1"
+              pageLinkClassName="h-10 w-10 mr-4 flex items-center justify-center"
+              activeClassName="bg-purple-700 text-white"
+            />
+          )
+        ) : (
+          <div className="mx-auto w-fit">
+            <div className="relative">
+              <svg
+                className="h-12 w-12 animate-spin text-indigo-400"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 4.75V6.25"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M17.1266 6.87347L16.0659 7.93413"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M19.25 12L17.75 12"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M17.1266 17.1265L16.0659 16.0659"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M12 17.75V19.25"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M7.9342 16.0659L6.87354 17.1265"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M6.25 12L4.75 12"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M7.9342 7.93413L6.87354 6.87347"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+        )}
       </div>
     </Card>
   );

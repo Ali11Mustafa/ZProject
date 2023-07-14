@@ -13,22 +13,18 @@ const NeedsDashboard = () => {
   const [pageNumber, setPageNumber] = useState(1);
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let userName = usr?.fullname;
-  let email = usr?.email;
-  let image = usr?.img;
-  let usrId = usr?.id;
   let token = usr?.token;
 
   const GetNewItem = (item) => {
     setNewItem(item);
-    //Math.random
   };
 
   const { needsTableColumns } = useNeedsTableColumns();
 
   useEffect(() => {
-    fetchData();
-  }, [newItem]);
+    const storedCurrentPage = currentPage;
+    fetchData(storedCurrentPage);
+  }, [newItem, currentPage]);
 
   const fetchData = (pageNumber = 1) => {
     const API = `https://api.hirari-iq.com/api/needs?page=${pageNumber}`;
@@ -42,8 +38,8 @@ const NeedsDashboard = () => {
 
       .then((response) => {
         setTotal(response.data.meta.total);
-        setCurrentPage(response.data.meta.currentPage);
-        setPerPage(response.data.meta.perPage);
+        setCurrentPage(pageNumber);
+        setPerPage(response.data.meta.per_page);
 
         let arrayNotDeleted = [];
         response.data.data.map((item) => {
@@ -77,6 +73,7 @@ const NeedsDashboard = () => {
             currentPage={currentPage}
             perPage={perPage}
             HandleFetch={HandleFetch}
+            setCurrentPage={setCurrentPage}
           />
         </div>
       </div>
