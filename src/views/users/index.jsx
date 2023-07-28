@@ -11,6 +11,7 @@ const ItemsDashboard = () => {
   const [perPage, setPerPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const GetNewItem = (item) => {
     setNewItem(item);
@@ -34,6 +35,8 @@ const ItemsDashboard = () => {
   };
   const FetchData = (pageNumber = 1) => {
     const API = `https://api.hirari-iq.com/api/users?page=${pageNumber}`;
+    setLoading(true);
+
     axios
       .get(API, config)
       .then((response) => {
@@ -45,10 +48,12 @@ const ItemsDashboard = () => {
         response.data.data.map((item) => {
           arrayNotDeleted.push(item);
         });
-
+        setLoading(false);
         setData(arrayNotDeleted);
       })
       .catch((error) => {
+        setLoading(false);
+
         console.error(error);
       });
   };
@@ -92,6 +97,7 @@ const ItemsDashboard = () => {
             currentPage={currentPage}
             perPage={perPage}
             HandleFetch={HandleFetch}
+            loading={loading}
           />
         </div>
       </div>

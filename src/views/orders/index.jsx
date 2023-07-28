@@ -10,6 +10,7 @@ const OrdersDashboard = () => {
   const [perPage, setPerPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const GetNewItem = (item) => {
     setNewItem(item);
@@ -32,7 +33,7 @@ const OrdersDashboard = () => {
   };
   const FetchData = (pageNumber = 1) => {
     const API = `https://api.hirari-iq.com/api/orders?page=${pageNumber}`;
-
+    setLoading(true);
     axios
       .get(API, config)
       .then((response) => {
@@ -46,10 +47,11 @@ const OrdersDashboard = () => {
             arrayNotDeleted.push(item);
           }
         });
-
+        setLoading(false);
         setOrders(arrayNotDeleted);
       })
       .catch((error) => {
+        setLoading(false);
         console.error(error);
       });
   };
@@ -71,6 +73,7 @@ const OrdersDashboard = () => {
             currentPage={currentPage}
             perPage={perPage}
             HandleFetch={HandleFetch}
+            loading={loading}
           />
         </div>
       </div>

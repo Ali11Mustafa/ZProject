@@ -17,6 +17,7 @@ import {
 import NewItem from "./NewItem";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import ReactPaginate from "react-paginate";
+import Spinner from "components/Spinner";
 
 const ItemsTable = (props) => {
   const {
@@ -27,6 +28,7 @@ const ItemsTable = (props) => {
     currentPage,
     HandleFetch,
     perPage,
+    loading,
   } = props;
   const [pageIndex, setPageIndex] = useState(0);
   const columns = useMemo(() => columnsData, [columnsData]);
@@ -50,7 +52,6 @@ const ItemsTable = (props) => {
   const { t } = useTranslation();
 
   const language = useLanguageStore((state) => state.language);
-
   function deleteMe(e) {
     Swal.fire({
       title: t("alerts.items.deleteAlerts.confirmation"),
@@ -148,177 +149,113 @@ const ItemsTable = (props) => {
               );
             })}
           </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row, index) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()} key={index}>
-                  {row.cells.map((cell, index) => {
-                    let data = "";
-                    if (cell.column.id === "name") {
-                      data = (
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.id === "remaining_item") {
-                      data = (
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.id === "type") {
-                      data = (
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {cell.value}
-                        </p>
-                      );
-                    } else if (cell.column.id === "actions") {
-                      data = (
-                        <div className="flex items-center gap-4">
-                          <button
-                            value={row.original.id}
-                            onClick={deleteMe}
-                            className="flex items-center gap-1 text-red-600"
-                          >
-                            <div
+          {loading ? ( // Check the loading state to show the spinner
+            <Spinner />
+          ) : data.length > 0 ? (
+            <tbody {...getTableBodyProps()}>
+              {page.map((row, index) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()} key={index}>
+                    {row.cells.map((cell, index) => {
+                      let data = "";
+                      if (cell.column.id === "name") {
+                        data = (
+                          <p className="text-sm font-medium text-black dark:text-white">
+                            {cell.value}
+                          </p>
+                        );
+                      } else if (cell.column.id === "remaining_item") {
+                        data = (
+                          <p className="text-sm font-medium text-black dark:text-white">
+                            {cell.value}
+                          </p>
+                        );
+                      } else if (cell.column.id === "type") {
+                        data = (
+                          <p className="text-sm font-medium text-black dark:text-white">
+                            {cell.value}
+                          </p>
+                        );
+                      } else if (cell.column.id === "actions") {
+                        data = (
+                          <div className="flex items-center gap-4">
+                            <button
                               value={row.original.id}
-                              className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
+                              onClick={deleteMe}
+                              className="flex items-center gap-1 text-red-600"
                             >
-                              <MdDeleteOutline value={row.original.id} />
-                            </div>
-                            <p
-                              value={row.original.id}
-                              className="text-start text-sm font-medium text-black dark:text-white"
+                              <div
+                                value={row.original.id}
+                                className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
+                              >
+                                <MdDeleteOutline value={row.original.id} />
+                              </div>
+                              <p
+                                value={row.original.id}
+                                className="text-start text-sm font-medium text-black dark:text-white"
+                              >
+                                {t("actions.delete")}
+                              </p>
+                            </button>
+                            <Link
+                              to={`/items/update/${row.original.id}`}
+                              className="flex items-center gap-1 text-green-600"
                             >
-                              {t("actions.delete")}
-                            </p>
-                          </button>
-                          <Link
-                            to={`/items/update/${row.original.id}`}
-                            className="flex items-center gap-1 text-green-600"
-                          >
-                            <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
-                              <FiEdit />
-                            </div>
-                            <p className="text-start text-sm font-medium text-black dark:text-white">
-                              {t("actions.update")}
-                            </p>
-                          </Link>
-                        </div>
-                      );
-                    }
+                              <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
+                                <FiEdit />
+                              </div>
+                              <p className="text-start text-sm font-medium text-black dark:text-white">
+                                {t("actions.update")}
+                              </p>
+                            </Link>
+                          </div>
+                        );
+                      }
 
-                    return (
-                      <td
-                        {...cell.getCellProps()}
-                        key={index}
-                        className="pt-[14px] pb-[16px] sm:text-[14px]"
-                      >
-                        {data}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
+                      return (
+                        <td
+                          {...cell.getCellProps()}
+                          key={index}
+                          className="pt-[14px] pb-[16px] sm:text-[14px]"
+                        >
+                          {data}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          ) : (
+            <p className="mx-center">No Data</p>
+          )}
         </table>
-        {tableData.length > 0 ? (
-          total > perPage && (
-            <ReactPaginate
-              breakLabel={<span className="mr-4">...</span>}
-              nextLabel={
-                showNextButton ? (
-                  <button className="text-md ml-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
-                    <BsChevronRight />
-                  </button>
-                ) : null
-              }
-              onPageChange={handlePageclick}
-              pageRangeDisplayed={3}
-              pageCount={Math.ceil(total / 10)}
-              previousLabel={
-                showPrevButton ? (
-                  <button className="text-md mr-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
-                    <BsChevronLeft />
-                  </button>
-                ) : null
-              }
-              containerClassName="flex items-center justify-center mt-8 mb-4"
-              pageClassName="block  border-solid h-10 w-10 hover:bg-indigo-700 rounded-md mx-1"
-              pageLinkClassName="h-10 w-10 mr-4 flex items-center justify-center"
-              activeClassName="bg-purple-700 text-white"
-            />
-          )
-        ) : (
-          <div className="mx-auto w-fit">
-            <div className="relative">
-              <svg
-                className="h-12 w-12 animate-spin text-indigo-400"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 4.75V6.25"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M17.1266 6.87347L16.0659 7.93413"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M19.25 12L17.75 12"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M17.1266 17.1265L16.0659 16.0659"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 17.75V19.25"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M7.9342 16.0659L6.87354 17.1265"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M6.25 12L4.75 12"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M7.9342 7.93413L6.87354 6.87347"
-                  stroke="currentColor"
-                  strokeWidth={1.5}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
+        {total > perPage && (
+          <ReactPaginate
+            breakLabel={<span className="mr-4">...</span>}
+            nextLabel={
+              showNextButton ? (
+                <button className="text-md ml-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
+                  <BsChevronRight />
+                </button>
+              ) : null
+            }
+            onPageChange={handlePageclick}
+            pageRangeDisplayed={3}
+            pageCount={Math.ceil(total / 10)}
+            previousLabel={
+              showPrevButton ? (
+                <button className="text-md mr-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
+                  <BsChevronLeft />
+                </button>
+              ) : null
+            }
+            containerClassName="flex items-center justify-center mt-8 mb-4"
+            pageClassName="block  border-solid h-10 w-10 hover:bg-indigo-700 rounded-md mx-1"
+            pageLinkClassName="h-10 w-10 mr-4 flex items-center justify-center"
+            activeClassName="bg-purple-700 text-white"
+          />
         )}
       </div>
     </Card>

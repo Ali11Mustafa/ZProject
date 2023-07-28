@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import NeedsTable from "./components/NeedsTable";
 import useNeedsTableColumns from "./variables/useNeedsTableColumns";
-import Pagination from "react-js-pagination";
 
 const NeedsDashboard = () => {
   const [needs, setNeeds] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [newItem, setNewItem] = useState("");
   const [total, setTotal] = useState(0);
   const [perPage, setPerPage] = useState(0);
@@ -28,7 +28,7 @@ const NeedsDashboard = () => {
 
   const fetchData = (pageNumber = 1) => {
     const API = `https://api.hirari-iq.com/api/needs?page=${pageNumber}`;
-
+    setLoading(true);
     axios
       .get(API, {
         headers: {
@@ -47,10 +47,11 @@ const NeedsDashboard = () => {
             arrayNotDeleted.push(item);
           }
         });
-
+        setLoading(false);
         setNeeds(arrayNotDeleted);
       })
       .catch((error) => {
+        setLoading(false);
         console.error(error);
       });
   };
@@ -74,6 +75,7 @@ const NeedsDashboard = () => {
             perPage={perPage}
             HandleFetch={HandleFetch}
             setCurrentPage={setCurrentPage}
+            loading={loading}
           />
         </div>
       </div>

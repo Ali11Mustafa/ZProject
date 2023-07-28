@@ -8,6 +8,7 @@ import { GoPackage } from "react-icons/go";
 import { BsFillBuildingsFill } from "react-icons/bs";
 import { SiMaterialdesignicons } from "react-icons/si";
 import { GiCrane } from "react-icons/gi";
+import { useTranslation } from "react-i18next";
 
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState([]);
@@ -17,13 +18,14 @@ function Dashboard() {
 
   const API = "https://api.hirari-iq.com/api/dashboard/counts";
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-
     axios
       .get(API, config)
       .then((data) => {
@@ -35,27 +37,27 @@ function Dashboard() {
 
             switch (key) {
               case "total_blocks":
-                title = "Total Buildings";
+                title = t("dashboardPage.total_blocks");
                 path = "/buildings";
                 icon = <BsFillBuildingsFill />;
                 break;
               case "total_needs":
-                title = "Total Needs";
+                title = t("dashboardPage.total_needs");
                 path = "/needs";
                 icon = <SiMaterialdesignicons />;
                 break;
               case "total_items":
-                title = "Total Items";
+                title = t("dashboardPage.total_items");
                 path = "/items";
                 icon = <GoPackage />;
                 break;
               case "total_orders":
-                title = "Total Orders";
+                title = t("dashboardPage.total_orders");
                 path = "/orders";
                 icon = <GiCrane />;
                 break;
               case "total_users":
-                title = "Total Users";
+                title = t("dashboardPage.total_users");
                 path = "/users";
                 icon = <FaUserFriends />;
                 break;
@@ -77,7 +79,7 @@ function Dashboard() {
         setDashboardData(modifiedData);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [t, token]);
 
   return (
     <div className="mx-auto max-w-[2000px]">
