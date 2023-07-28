@@ -96,7 +96,6 @@ const resources = {
           actions: "ACTIONS",
         },
       },
-
       newBuilding: {
         title: "Add New Building",
         name: "Name",
@@ -425,6 +424,13 @@ const resources = {
             },
           },
         },
+      },
+      dashboardPage: {
+        total_users: "Total Users",
+        total_blocks: "Total Buildings",
+        total_items: "Total Items",
+        total_needs: "Total Needs",
+        total_orders: "Total Orders",
       },
     },
   },
@@ -842,6 +848,13 @@ const resources = {
           },
         },
       },
+      dashboardPage: {
+        total_users: "کۆی گشتی بەکارهێنەرەکان",
+        total_blocks: "کۆی گشتی باڵەخانەکان",
+        total_items: "کۆی گشتی کەرەستەکان",
+        total_needs: "کۆی گشتی پێویستیەکان",
+        total_orders: "کۆی گشتی داواکاریەکان",
+      },
     },
   },
   ar: {
@@ -1192,7 +1205,6 @@ const resources = {
               reject: "رفض",
             },
           },
-          
         },
         users: {
           deleteAlerts: {
@@ -1225,6 +1237,13 @@ const resources = {
             },
           },
         },
+      },
+      dashboardPage: {
+        total_users: "إجمالي المستخدمين",
+        total_blocks: "إجمالي المباني",
+        total_items: "إجمالي العناصر",
+        total_needs: "إجمالي الاحتياجات",
+        total_orders: "إجمالي الطلبات",
       },
     },
   },
