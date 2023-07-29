@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Card from "components/card";
 import { useGlobalFilter, usePagination, useTable } from "react-table";
 import { MdDeleteOutline } from "react-icons/md";
@@ -113,6 +113,17 @@ const BuildingsTable = (props) => {
   const showNextButton = currentPage !== total - 1;
   const showPrevButton = currentPage !== 1 || currentPage !== 0;
 
+  const [expandedDescriptions, setExpandedDescriptions] = useState([]);
+
+  // Step 2: Function to toggle the expanded state for a description
+  const toggleDescriptionExpansion = (descriptionId) => {
+    setExpandedDescriptions((prevExpanded) =>
+      prevExpanded.includes(descriptionId)
+        ? prevExpanded.filter((id) => id !== descriptionId)
+        : [...prevExpanded, descriptionId]
+    );
+  };
+
   return (
     <Card extra={"w-full h-full sm:overflow-auto px-5"}>
       <header className="relative flex items-center justify-between pt-4">
@@ -122,7 +133,7 @@ const BuildingsTable = (props) => {
         <NewBuilding GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
+      <div className="mt-8 overflow-x-scroll ">
         <table
           {...getTableProps()}
           className="w-full"
@@ -164,13 +175,39 @@ const BuildingsTable = (props) => {
                         if (
                           cell.column.id === "name" ||
                           cell.column.id === "number_of_floor" ||
-                          cell.column.id === "apartment_per_floor" ||
-                          cell.column.id === "description"
+                          cell.column.id === "apartment_per_floor"
                         ) {
                           data = (
                             <p className="w-[100px] truncate text-sm font-medium text-black dark:text-white">
                               {cell.value}
                             </p>
+                          );
+                        } else if (cell.column.id === "description") {
+                          const descriptionText = cell.value;
+                          const descriptionId = row.original.id; // Assuming 'id' is the unique ID for each description row
+                          const isExpanded =
+                            expandedDescriptions.includes(descriptionId);
+
+                          data = (
+                            <div className="flex items-center">
+                              <span
+                                className={`${
+                                  !isExpanded
+                                    ? "w-[100px] overflow-hidden truncate"
+                                    : ""
+                                } text-sm font-medium text-black dark:text-white`}
+                              >
+                                {descriptionText}
+                              </span>
+                              <button
+                                className="text-sm text-gray-400"
+                                onClick={() =>
+                                  toggleDescriptionExpansion(descriptionId)
+                                }
+                              >
+                                {isExpanded ? "Show Less" : "Show More"}
+                              </button>
+                            </div>
                           );
                         } else if (cell.column.id === "level") {
                           data = (
