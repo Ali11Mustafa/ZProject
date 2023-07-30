@@ -233,7 +233,7 @@ const ItemsTable = (props) => {
               })}
             </tbody>
           ) : (
-            <p className="mx-center">No Data</p>
+            <p className="mx-center"></p>
           )}
         </table>
         {total > perPage && (
