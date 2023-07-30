@@ -194,7 +194,7 @@ const BuildingsTable = (props) => {
                                 className={`${
                                   !isExpanded
                                     ? "w-[100px] overflow-hidden truncate"
-                                    : ""
+                                    : "h-[100px] w-[200px] overflow-y-scroll break-words"
                                 } text-sm font-medium text-black dark:text-white`}
                               >
                                 {descriptionText}
