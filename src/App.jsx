@@ -16,6 +16,7 @@ import DashboardPage from "pages/DashboardPage";
 import UpdateNeed from "./views/needs/Pages/UpdateNeed";
 import UpdateOrder from "./views/orders/pages/UpdateOrder";
 import UpdateUser from "./views/users/pages/UpdateUser";
+import Contract from "views/apartments/Pages/Contract";
 
 export const useSearchStore = create((set) => ({
   searchText: "",
@@ -70,7 +71,11 @@ const App = () => {
       <Route path="/buildings" element={<Buildings />} />
       <Route path="/Login" element={<Auth />} />
       <Route path="/buildings/update/:buildingId" element={<Updateblock />} />
-      <Route path="/apartments/:buildingId" element={<Apartments />} />
+      <Route path="buildings/:buildingId/apartments" element={<Apartments />} />
+      <Route
+        path="buildings/:buildingId/apartments/:apartmentId/contract"
+        element={<Contract />}
+      />
       <Route path="/needs" element={<Needs />} />
       <Route path="/items" element={<Items />} />
       <Route path="/items/update/:itemId" element={<UpdateItem />} />

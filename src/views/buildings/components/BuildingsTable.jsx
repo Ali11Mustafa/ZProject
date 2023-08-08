@@ -248,7 +248,7 @@ const BuildingsTable = (props) => {
                                 </p>
                               </Link>
                               <Link
-                                to={`apartments/${row.original.id}`}
+                                to={`${row.original.id}/apartments`}
                                 className="flex items-center gap-1 text-blue-600"
                               >
                                 <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg">

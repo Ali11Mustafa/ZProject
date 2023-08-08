@@ -146,14 +146,13 @@ const resources = {
       apartmentsTable: {
         title: "Apartments",
         columns: {
-          buildingId: "BUILDING ID",
-          name: "NAME",
-          type: "TYPE",
-          numberOfInstallments: "NUMBER OF INSTALLMENTS",
-          pricePerInstallments: "PRICE PER INSTALLMENTS",
-          remaininPrice: "REMAINING PRICE",
-          totalPrice: "TOTAL PRICE",
-          description: "DESCRIPTION",
+          owner_name: "Owner's Name",
+          phone_number: "Phone Number",
+          contract_date: "Contract Date",
+          apartment_number: "Apartment's Number",
+          total: "Total",
+          apartment_price: "Apartment's Price",
+          remaining_money: "Remaining Money",
           actions: "ACTIONS",
         },
       },
@@ -161,6 +160,7 @@ const resources = {
         update: "Update",
         delete: "Delete",
         apartments: "Aparatments",
+        contract: "Contract",
       },
       langs: {
         en: "English",
@@ -176,6 +176,7 @@ const resources = {
         update: "Update",
         close: "Close",
         cancel: "Cancle",
+        submit: "Submit",
       },
       updatePage: {
         buildings: "Update Building",
@@ -511,14 +512,13 @@ const resources = {
       apartmentsTable: {
         title: "شوقەکان",
         columns: {
-          buildingId: "ئایدی باڵەخانە",
-          name: "ناو",
-          type: "جۆر",
-          numberOfInstallments: "ژمارەی قیستەکان",
-          pricePerInstallments: "نرخ بۆ هەر قیستێک",
-          remaininPrice: "نرخی ماوە",
-          totalPrice: "نرخی گشتی",
-          description: "باسکردن",
+          owner_name: "ناوی خاوەن",
+          phone_number: "ژمارەی مۆبایل",
+          contract_date: "بەرواری گرێبەست",
+          apartment_number: "ژمارەی شوقە",
+          total: "کۆی گشتی",
+          apartment_price: "نرخی شوقە",
+          remaining_money: "پارەی ماوە",
           actions: "کردارەکان",
         },
       },
@@ -584,6 +584,7 @@ const resources = {
         update: "نوێکردنەوە",
         delete: "سڕینەوە",
         apartments: "شوقەکان",
+        contract: "گرێبەست",
       },
       langs: {
         en: "ئینگلیزی",
@@ -599,6 +600,7 @@ const resources = {
         update: "نوێبکەوە",
         close: "دابخە",
         cancel: "پەشیمانبوونەوە",
+        submit: "ناردن",
       },
       updatePage: {
         buildings: "نوێکرندەوەی باڵەخانە",
@@ -934,15 +936,14 @@ const resources = {
       apartmentsTable: {
         title: "شقق",
         columns: {
-          buildingId: "معرف البناء",
-          name: "اسم",
-          type: "نوع",
-          numberOfInstallments: "عدد الأقساط",
-          pricePerInstallments: "السعر لكل قسط",
-          remaininPrice: "السعر المتبقي",
-          totalPrice: "السعر الكلي",
-          description: "وصف",
-          actions: "أجراءات",
+          owner_name: "اسم المالك",
+          phone_number: "رقم الهاتف",
+          contract_date: "تاريخ العقد",
+          apartment_number: "رقم الشقة",
+          total: "المجموع",
+          apartment_price: "سعر الشقة",
+          remaining_money: "المبلغ المتبقي",
+          actions: "الإجراءات",
         },
       },
       usersTable: {
@@ -1007,6 +1008,7 @@ const resources = {
         update: "تحديث",
         delete: "يمسح",
         apartments: "شقق سكنية",
+        contract: "العقد",
       },
 
       langs: {
@@ -1023,6 +1025,7 @@ const resources = {
         update: "تحديث",
         close: "يغلق",
         cancel: "يلغي",
+        submit: "ارسال",
       },
       updatePage: {
         buildings: "تحديث المبنى",
