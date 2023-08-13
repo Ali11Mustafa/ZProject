@@ -146,13 +146,12 @@ const resources = {
       apartmentsTable: {
         title: "Apartments",
         columns: {
-          owner_name: "Owner's Name",
-          phone_number: "Phone Number",
-          contract_date: "Contract Date",
           apartment_number: "Apartment's Number",
-          total: "Total",
-          apartment_price: "Apartment's Price",
-          remaining_money: "Remaining Money",
+          status: "Status",
+          building: "Building",
+          description: "Description",
+          floor: "Floor",
+          area: "Area",
           actions: "ACTIONS",
         },
       },
@@ -161,6 +160,7 @@ const resources = {
         delete: "Delete",
         apartments: "Aparatments",
         contract: "Contract",
+        view: "View",
       },
       langs: {
         en: "English",
@@ -585,6 +585,7 @@ const resources = {
         delete: "سڕینەوە",
         apartments: "شوقەکان",
         contract: "گرێبەست",
+        view: "بینین",
       },
       langs: {
         en: "ئینگلیزی",
@@ -1009,6 +1010,7 @@ const resources = {
         delete: "يمسح",
         apartments: "شقق سكنية",
         contract: "العقد",
+        view: "شاهده",
       },
 
       langs: {

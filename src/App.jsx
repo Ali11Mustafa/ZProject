@@ -17,6 +17,8 @@ import UpdateNeed from "./views/needs/Pages/UpdateNeed";
 import UpdateOrder from "./views/orders/pages/UpdateOrder";
 import UpdateUser from "./views/users/pages/UpdateUser";
 import Contract from "views/apartments/Pages/Contract";
+import View from "views/apartments/Pages/View";
+import Pdf from "views/apartments/components/Pdf";
 
 export const useSearchStore = create((set) => ({
   searchText: "",
@@ -47,6 +49,29 @@ export const useDarkModeStore = create((set) => ({
   toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
 }));
 
+export const usePdfStore = create((set) => ({
+  owner: "",
+  contractDate: "",
+  total: "",
+  remainingMoney: "",
+  phoneNumber: "",
+  apartmentPrice: "",
+  apartmentNumber: "",
+  building: "",
+  floor: "",
+  area: "",
+  setOwner: (owner) => set({ owner }),
+  setContractDate: (contractDate) => set({ contractDate }),
+  setTotal: (total) => set({ total }),
+  setRemainingMoney: (remainingMoney) => set({ remainingMoney }),
+  setPhoneNumber: (phoneNumber) => set({ phoneNumber }),
+  setApartmentPrice: (apartmentPrice) => set({ apartmentPrice }),
+  setApartmentNumber: (apartmentNumber) => set({ apartmentNumber }),
+  setBuilding: (building) => set({ building }),
+  setFloor: (floor) => set({ floor }),
+  setArea: (area) => set({ area }),
+}));
+
 const App = () => {
   const language = useLanguageStore((state) => state.language);
   const { i18n } = useTranslation();
@@ -73,6 +98,10 @@ const App = () => {
       <Route path="/buildings/update/:buildingId" element={<Updateblock />} />
       <Route path="buildings/:buildingId/apartments" element={<Apartments />} />
       <Route
+        path="buildings/:buildingId/apartments/:apartmentId/details"
+        element={<View />}
+      />
+      <Route
         path="buildings/:buildingId/apartments/:apartmentId/contract"
         element={<Contract />}
       />
@@ -85,6 +114,7 @@ const App = () => {
       <Route path="/needs/update/:needId" element={<UpdateNeed />} />
       <Route path="/users/update/:useId" element={<UpdateUser />} />
       <Route path="/orders/update/:orderId" element={<UpdateOrder />} />
+      <Route path="/download-pdf" element={<Pdf />} />
     </Routes>
   );
 };

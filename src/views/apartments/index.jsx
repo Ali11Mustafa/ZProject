@@ -2,6 +2,8 @@ import ApartmentsTable from "./components/ApartmentsTable";
 import apartmentsData from "./variables/apartmentsData.json";
 import { useParams } from "react-router-dom";
 import useApartmentsTableColumns from "./variables/useApartmentsTableColumns";
+import { usePdfStore } from "App";
+import { useEffect } from "react";
 
 const ApartmentsDashbaord = () => {
   const { apartmentsTableColumns } = useApartmentsTableColumns();
@@ -12,17 +14,26 @@ const ApartmentsDashbaord = () => {
   //   (apartment) => apartment.building_id === buildingId
   // );
 
+  const pdfStore = usePdfStore();
   const mockData = [
     {
-      owner_name: "Ali mustafa",
-      phone_number: "000120012",
-      contract_date: "9/2/2023",
-      apartment_number: "E2-1",
-      total: "39,000$",
-      apartment_price: "70,000$",
-      remaining_money: "20,900$",
+      apartment_number: "A102",
+      building: "ZA1",
+      description: "some text about the apartment",
+      floor: "12",
+      status: "sold",
+      area: "1000",
     },
   ];
+
+  // Update pdfStore values directly
+  useEffect(() => {
+    const data = mockData[0]; // Assuming you have only one data entry in mockData
+    pdfStore.setBuilding(data.building);
+    pdfStore.setApartmentNumber(data.apartment_number); // Corrected property name
+    pdfStore.setArea(data.area);
+    pdfStore.setFloor(data.floor);
+  }, []); // Empty dependency array to run the effect only once
 
   return (
     <div>

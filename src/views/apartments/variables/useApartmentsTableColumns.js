@@ -5,32 +5,28 @@ export default function useApartmentsTableColumns() {
 
   const apartmentsTableColumns = [
     {
-      Header: t("apartmentsTable.columns.owner_name"),
-      accessor: "owner_name",
-    },
-    {
-      Header: t("apartmentsTable.columns.phone_number"),
-      accessor: "phone_number",
-    },
-    {
-      Header: t("apartmentsTable.columns.contract_date"),
-      accessor: "contract_date",
-    },
-    {
       Header: t("apartmentsTable.columns.apartment_number"),
       accessor: "apartment_number",
     },
     {
-      Header: t("apartmentsTable.columns.total"),
-      accessor: "total",
+      Header: t("apartmentsTable.columns.building"),
+      accessor: "building",
     },
     {
-      Header: t("apartmentsTable.columns.apartment_price"),
-      accessor: "apartment_price",
+      Header: t("apartmentsTable.columns.description"),
+      accessor: "description",
     },
     {
-      Header: t("apartmentsTable.columns.remaining_money"),
-      accessor: "remaining_money",
+      Header: t("apartmentsTable.columns.floor"),
+      accessor: "floor",
+    },
+    {
+      Header: t("apartmentsTable.columns.area"),
+      accessor: "area",
+    },
+    {
+      Header: t("apartmentsTable.columns.status"),
+      accessor: "status",
     },
     {
       Header: t("apartmentsTable.columns.actions"),

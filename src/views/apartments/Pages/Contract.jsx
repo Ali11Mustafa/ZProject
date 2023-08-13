@@ -1,12 +1,9 @@
-import { useLanguageStore } from "App";
+import { useLanguageStore, usePdfStore } from "App";
 import Layout from "Layout";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-import { useState, useEffect } from "react";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import { useEffect } from "react";
 
 function Contract() {
   const { t } = useTranslation();
@@ -16,18 +13,29 @@ function Contract() {
     shouldUnregister: false,
   });
 
+  const pdfStore = usePdfStore();
+
   const formData = watch();
 
-  useEffect(() => {
-    if (formData) {
-      generatePDF(formData);
-    }
-  }, [formData]);
+  const handleDownloadPDF = () => {
+    // Setting the data in the store
+    pdfStore.setOwner(formData.owner_name);
+    pdfStore.setContractDate(formData.contract_date);
+    pdfStore.setTotal(formData.total);
+    pdfStore.setRemainingMoney(formData.remaining_money);
+    pdfStore.setPhoneNumber(formData.phone_number);
+    pdfStore.setApartmentPrice(formData.apartment_price);
+
+    // Open the link in a new tab
+    navigate("/download-pdf");
+  };
 
   useEffect(() => {
     const defaultDate = new Date();
     const formattedDefaultDate = defaultDate.toISOString().split("T")[0];
-    setValue("contract_date", formattedDefaultDate);
+    const dateParts = formattedDefaultDate.split("-");
+    const formattedDate = dateParts.join("/");
+    setValue("contract_date", formattedDate);
     setValue("owner_name", "Ali Mustafa");
     setValue("total", "12000");
     setValue("remaining_money", "800");
@@ -40,189 +48,7 @@ function Contract() {
     navigate(-1);
   }
 
-  function onSubmit(data) {
-    // generatePDF(data);
-  }
-
-  const [pdfData, setPdfData] = useState(null);
-
-  function generatePDF(formData) {
-    if (formData) {
-      const docDefinition = {
-        pageMargins: [40, 60, 40, 60], // Adjust margins as needed
-        background: function (currentPage, pageCount) {
-          return {
-            canvas: [
-              {
-                type: "linear",
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 595.28, // Replace with your desired height (A4 page height in points)
-                colorStops: [
-                  [0, "#08d8f3"], // Start color (top)
-                  [1, "#294fb6"], // End color (bottom)
-                ],
-              },
-              {
-                type: "linear",
-                x1: 0,
-                y1: 0,
-                x2: 515,
-                y2: 0,
-                colorStops: [
-                  [0, "#08d8f3"], // Start color (top)
-                  [1, "#294fb6"], // End color (bottom)
-                ],
-              },
-              {
-                type: "linear",
-                x1: 0,
-                y1: 585.28, // Replace with your desired height (A4 page height in points) - 10
-                x2: 515,
-                y2: 585.28, // Replace with your desired height (A4 page height in points) - 10
-                colorStops: [
-                  [0, "#08d8f3"], // Start color (top)
-                  [1, "#294fb6"], // End color (bottom)
-                ],
-              },
-            ],
-          };
-        },
-        content: [
-          {
-            text: "CONTRACT INFORMATION",
-            style: "header",
-            alignment: "center",
-          },
-          {
-            text: "Owner's Name:",
-            style: "label",
-          },
-          {
-            text: formData.owner_name,
-            style: "value",
-          },
-          {
-            text: "Phone Number:",
-            style: "label",
-          },
-          {
-            text: formData.phone_number,
-            style: "value",
-          },
-          {
-            text: "Contract Date:",
-            style: "label",
-          },
-          {
-            text: formData.contract_date,
-            style: "value",
-          },
-          {
-            text: "Apartment's Number:",
-            style: "label",
-          },
-          {
-            text: formData.apartment_number,
-            style: "value",
-          },
-          {
-            text: "Total:",
-            style: "label",
-          },
-          {
-            text: formData.total,
-            style: "value",
-          },
-          {
-            text: "Apartment's Price:",
-            style: "label",
-          },
-          {
-            text: formData.apartment_price,
-            style: "value",
-          },
-          {
-            text: "Remaining Money:",
-            style: "label",
-          },
-          {
-            text: formData.remaining_money,
-            style: "value",
-          },
-        ],
-        styles: {
-          header: {
-            fontSize: 18,
-            bold: true,
-            margin: [0, 20, 0, 10],
-            color: "#4905a1",
-          },
-          label: {
-            fontSize: 14,
-            bold: true,
-            margin: [0, 5],
-            color: "#0d151a",
-          },
-          value: {
-            fontSize: 14,
-            margin: [0, 5],
-            color: "#333333",
-          },
-        },
-        defaultStyle: {
-          alignment: "left",
-        },
-      };
-
-      const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-
-      // Add background color and watermark
-      pdfDocGenerator["background"] = [
-        {
-          canvas: [
-            {
-              type: "linear",
-              x1: 0,
-              y1: 585.28, // Replace with your desired height (A4 page height in points) - 10
-              x2: 515,
-              y2: 585.28, // Replace with your desired height (A4 page height in points) - 10
-              colorStops: [
-                [0, "#08d8f3"], // Start color (top)
-                [1, "#294fb6"], // End color (bottom)
-              ],
-            },
-          ],
-        },
-      ];
-
-      pdfDocGenerator["footer"] = function (currentPage, pageCount) {
-        return {
-          text: currentPage.toString() + " of " + pageCount,
-          alignment: "center",
-          fontSize: 10,
-          margin: [0, 10, 0, 0],
-        };
-      };
-
-      pdfDocGenerator.getBlob((blob) => {
-        setPdfData(blob);
-      });
-    }
-  }
-
-  function downloadPDF() {
-    if (pdfData) {
-      const pdfUrl = URL.createObjectURL(pdfData);
-      // Use the temporary URL for the download link
-      const a = document.createElement("a");
-      a.href = pdfUrl;
-      a.download = "generated_pdf.pdf";
-      a.click();
-      URL.revokeObjectURL(pdfUrl); // Release the object URL after download
-    }
-  }
+  function onSubmit(data) {}
 
   return (
     <Layout>
@@ -403,15 +229,12 @@ function Contract() {
                           language === "en" ? "justify-end" : "justify-start"
                         } rounded-b pt-5`}
                       >
-                        {pdfData && (
-                          <a
-                            href="#"
-                            onClick={downloadPDF}
-                            className="text-black dark:text-white"
-                          >
-                            Download PDF
-                          </a>
-                        )}
+                        <button
+                          onClick={handleDownloadPDF}
+                          className="font-bold text-black dark:text-white"
+                        >
+                          download
+                        </button>
                         <button
                           onClick={goBack}
                           className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
