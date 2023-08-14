@@ -129,6 +129,9 @@ import {
     const building = pdfStore.building;
     const floor = pdfStore.floor;
     const area = pdfStore.area;
+    const buyerAddress = pdfStore.buyerAddress;
+    const buyerIdNumber = pdfStore.buyerIdNumber;
+
   
     const styles = StyleSheet.create({
       viewer: {
@@ -426,7 +429,7 @@ import {
                     کارەکانی
                   </Text>
                   <Text>ژمارەی ناسنامە: </Text>
-                  <Text>ناونیشان / </Text>
+                  <Text>ناونیشان / هەولێر-گوندی ئارام</Text>
                   <Text>ژ. مۆبایل:</Text>
                 </View>
                 <View
@@ -441,8 +444,8 @@ import {
                     لایەنی دووەم
                   </Text>
                   <Text style={{}}> {owner} کڕیار: </Text>
-                  <Text style={{}}>ژمارەی ناسنامە: </Text>
-                  <Text style={{}}>ناونیشان / هەولێر - </Text>
+                  <Text style={{}}>{buyerIdNumber}ژمارەی ناسنامە: </Text>
+                  <Text style={{}}>{buyerAddress}ناونیشان / هەولێر - </Text>
                   <Text style={{}}> {phoneNumber} ژ. مۆبایل:</Text>
                 </View>
               </View>

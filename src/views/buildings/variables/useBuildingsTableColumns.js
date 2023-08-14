@@ -26,9 +26,14 @@ export default function useBuildingsTableColumns() {
       accessor: "apartment_per_floor",
     },
    
+    
     {
-      Header: t("buildingsTable.columns.description"),
-      accessor: "description",
+      Header: t("buildingsTable.columns.TotalSold"),
+      accessor: "TotalSold",
+    },
+    {
+      Header: t("buildingsTable.columns.TotalAvailable"),
+      accessor: "TotalAvailable",
     },
     {
       Header: t("buildingsTable.columns.level"),

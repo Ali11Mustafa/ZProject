@@ -20,6 +20,8 @@ function View() {
     total: "150000",
     apartment_price: "120000",
     remaining_money: "30000",
+    buyerAddress:"Erbil/mamostayan",
+    buyerIdNumber:"007621121"
   };
 
   const navigate = useNavigate();

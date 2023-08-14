@@ -133,7 +133,7 @@ const BuildingsTable = (props) => {
         <NewBuilding GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8 overflow-x-scroll ">
+      <div className="mt-8 ">
         <table
           {...getTableProps()}
           className="w-full"

@@ -60,6 +60,9 @@ export const usePdfStore = create((set) => ({
   building: "",
   floor: "",
   area: "",
+  buyerIdNumber:"",
+  buyerAddress:"",
+
   setOwner: (owner) => set({ owner }),
   setContractDate: (contractDate) => set({ contractDate }),
   setTotal: (total) => set({ total }),
@@ -70,6 +73,10 @@ export const usePdfStore = create((set) => ({
   setBuilding: (building) => set({ building }),
   setFloor: (floor) => set({ floor }),
   setArea: (area) => set({ area }),
+  setbuyerIdNumber:(buyerIdNumber)=>set({buyerIdNumber}),
+  setbuyerAddress:(buyerAddress)=>set({buyerAddress}),
+
+
 }));
 
 const App = () => {

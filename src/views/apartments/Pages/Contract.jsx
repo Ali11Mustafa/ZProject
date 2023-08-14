@@ -25,6 +25,10 @@ function Contract() {
     pdfStore.setRemainingMoney(formData.remaining_money);
     pdfStore.setPhoneNumber(formData.phone_number);
     pdfStore.setApartmentPrice(formData.apartment_price);
+    pdfStore.setApartmentPrice(formData.apartment_price);
+    pdfStore.setApartmentPrice(formData.apartment_price);
+    pdfStore.setbuyerIdNumber(formData.buyerIdNumber);
+    pdfStore.setbuyerAddress(formData.buyerAddress)
 
     // Open the link in a new tab
     navigate("/download-pdf");
@@ -42,6 +46,9 @@ function Contract() {
     setValue("phone_number", "122-122-122-1122");
     setValue("apartment_number", "12E-T");
     setValue("apartment_price", "72000");
+    setValue("buyerIdNumber", "007621121");
+    setValue("buyerAddress", "Erbil/mamostayan");
+
   }, []);
 
   function goBack() {
@@ -82,6 +89,7 @@ function Contract() {
                       )}
                     />
                   </div>
+                  
 
                   <div className="md:col-span-5">
                     <label
@@ -110,6 +118,49 @@ function Contract() {
                       )}
                     />
                   </div>
+                  <div className="md:col-span-3">
+                    <label
+                      className="font-medium text-gray-900 dark:text-white"
+                      htmlFor="contract_date"
+                    >
+                      Address
+                    </label>
+                    <Controller
+                      name="buyerAddress"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-gray-50 px-4 dark:border-none"
+                          placeholder=""
+                        />
+                      )}
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label
+                      className="font-medium text-gray-900 dark:text-white"
+                      htmlFor="apartment_number"
+                    >
+                     ID card NUmber       </label>
+                    <Controller
+                      name="buyerIdNumber"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-gray-50 px-4 dark:border-none"
+                          placeholder=""
+                        />
+                      )}
+                    />
+                  </div>
+
 
                   <div className="md:col-span-3">
                     <label

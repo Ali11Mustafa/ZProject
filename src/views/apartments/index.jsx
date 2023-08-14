@@ -23,6 +23,8 @@ const ApartmentsDashbaord = () => {
       floor: "12",
       status: "sold",
       area: "1000",
+      buyerAddress:"Erbil/mamostayan",
+    buyerIdNumber:"007621121"
     },
   ];
 
@@ -33,6 +35,8 @@ const ApartmentsDashbaord = () => {
     pdfStore.setApartmentNumber(data.apartment_number); // Corrected property name
     pdfStore.setArea(data.area);
     pdfStore.setFloor(data.floor);
+    pdfStore.setbuyerIdNumber(data.buyerAddress);
+    pdfStore.setbuyerAddress(data.buyerAddress);
   }, []); // Empty dependency array to run the effect only once
 
   return (
