@@ -134,20 +134,7 @@ export default function NewApartment({ GetNewItem }) {
                         <option value="B005">B005</option>
                       </select>
                     </div> */}
-                    <div className="mb-4">
-                      <label
-                        className="mb-2 block text-black dark:font-medium dark:text-white"
-                        htmlFor="description"
-                      >
-                        Description
-                      </label>
-                      <textarea
-                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
-                        id="description"
-                        name="description"
-                        {...register("description", { required: true })}
-                      />
-                    </div>
+                    
                     <div className="mb-4">
                       <label
                         className="mb-2 block text-black dark:font-medium dark:text-white"

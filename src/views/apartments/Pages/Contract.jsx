@@ -134,6 +134,7 @@ function Contract() {
       apartment_description: data.apartment_description.toString(),
       apartment_id: apartmentId.toString(),
     };
+    console.log(contractData);
 
     try {
       await axios.post(API, contractData, config);
@@ -417,27 +418,26 @@ function Contract() {
                   </div>
 
                   <div className="md:col-span-6">
-                    <label
-                      className="font-medium text-gray-900 dark:text-white"
-                      htmlFor="contract_date"
-                    >
-                      {t("contractForm.contractDate")}
-                    </label>
-                    <Controller
-                      name="contract_date"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="date"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
-                          placeholder=""
-                          disabled={isEditable}
-                        />
-                      )}
-                    />
-                  </div>
+  <label
+    className="font-medium text-gray-900 dark:text-white"
+    htmlFor="contract_date"
+  >
+    {t("contractForm.contractDate")}
+  </label>
+  <Controller
+    name="contract_date"
+    control={control}
+    defaultValue=""
+    render={({ field }) => (
+      <input
+        type="date" 
+        {...field}
+        className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
+        placeholder=""
+      />
+    )}
+  />
+</div>
 
                   <div className="md:col-span-3">
                     <label

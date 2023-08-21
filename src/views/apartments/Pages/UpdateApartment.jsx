@@ -70,7 +70,6 @@ function UpdateApartment() {
           setValue("apartment_number", apartment[0].apartment_number);
           setValue("floor_number", apartment[0].floor_number);
           setValue("area", apartment[0].area);
-          setValue("description", apartment[0].description);
         }
       })
       .catch((error) => {
@@ -120,20 +119,7 @@ function UpdateApartment() {
               {...register("apartment_number", { required: true })}
             />
           </div>
-          <div className="mb-4">
-            <label
-              className="mb-2 block font-medium text-gray-700"
-              htmlFor="description"
-            >
-              {t("updateApartment.description")}
-            </label>
-            <textarea
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
-              id="description"
-              name="description"
-              {...register("description", { required: true })}
-            />
-          </div>
+         
           <div className="mb-4">
             <label
               className="mb-2 block font-medium text-gray-700"
