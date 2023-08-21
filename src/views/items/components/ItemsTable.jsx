@@ -110,7 +110,7 @@ const ItemsTable = (props) => {
   const showPrevButton = currentPage !== 1 || currentPage !== 0;
 
   return (
-    <Card extra={"w-full h-full sm:overflow-auto px-5"}>
+    <Card extra={"w-full h-full sm:overflow-auto px-5 mt-10"}>
       <header className="relative flex items-center justify-between pt-4">
         <div className="text-xl font-semibold text-navy-700 dark:text-white">
           {t("itemsTable.title")}
@@ -118,7 +118,7 @@ const ItemsTable = (props) => {
         <NewItem GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
+      <div className="mt-8 ">
         <table
           {...getTableProps()}
           className="w-full"
@@ -133,7 +133,7 @@ const ItemsTable = (props) => {
                   {headerGroup.headers.map((column, index) => (
                     <th
                       {...column.getHeaderProps(column.getSortByToggleProps())}
-                      className={`border-b border-gray-200  pb-[10px] text-start  dark:!border-navy-700 ${
+                      className={`border-b !border-gray-300 pb-[10px] text-start  dark:!border-gray-700 ${
                         language !== "en"
                           ? "lg:pl-auto pl-[40px] text-right"
                           : "lg:pr-auto pr-[40px]"
@@ -233,11 +233,11 @@ const ItemsTable = (props) => {
         </table>
         {total > perPage && (
           <ReactPaginate
-            breakLabel={<span className="mr-4">...</span>}
+            breakLabel={<span className="mx-2">...</span>}
             nextLabel={
               showNextButton ? (
-                <button className="text-md ml-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
-                  <BsChevronRight />
+                <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+                  {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
                 </button>
               ) : null
             }
@@ -246,15 +246,15 @@ const ItemsTable = (props) => {
             pageCount={Math.ceil(total / 10)}
             previousLabel={
               showPrevButton ? (
-                <button className="text-md mr-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
-                  <BsChevronLeft />
+                <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+                  {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
                 </button>
               ) : null
             }
             containerClassName="flex items-center justify-center mt-8 mb-4"
-            pageClassName="block  border-solid h-10 w-10 hover:bg-indigo-700 rounded-md mx-1"
+            pageClassName="flex w-full h-full border-solid  items-center justify-center hover:bg-myPrimary rounded-md mx-2 "
             pageLinkClassName="h-10 w-10 mr-4 flex items-center justify-center"
-            activeClassName="bg-purple-700 text-white"
+            activeClassName="bg-myPrimary text-white"
           />
         )}
       </div>

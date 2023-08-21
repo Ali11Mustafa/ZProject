@@ -125,12 +125,14 @@ const BuildingsTable = (props) => {
   };
 
   return (
-    <Card extra={"w-full h-full sm:overflow-auto px-5"}>
+    <Card extra={"w-full h-full px-5 mt-7"}>
       <header className="relative flex items-center justify-between pt-4">
         <div className="text-xl font-semibold text-navy-700 dark:text-white">
           {t("buildingsTable.title")}
         </div>
-        <NewBuilding GetNewItem={GetNewItem} />
+        <div>
+          <NewBuilding GetNewItem={GetNewItem} />
+        </div>
       </header>
 
       <div className="mt-8 ">
@@ -146,7 +148,7 @@ const BuildingsTable = (props) => {
               <tr {...headerGroup.getHeaderGroupProps()} key={index}>
                 {headerGroup.headers.map((column, index) => (
                   <th
-                    className={`border-b border-gray-200 pb-[10px] text-start  dark:!border-navy-700 ${
+                    className={`border-b !border-gray-300 pb-[10px] text-start  dark:!border-gray-700 ${
                       language !== "en"
                         ? "lg:pl-auto pl-[40px] text-right"
                         : "lg:pr-auto pr-[40px]"
@@ -175,7 +177,9 @@ const BuildingsTable = (props) => {
                         if (
                           cell.column.id === "name" ||
                           cell.column.id === "number_of_floor" ||
-                          cell.column.id === "apartment_per_floor"
+                          cell.column.id === "apartment_per_floor" ||
+                          cell.column.id === "total_apartments" ||
+                          cell.column.id === "sold_apartments"
                         ) {
                           data = (
                             <p className="w-[100px] truncate text-sm font-medium text-black dark:text-white">
@@ -286,11 +290,11 @@ const BuildingsTable = (props) => {
 
         {total > perPage && (
           <ReactPaginate
-            breakLabel={<span className="mr-4">...</span>}
+            breakLabel={<span className="mx-2">...</span>}
             nextLabel={
               showNextButton ? (
-                <button className="text-md ml-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
-                  <BsChevronRight />
+                <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+                  {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
                 </button>
               ) : null
             }
@@ -299,15 +303,15 @@ const BuildingsTable = (props) => {
             pageCount={Math.ceil(total / 10)}
             previousLabel={
               showPrevButton ? (
-                <button className="text-md mr-4 flex h-10 w-10 items-center justify-center rounded-md bg-indigo-500 text-white hover:bg-indigo-600">
-                  <BsChevronLeft />
+                <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+                  {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
                 </button>
               ) : null
             }
             containerClassName="flex items-center justify-center mt-8 mb-4"
-            pageClassName="block  border-solid h-10 w-10 hover:bg-indigo-700 rounded-md mx-1"
-            pageLinkClassName="h-10 w-10 mr-4 flex items-center justify-center"
-            activeClassName="bg-purple-700 text-white"
+            pageClassName="flex w-full h-full border-solid  items-center justify-center hover:bg-myPrimary rounded-md mx-2 "
+            pageLinkClassName="h-10 w-full mr-4 flex items-center justify-center"
+            activeClassName="bg-myPrimary text-white"
           />
         )}
       </div>

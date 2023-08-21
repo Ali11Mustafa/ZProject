@@ -1,80 +1,338 @@
 import { useLanguageStore, usePdfStore } from "App";
 import Layout from "Layout";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
+import Pdf from "../components/Pdf";
+import { saveAs } from "file-saver";
+import axios from "axios";
+import { useMemo } from "react";
+import Card from "components/card";
 
 function Contract() {
   const { t } = useTranslation();
   const language = useLanguageStore((state) => state.language);
   const navigate = useNavigate();
+  const { apartmentId } = useParams();
   const { handleSubmit, control, setValue, watch } = useForm({
     shouldUnregister: false,
   });
 
-  const pdfStore = usePdfStore();
+  const [isReserved, setIsReserved] = useState(false);
+  const [contractData, setContractData] = useState(null);
 
-  const formData = watch();
-
-  const handleDownloadPDF = () => {
-    // Setting the data in the store
-    pdfStore.setOwner(formData.owner_name);
-    pdfStore.setContractDate(formData.contract_date);
-    pdfStore.setTotal(formData.total);
-    pdfStore.setRemainingMoney(formData.remaining_money);
-    pdfStore.setPhoneNumber(formData.phone_number);
-    pdfStore.setApartmentPrice(formData.apartment_price);
-    pdfStore.setApartmentPrice(formData.apartment_price);
-    pdfStore.setApartmentPrice(formData.apartment_price);
-    pdfStore.setbuyerIdNumber(formData.buyerIdNumber);
-    pdfStore.setbuyerAddress(formData.buyerAddress)
-
-    // Open the link in a new tab
-    navigate("/download-pdf");
-  };
-
-  useEffect(() => {
-    const defaultDate = new Date();
-    const formattedDefaultDate = defaultDate.toISOString().split("T")[0];
-    const dateParts = formattedDefaultDate.split("-");
-    const formattedDate = dateParts.join("/");
-    setValue("contract_date", formattedDate);
-    setValue("owner_name", "Ali Mustafa");
-    setValue("total", "12000");
-    setValue("remaining_money", "800");
-    setValue("phone_number", "122-122-122-1122");
-    setValue("apartment_number", "12E-T");
-    setValue("apartment_price", "72000");
-    setValue("buyerIdNumber", "007621121");
-    setValue("buyerAddress", "Erbil/mamostayan");
-
-  }, []);
+  const [isUpdatable, setIsUpdatable] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
+  const downloadPdfRef = useRef();
+  const [contractId, setContractId] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   function goBack() {
     navigate(-1);
   }
 
-  function onSubmit(data) {}
+  let usr = JSON.parse(sessionStorage.getItem("user"));
+  let token = usr?.token;
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const {
+    setOwnerName,
+    setContractDate,
+    setTotalPaymentPrice,
+    setPendingPrice,
+    setPhoneNumber,
+    setApartmentPrice,
+    setApartmentNumber,
+    setFloorNumber,
+    setArea,
+    setbuyerCardId,
+    setbuyerAddress,
+    ownerName,
+    contractDate,
+    totalPaymentPrice,
+    phoneNumber,
+    apartmentPrice,
+    apartmentNumber,
+    buildingName,
+    floorNumber,
+    area,
+    buyerCardId,
+    buyerAddress,
+    pendingPrice,
+  } = usePdfStore();
+
+  // get the contract data function
+  async function getContractData() {
+    const API = `https://api.hirari-iq.com/api/contract/${apartmentId}`;
+    axios
+      .get(API, config)
+      .then((response) => {
+        setIsReserved(true);
+        setIsEditable(true);
+        setContractData(response.data.data);
+        setContractId(response.data.data.id.toString());
+        if (response.data.data) {
+          setValue("contract_date", response.data.data.contract_date);
+          setValue("owner_name", response.data.data.owner_name);
+          setValue(
+            "total_payment_price",
+            response.data.data.total_payment_price
+          );
+          setValue("pending_price", response.data.data.pending_price);
+          setValue("phone_number", response.data.data.phone_number);
+          setValue(
+            "apartment_number",
+            response.data.data.apartment_detail?.apartment_number
+          );
+          setValue("apartment_price", response.data.data.apartment_price);
+          setValue("buyer_card_id", response.data.data.buyer_card_id);
+          setValue("buyer_address", response.data.data.buyer_address);
+          setValue("contract_type", response.data.data.contract_type.trim());
+          setValue(
+            "apartment_description",
+            response.data.data.apartment_description
+          );
+        }
+      })
+      .catch((error) => {
+        setIsReserved(false);
+        setIsEditable(false);
+      });
+  }
+
+  // get the contract on first render
+  useEffect(() => {
+    getContractData();
+  }, [apartmentId]);
+
+  async function onSubmit(data) {
+    const API = `https://api.hirari-iq.com/api/contract`;
+    setIsReserved(true);
+    setIsEditable(true);
+    setIsUpdatable(true);
+
+    const contractData = {
+      owner_name: data.owner_name.toString(),
+      phone_number: data.phone_number.toString(),
+      contract_date: data.contract_date.toString(),
+      apartment_price: data.apartment_price.toString(),
+      total_payment_price: data.total_payment_price.toString(),
+      pending_price: data.pending_price.toString(),
+      contract_type: data.contract_type.toString(),
+      buyer_address: data.buyer_address,
+      buyer_card_id: data.buyer_card_id.toString(),
+      apartment_description: data.apartment_description.toString(),
+      apartment_id: apartmentId.toString(),
+    };
+
+    try {
+      await axios.post(API, contractData, config);
+      const res = await axios.get(
+        `https://api.hirari-iq.com/api/contract/${apartmentId}`,
+        config
+      );
+      if (res) {
+        setIsSubmitted(true);
+        setApartmentNumber(res.data.data.apartment_detail.apartment_number);
+        setApartmentPrice(res.data.data.apartment_price);
+        setArea(res.data.data.apartment_detail.area);
+        setFloorNumber(res.data.data.apartment_detail.floor_number);
+        setContractDate(res.data.data.contract_date);
+        setOwnerName(res.data.data.owner_name);
+        setbuyerCardId(res.data.data.buyer_card_id);
+        setbuyerAddress(res.data.data.buyer_address);
+        setPhoneNumber(res.data.data.phone_number);
+        setTotalPaymentPrice(res.data.data.total_payment_price);
+        setPendingPrice(res.data.data.pending_price);
+      }
+    } catch (error) {
+      setIsSubmitted(false);
+      setIsReserved(false);
+      setIsUpdatable(false);
+      setIsEditable(false);
+      console.error(error);
+    }
+  }
+
+  function editContract() {
+    setIsUpdatable(true);
+    setIsEditable(false);
+  }
+
+  function deleteContract() {
+    setIsReserved(false);
+
+    const API = `https://api.hirari-iq.com/api/contract/${contractId}`;
+    axios
+      .delete(API, config)
+      .then((response) => {
+        console.log("deleted successfully");
+        goBack();
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsEditable(true);
+        setIsReserved(true);
+      });
+  }
+
+  async function updateContract() {
+    setIsEditable(true);
+    const data = watch();
+    const contractData = {
+      owner_name: data.owner_name.toString(),
+      phone_number: data.phone_number.toString(),
+      contract_date: data.contract_date.toString(),
+      apartment_price: data.apartment_price.toString(),
+      total_payment_price: data.total_payment_price.toString(),
+      pending_price: data.pending_price.toString(),
+      contract_type: data.contract_type.toString(),
+      buyer_address: data.buyer_address,
+      buyer_card_id: data.buyer_card_id.toString(),
+      apartment_description: data.apartment_description.toString(),
+      apartment_id: apartmentId.toString(),
+    };
+
+    setContractData((prevData) => ({
+      ...prevData,
+      owner_name: contractData.owner_name,
+      total_payment_price: contractData.total_payment_price,
+      pending_price: contractData.pending_price,
+      phone_number: contractData.phone_number,
+      contract_type: contractData.contract_type,
+      contract_date: contractData.contract_date,
+      buyer_card_id: contractData.buyer_card_id,
+      buyer_address: contractData.buyer_address,
+      apartment_price: contractData.apartment_price,
+    }));
+
+    const API = `https://api.hirari-iq.com/api/contract/${contractId}`;
+    try {
+      await axios.put(API, contractData, config);
+      setIsReserved(true);
+      console.log("updated successfully");
+      await waitForPdfButton();
+      downloadPdf();
+    } catch (error) {
+      console.error(error);
+      setIsEditable(false);
+    }
+  }
+
+  async function waitForPdfButton() {
+    return new Promise((resolve) => {
+      const checkInterval = setInterval(() => {
+        const downloadPdfButton = document.getElementById(
+          "pdf-download-button"
+        );
+        if (downloadPdfButton) {
+          clearInterval(checkInterval);
+          resolve();
+        }
+      }, 200);
+    });
+  }
+
+  useEffect(() => {
+    if (contractData) {
+      setApartmentNumber(contractData?.apartment_detail.apartment_number);
+      setApartmentPrice(contractData?.apartment_price);
+      setArea(contractData?.apartment_detail?.area);
+      setFloorNumber(contractData?.apartment_detail?.floor_number);
+      setContractDate(contractData?.contract_date);
+      setOwnerName(contractData?.owner_name);
+      setbuyerCardId(contractData?.buyer_card_id);
+      setbuyerAddress(contractData?.buyer_address);
+      setPhoneNumber(contractData?.phone_number);
+      setTotalPaymentPrice(contractData?.total_payment_price);
+      setPendingPrice(contractData?.pending_price);
+    }
+  }, [contractData]);
+
+  const memoizedData = useMemo(
+    () => ({
+      ownerName,
+      contractDate,
+      totalPaymentPrice,
+      pendingPrice,
+      phoneNumber,
+      apartmentPrice,
+      apartmentNumber,
+      buildingName,
+      floorNumber,
+      area,
+      buyerCardId,
+      buyerAddress,
+    }),
+    [
+      ownerName,
+      contractDate,
+      totalPaymentPrice,
+      pendingPrice,
+      phoneNumber,
+      apartmentPrice,
+      apartmentNumber,
+      buildingName,
+      floorNumber,
+      area,
+      buyerCardId,
+      buyerAddress,
+    ]
+  );
+
+  useEffect(() => {
+    if (isSubmitted && memoizedData) {
+      setTimeout(() => {
+        downloadPdf();
+      }, 200);
+    }
+  }, [memoizedData, isSubmitted]);
+
+  function downloadPdf() {
+    const downloadPdfButton = document.getElementById("pdf-download-button");
+    if (downloadPdfButton) {
+      downloadPdfButton.click();
+    }
+  }
 
   return (
     <Layout>
-      {/* component */}
-      <div className="flex items-center justify-center p-6">
-        <div className="container mx-auto max-w-screen-lg">
+      <Card
+        extra={
+          "w-full h-full sm:overflow-auto px-5 mt-10 p-5 mt-10 max-w-[1800px] mx-auto"
+        }
+      >
+        <header className="relative mb-10 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button onClick={goBack} className="text-lg text-white">
+              {language === "en" ? <BsArrowLeft /> : <BsArrowRight />}
+            </button>
+            <div className="text-xl font-semibold text-navy-700 dark:text-white">
+              {t("contract")}
+            </div>
+          </div>
+        </header>
+        <div className="container mx-auto max-w-screen-lg ">
           <div>
-            <h2 className="mb-5 text-xl font-semibold text-gray-900 dark:text-gray-400">
-              Contract{" "}
-            </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="mb-6">
               <div className="lg:col-span-2">
-                <div className="grid grid-cols-1 gap-4 gap-y-6 text-sm md:grid-cols-5">
-                  <div className="md:col-span-5">
+                <div className="grid grid-cols-1 gap-4 gap-y-6 text-sm md:grid-cols-6">
+                  <div className="md:col-span-4">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
                       htmlFor="owner_name"
                     >
-                      Owner's Name
+                      {t("contractForm.ownerName")}
                     </label>
                     <Controller
                       name="owner_name"
@@ -84,57 +342,8 @@ function Contract() {
                         <input
                           {...field}
                           type="text"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-gray-50 px-4 dark:border-none"
-                        />
-                      )}
-                    />
-                  </div>
-                  
-
-                  <div className="md:col-span-5">
-                    <label
-                      className="font-medium text-gray-900 dark:text-white"
-                      htmlFor="phone_number"
-                    >
-                      Phone Number
-                    </label>
-                    <Controller
-                      name="phone_number"
-                      control={control}
-                      defaultValue=""
-                      rules={{
-                        pattern: {
-                          value: /[0-9]{3}-[0-9]{3}-[0-9]{4}/,
-                          message:
-                            "Please enter your phone number in the format XXX-XXX-XXXX",
-                        },
-                      }}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-gray-50 px-4 dark:border-none"
-                        />
-                      )}
-                    />
-                  </div>
-                  <div className="md:col-span-3">
-                    <label
-                      className="font-medium text-gray-900 dark:text-white"
-                      htmlFor="contract_date"
-                    >
-                      Address
-                    </label>
-                    <Controller
-                      name="buyerAddress"
-                      control={control}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-gray-50 px-4 dark:border-none"
-                          placeholder=""
+                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
+                          disabled={isEditable}
                         />
                       )}
                     />
@@ -143,31 +352,76 @@ function Contract() {
                   <div className="md:col-span-2">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
-                      htmlFor="apartment_number"
+                      htmlFor="phone_number"
                     >
-                     ID card NUmber       </label>
+                      {t("contractForm.phoneNumber")}
+                    </label>
                     <Controller
-                      name="buyerIdNumber"
+                      name="phone_number"
                       control={control}
                       defaultValue=""
                       render={({ field }) => (
                         <input
                           {...field}
                           type="text"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-gray-50 px-4 dark:border-none"
+                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
+                          disabled={isEditable}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="md:col-span-4">
+                    <label
+                      className="font-medium text-gray-900 dark:text-white"
+                      htmlFor="buyer_address"
+                    >
+                      {t("contractForm.adress")}
+                    </label>
+                    <Controller
+                      name="buyer_address"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                           placeholder=""
+                          disabled={isEditable}
                         />
                       )}
                     />
                   </div>
 
+                  <div className="md:col-span-2">
+                    <label
+                      className="font-medium text-gray-900 dark:text-white"
+                      htmlFor="buyer_card_id"
+                    >
+                      {t("contractForm.idCardNumber")}
+                    </label>
+                    <Controller
+                      name="buyer_card_id"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
+                          placeholder=""
+                          disabled={isEditable}
+                        />
+                      )}
+                    />
+                  </div>
 
-                  <div className="md:col-span-3">
+                  <div className="md:col-span-6">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
                       htmlFor="contract_date"
                     >
-                      Contract Date
+                      {t("contractForm.contractDate")}
                     </label>
                     <Controller
                       name="contract_date"
@@ -177,19 +431,20 @@ function Contract() {
                         <input
                           {...field}
                           type="date"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-gray-50 px-4 dark:border-none"
+                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                           placeholder=""
+                          disabled={isEditable}
                         />
                       )}
                     />
                   </div>
 
-                  <div className="md:col-span-2">
+                  <div className="md:col-span-3">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
                       htmlFor="apartment_number"
                     >
-                      Apartment's Number
+                      {t("contractForm.apartmentNumber")}
                     </label>
                     <Controller
                       name="apartment_number"
@@ -199,30 +454,32 @@ function Contract() {
                         <input
                           {...field}
                           type="text"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-gray-50 px-4 dark:border-none"
+                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                           placeholder=""
+                          disabled={isEditable}
                         />
                       )}
                     />
                   </div>
 
-                  <div className="md:col-span-2">
+                  <div className="md:col-span-3">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
-                      htmlFor="total"
+                      htmlFor="total_payment_price"
                     >
-                      Total
+                      {t("contractForm.totalPaymentPrice")}
                     </label>
-                    <div className="mt-1 flex h-10 items-center rounded border border-gray-200 bg-gray-50">
+                    <div className="mt-1 flex h-10 items-center rounded ">
                       <Controller
-                        name="total"
+                        name="total_payment_price"
                         control={control}
                         defaultValue=""
                         render={({ field }) => (
                           <input
                             {...field}
                             type="number"
-                            className="bg-transparent w-full appearance-none border border-indigo-600 bg-gray-50 px-4 text-gray-800 outline-none dark:border-none"
+                            className="flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
+                            disabled={isEditable}
                           />
                         )}
                       />
@@ -234,9 +491,9 @@ function Contract() {
                       className="font-medium text-gray-900 dark:text-white"
                       htmlFor="apartment_price"
                     >
-                      Apartment's Price
+                      {t("contractForm.apartmentPrice")}
                     </label>
-                    <div className="mt-1 flex h-10 items-center rounded border border-indigo-600 bg-gray-50 dark:border-none">
+                    <div className="mt-1 flex h-10 items-center rounded ">
                       <Controller
                         name="apartment_price"
                         control={control}
@@ -245,59 +502,121 @@ function Contract() {
                           <input
                             {...field}
                             type="number"
-                            className="bg-transparent w-full appearance-none px-4 text-gray-800 outline-none"
+                            className="flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
+                            disabled={isEditable}
                           />
                         )}
                       />
                     </div>
                   </div>
 
-                  <div className="md:col-span-1">
+                  <div className="md:col-span-2">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
-                      htmlFor="remaining_money"
+                      htmlFor="pending_price"
                     >
-                      Remaining money
+                      {t("contractForm.pendingPrice")}
                     </label>
                     <Controller
-                      name="remaining_money"
+                      name="pending_price"
                       control={control}
                       defaultValue=""
                       render={({ field }) => (
                         <input
                           {...field}
                           type="number"
-                          className="mt-1 flex h-10 w-full items-center rounded border border-indigo-600 bg-gray-50 px-4 transition-all dark:border-none"
+                          className="mt-1 flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
+                          disabled={isEditable}
                         />
                       )}
                     />
                   </div>
-
-                  <div className="mt-6 text-right md:col-span-5">
+                  <div className="md:col-span-2">
+                    <label
+                      className="font-medium text-gray-900 dark:text-white"
+                      htmlFor="contract_type"
+                    >
+                      {t("contractForm.contractType")}
+                    </label>
+                    <Controller
+                      name="contract_type"
+                      control={control}
+                      defaultValue="cash"
+                      render={({ field }) => (
+                        <select
+                          {...field}
+                          className="mt-1 flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
+                          disabled={isEditable}
+                        >
+                          <option value="cash">Cash</option>
+                          <option value="installment">Installment</option>
+                        </select>
+                      )}
+                    />
+                  </div>
+                  <div className="md:col-span-6">
+                    <label
+                      className="font-medium text-gray-900 dark:text-white"
+                      htmlFor="apartment_description"
+                    >
+                      {t("contractForm.description")}
+                    </label>
+                    <Controller
+                      name="apartment_description"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <textarea
+                          {...field}
+                          rows={4}
+                          className="mt-1 flex w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
+                          disabled={isEditable}
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="mt-2 text-right md:col-span-6">
                     <div className="inline-flex items-end">
                       <div
-                        className={`border-slate-200 flex items-center ${
+                        className={`border-slate-200 flex items-center gap-4 ${
                           language === "en" ? "justify-end" : "justify-start"
                         } rounded-b pt-5`}
                       >
-                        <button
-                          onClick={handleDownloadPDF}
-                          className="font-bold text-black dark:text-white"
-                        >
-                          download
-                        </button>
-                        <button
-                          onClick={goBack}
-                          className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
-                        >
-                          {t("formButtons.cancel")}
-                        </button>
-                        <button
-                          type="submit"
-                          className="active:bg-emerald-600 mb-1 mr-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
-                        >
-                          {t("formButtons.submit")}
-                        </button>
+                        {!isReserved && (
+                          <button
+                            type="submit"
+                            className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                          >
+                            {t("formButtons.submit")}
+                          </button>
+                        )}
+                        {isUpdatable && !isEditable && (
+                          <button
+                            type="button"
+                            className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                            onClick={updateContract}
+                          >
+                            {t("formButtons.update")}
+                          </button>
+                        )}
+                        {isEditable && isReserved && (
+                          <button
+                            type="button"
+                            className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                            onClick={editContract}
+                          >
+                            {t("formButtons.edit")}
+                          </button>
+                        )}
+                        {isReserved && (
+                          <button
+                            type="button"
+                            className="active:bg-emerald-600 mb-1 mr-1 rounded bg-red-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                            onClick={deleteContract}
+                          >
+                            {t("formButtons.delete")}
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -306,6 +625,26 @@ function Contract() {
             </form>
           </div>
         </div>
+      </Card>
+      <div className="hidden">
+        <PDFDownloadLink
+          document={<Pdf contractPdfData={memoizedData} />}
+          filename="contract"
+        >
+          {({ loading }) =>
+            loading ? (
+              <span className="text-white">Loading Document...</span>
+            ) : (
+              <button
+                type="button"
+                id="pdf-download-button"
+                ref={downloadPdfRef}
+              >
+                Download Contract
+              </button>
+            )
+          }
+        </PDFDownloadLink>
       </div>
     </Layout>
   );

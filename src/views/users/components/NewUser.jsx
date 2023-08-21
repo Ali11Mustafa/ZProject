@@ -72,10 +72,10 @@ export default function NewItem({ GetNewItem }) {
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">
             <div className="relative  my-6 mx-auto w-[90%] max-w-xl">
               {/*content*/}
-              <div className="relative flex w-full flex-col rounded-lg border-0 bg-white outline-none focus:outline-none">
+              <div className="relative flex w-full flex-col rounded-lg border-0 bg-white outline-none focus:outline-none dark:bg-myCard">
                 {/*header*/}
-                <div className="border-slate-200 flex items-center justify-between rounded-t border-b border-solid p-5">
-                  <h3 className="text-xl font-semibold dark:text-indigo-900">
+                <div className="border-slate-200 flex items-center justify-between rounded-t py-5 px-7">
+                  <h3 className="text-xl font-semibold dark:text-[#778da9]">
                     {t("newUser.title")}
                   </h3>
                   <button
@@ -92,18 +92,18 @@ export default function NewItem({ GetNewItem }) {
                 {/*body*/}
                 <div>
                   <form
-                    className="mb-4 rounded bg-white px-8 pt-6 pb-8"
+                    className="mb-4 rounded bg-white px-8 pt-6 pb-8 dark:bg-myCard"
                     onSubmit={handleSubmit(onSubmit)}
                   >
                     <div className="mb-4">
                       <label
-                        className="mb-2 block font-medium text-gray-700"
+                        className="mb-2 block text-black dark:font-medium dark:text-white"
                         htmlFor="name"
                       >
                         {t("newItem.name")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
                         id="name"
                         type="text"
                         name="name"
@@ -112,13 +112,13 @@ export default function NewItem({ GetNewItem }) {
                     </div>
                     <div className="mb-4">
                       <label
-                        className="mb-2 block font-medium text-gray-700"
+                        className="mb-2 block text-black dark:font-medium dark:text-white"
                         htmlFor="email"
                       >
-                        {t("email")}
+                        {t("newUser.email")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
                         id="email"
                         type="text"
                         name="email"
@@ -127,13 +127,13 @@ export default function NewItem({ GetNewItem }) {
                     </div>
                     <div className="mb-4">
                       <label
-                        className="mb-2 block font-medium text-gray-700"
+                        className="mb-2 block text-black dark:font-medium dark:text-white"
                         htmlFor="password"
                       >
-                        {t("Password")}
+                        {t("newUser.password")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
                         id="password"
                         type="text"
                         name="password"
@@ -142,13 +142,13 @@ export default function NewItem({ GetNewItem }) {
                     </div>
                     <div className="mb-4">
                       <label
-                        className="mb-2 block font-medium text-gray-700"
+                        className="mb-2 block text-black dark:font-medium dark:text-white"
                         htmlFor="salary"
                       >
-                        {"salary"}
+                        {t("newUser.salary")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
                         id="salary"
                         type="text"
                         name="salry"
@@ -157,19 +157,19 @@ export default function NewItem({ GetNewItem }) {
                     </div>
                     <div className="mb-4">
                       <label
-                        className="mb-2 block font-medium text-gray-700"
+                        className="mb-2 block text-black dark:font-medium dark:text-white"
                         htmlFor="role"
                       >
-                        {"role"}
+                        {t("newUser.role")}
                       </label>
                       <select
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
                         id="role"
                         name="role"
                         type="text"
+                        defaultValue="admin"
                         {...register("role", { required: true })}
                       >
-                        <option value="">Select a Role</option>
                         <option value="admin">admin</option>
                         <option value="only_read">only red</option>
                         <option value="officer_eng">officer Eng</option>
@@ -185,13 +185,13 @@ export default function NewItem({ GetNewItem }) {
                       } rounded-b pt-5`}
                     >
                       <button
-                        className="background-transparent text-md mb-1 mr-1 px-6 py-2 font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                        className="background-transparent text-md mb-1 mr-1 px-6 py-2 font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
                         type="button"
                         onClick={() => setShowModal(false)}
                       >
                         {t("formButtons.close")}
                       </button>
-                      <button className="active:bg-emerald-600 mb-1 mr-1 rounded bg-indigo-700 px-6 py-3 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none">
+                      <button className="active:bg-emerald-600 mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none md:hover:bg-mySecondary">
                         {t("formButtons.create")}
                       </button>
                     </div>

@@ -2,13 +2,12 @@ import axios from "axios";
 import Widget from "components/widget/widget";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-import { FaUserFriends } from "react-icons/fa";
-import { GoPackage } from "react-icons/go";
-import { BsFillBuildingsFill } from "react-icons/bs";
-import { SiMaterialdesignicons } from "react-icons/si";
-import { GiCrane } from "react-icons/gi";
 import { useTranslation } from "react-i18next";
+import UsersSvg from "../../assets/icons/UsersSvg";
+import OrdersSvg from "../../assets/icons/OrdersSvg";
+import ItemsSvg from "../../assets/icons/itemsSvg";
+import BuildingsSvg from "../../assets/icons/BuildingsSvg";
+import NeedsSvg from "../../assets/icons/NeedsSvg";
 
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState([]);
@@ -34,37 +33,44 @@ function Dashboard() {
             let title = "";
             let icon = null;
             let path = "";
+            let hoverColor = "";
 
             switch (key) {
               case "total_blocks":
                 title = t("dashboardPage.total_blocks");
                 path = "/buildings";
-                icon = <BsFillBuildingsFill />;
+                icon = <BuildingsSvg />;
+                hoverColor = "#6a4c93";
                 break;
               case "total_needs":
                 title = t("dashboardPage.total_needs");
                 path = "/needs";
-                icon = <SiMaterialdesignicons />;
+                icon = <NeedsSvg />;
+                hoverColor = "#f4a259";
                 break;
               case "total_items":
                 title = t("dashboardPage.total_items");
                 path = "/items";
-                icon = <GoPackage />;
+                icon = <ItemsSvg />;
+                hoverColor = "#8cb369";
                 break;
               case "total_orders":
                 title = t("dashboardPage.total_orders");
                 path = "/orders";
-                icon = <GiCrane />;
+                icon = <OrdersSvg />;
+                hoverColor = "#ff595e";
                 break;
               case "total_users":
                 title = t("dashboardPage.total_users");
                 path = "/users";
-                icon = <FaUserFriends />;
+                icon = <UsersSvg />;
+                hoverColor = "#1982c4";
                 break;
               default:
                 title = "";
                 path = "";
                 icon = null;
+                hoverColor = "";
             }
 
             return {
@@ -73,6 +79,7 @@ function Dashboard() {
               subtitle: value,
               icon,
               path,
+              hoverColor,
             };
           }
         );
@@ -84,7 +91,7 @@ function Dashboard() {
   return (
     <div className="mx-auto max-w-[2000px]">
       {dashboardData.length > 0 ? (
-        <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {dashboardData.map((data) => {
             return (
               <Link to={data.path} key={data.id}>
@@ -92,6 +99,7 @@ function Dashboard() {
                   icon={data.icon}
                   title={data.title}
                   subtitle={data.subtitle}
+                  hoverColor={data.hoverColor}
                 />
               </Link>
             );

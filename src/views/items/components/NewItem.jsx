@@ -57,7 +57,7 @@ export default function NewItem({ GetNewItem }) {
 
   return (
     <>
-      {(role === "admin"||role==="engineer"||role==="officer_eng") && (
+      {(role === "admin" || role === "engineer" || role === "officer_eng") && (
         <button
           className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"
@@ -72,10 +72,10 @@ export default function NewItem({ GetNewItem }) {
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">
             <div className="relative  my-6 mx-auto w-[90%] max-w-xl">
               {/*content*/}
-              <div className="relative flex w-full flex-col rounded-lg border-0 bg-white outline-none focus:outline-none">
+              <div className="relative flex w-full flex-col rounded-lg border-0 bg-white outline-none focus:outline-none dark:bg-myCard">
                 {/*header*/}
-                <div className="border-slate-200 flex items-center justify-between rounded-t border-b border-solid p-5">
-                  <h3 className="text-xl font-semibold dark:text-indigo-900">
+                <div className="border-slate-200 flex items-center justify-between rounded-t py-5 px-7">
+                  <h3 className="text-xl font-semibold dark:text-[#778da9]">
                     {t("newItem.title")}
                   </h3>
                   <button
@@ -92,12 +92,12 @@ export default function NewItem({ GetNewItem }) {
                 {/*body*/}
                 <div>
                   <form
-                    className="mb-4 rounded bg-white px-8 pt-6 pb-8"
+                    className="mb-4 rounded bg-white px-8 pt-6 pb-8 dark:bg-myCard"
                     onSubmit={handleSubmit(onSubmit)}
                   >
                     <div className="mb-4">
                       <label
-                        className="mb-2 block font-medium text-gray-700"
+                        className="mb-2 block text-black dark:font-medium dark:text-white"
                         htmlFor="name"
                       >
                         {t("newItem.name")}
@@ -113,7 +113,7 @@ export default function NewItem({ GetNewItem }) {
                     </div>
                     <div className="mb-4">
                       <label
-                        className="mb-2 block font-medium text-gray-700"
+                        className="mb-2 block text-black dark:font-medium dark:text-white"
                         htmlFor="no_of_floors"
                       >
                         {t("newItem.type")}

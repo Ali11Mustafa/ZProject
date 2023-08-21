@@ -8,6 +8,7 @@ import useFetchItems from "hooks/useFetchItems";
 import axios from "axios";
 import React, { useState, useMemo, useEffect } from "react";
 import Swal from "sweetalert2";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
 function UpdateOrder() {
   const { orderId } = useParams();
@@ -92,10 +93,26 @@ function UpdateOrder() {
 
   return (
     <Layout>
-      <Card extra={"w-full h-full sm:overflow-auto px-5 p-5"}>
-        <h1 className="mb-10 text-xl font-bold">{t("updatePage.orders")}</h1>
+      <Card
+        extra={
+          "w-full h-full sm:overflow-auto px-5 mt-10 p-5 mt-10 max-w-[1800px] mx-auto"
+        }
+      >
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => {
+              navigate(-1);
+            }}
+            className="text-lg text-white"
+          >
+            {language === "en" ? <BsArrowLeft /> : <BsArrowRight />}
+          </button>
+          <div className="text-xl font-semibold text-navy-700 dark:text-white">
+            {t("updatePage.items")}
+          </div>
+        </div>
         <form
-          className="mb-4 rounded bg-white px-8 pt-6 pb-8"
+          className="mb-4 rounded px-8 pt-6 pb-8"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="mb-4">
@@ -106,7 +123,7 @@ function UpdateOrder() {
               {t("newOrder.order_amount")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="amount"
               name="amount"
               type="number"
@@ -121,7 +138,7 @@ function UpdateOrder() {
               {t("newOrder.order_unit")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="unit"
               name="unit"
               {...register("unit", { required: true })}
@@ -141,7 +158,7 @@ function UpdateOrder() {
               {t("newOrder.order_price")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="price"
               name="price"
               type="number"
@@ -156,7 +173,7 @@ function UpdateOrder() {
               {t("newOrder.item_name")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="name"
               name="name"
               type="string"
@@ -177,14 +194,19 @@ function UpdateOrder() {
               language === "en" ? "justify-end" : "justify-start"
             } rounded-b pt-5`}
           >
-            <Link
-              to="/orders"
-              className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+            <button
               type="button"
+              className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+              onClick={() => {
+                navigate(-1);
+              }}
             >
-              {t("formButtons.close")}
-            </Link>
-            <button className="active:bg-emerald-600 mb-1 mr-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none">
+              {t("formButtons.cancel")}
+            </button>
+            <button
+              type="submit"
+              className="active:bg-emerald-600 mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:bg-mySecondary hover:shadow-lg focus:outline-none"
+            >
               {t("formButtons.update")}
             </button>
           </div>

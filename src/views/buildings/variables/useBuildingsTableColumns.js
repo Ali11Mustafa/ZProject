@@ -1,14 +1,13 @@
 import { useTranslation } from "react-i18next";
 
 export default function useBuildingsTableColumns() {
-  const {t} = useTranslation()
-  let usr = JSON.parse(sessionStorage.getItem('user'));
+  const { t } = useTranslation();
+  let usr = JSON.parse(sessionStorage.getItem("user"));
   let userName = usr?.fullname;
   let email = usr?.email;
   let role = usr?.role;
   let usrId = usr?.id;
   let token = usr?.token;
-
 
   const buildingsTableColumns = [
     {
@@ -25,35 +24,27 @@ export default function useBuildingsTableColumns() {
       Header: t("buildingsTable.columns.apartmentsPerFloor"),
       accessor: "apartment_per_floor",
     },
-   
-    
+
     {
-      Header: t("buildingsTable.columns.TotalSold"),
-      accessor: "TotalSold",
+      Header: t("buildingsTable.columns.soldApartments"),
+      accessor: "sold_apartments",
     },
     {
-      Header: t("buildingsTable.columns.TotalAvailable"),
-      accessor: "TotalAvailable",
+      Header: t("buildingsTable.columns.totalApartments"),
+      accessor: "total_apartments",
     },
     {
       Header: t("buildingsTable.columns.level"),
       accessor: "level",
     },
-    
   ];
 
-  if(role==="admin"){
-    buildingsTableColumns.push(  {
+  if (role === "admin") {
+    buildingsTableColumns.push({
       Header: t("buildingsTable.columns.actions"),
       accessor: "actions",
-      
-    },
-   )
-    
+    });
   }
-  
 
-  
-
-  return {buildingsTableColumns}
+  return { buildingsTableColumns };
 }

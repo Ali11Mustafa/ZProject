@@ -1,43 +1,96 @@
 import ApartmentsTable from "./components/ApartmentsTable";
-import apartmentsData from "./variables/apartmentsData.json";
 import { useParams } from "react-router-dom";
 import useApartmentsTableColumns from "./variables/useApartmentsTableColumns";
 import { usePdfStore } from "App";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useBuildingData } from "App";
+import { useMemo } from "react";
 
 const ApartmentsDashbaord = () => {
   const { apartmentsTableColumns } = useApartmentsTableColumns();
 
-  // const { buildingId } = useParams();
+  const { buildingId } = useParams();
 
-  // const apartments = apartmentsData.filter(
-  //   (apartment) => apartment.building_id === buildingId
-  // );
+  let usr = JSON.parse(sessionStorage.getItem("user"));
+  let token = usr?.token;
 
-  const pdfStore = usePdfStore();
-  const mockData = [
-    {
-      apartment_number: "A102",
-      building: "ZA1",
-      description: "some text about the apartment",
-      floor: "12",
-      status: "sold",
-      area: "1000",
-      buyerAddress:"Erbil/mamostayan",
-    buyerIdNumber:"007621121"
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  ];
+  };
 
-  // Update pdfStore values directly
+  const [total, setTotal] = useState(0);
+  const [perPage, setPerPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [apartmentsData, setApartmentsData] = useState([]);
+  const [newItem, setNewItem] = useState("");
+
+  const GetNewItem = (item) => {
+    setNewItem(item);
+  };
+
   useEffect(() => {
-    const data = mockData[0]; // Assuming you have only one data entry in mockData
-    pdfStore.setBuilding(data.building);
-    pdfStore.setApartmentNumber(data.apartment_number); // Corrected property name
-    pdfStore.setArea(data.area);
-    pdfStore.setFloor(data.floor);
-    pdfStore.setbuyerIdNumber(data.buyerAddress);
-    pdfStore.setbuyerAddress(data.buyerAddress);
-  }, []); // Empty dependency array to run the effect only once
+    const storedCurrentPage = currentPage;
+    fetchData(storedCurrentPage);
+  }, [newItem, currentPage]);
+
+  const fetchData = (pageNumber = 1) => {
+    const API = `https://api.hirari-iq.com/api/apartments/${buildingId}?page=${pageNumber}`;
+    axios
+      .get(API, config)
+      .then((response) => {
+        setTotal(response.data.meta.total);
+        setCurrentPage(pageNumber);
+        setPerPage(response.data.meta.per_page);
+
+        let arrayNotDeleted = [];
+        response.data.data.map((item) => {
+          if (item.is_deleted !== 1) {
+            arrayNotDeleted.push(item);
+          }
+        });
+
+        setApartmentsData(arrayNotDeleted);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const HandleFetch = (pageNumber) => {
+    fetchData(pageNumber);
+  };
+
+  const { setBuildingName } = usePdfStore();
+  const [buildingNameFromApi, setBuildingNameFromApi] = useState("");
+  const memoizedBuildingName = useMemo(
+    () => ({
+      buildingNameFromApi,
+    }),
+    [buildingNameFromApi]
+  );
+
+  useEffect(() => {
+    const API = `https://api.hirari-iq.com/api/blocks`;
+    axios
+      .get(API, config)
+      .then((response) => {
+        const currentBuilding = response.data.data.filter(
+          (block) => block.id === buildingId
+        );
+        setBuildingNameFromApi(currentBuilding[0].name);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [buildingId]);
+
+  useEffect(() => {
+    setBuildingName(memoizedBuildingName.buildingNameFromApi);
+  }, [buildingNameFromApi]);
 
   return (
     <div>
@@ -46,7 +99,15 @@ const ApartmentsDashbaord = () => {
         <div>
           <ApartmentsTable
             columnsData={apartmentsTableColumns}
-            tableData={mockData}
+            tableData={apartmentsData}
+            setPageNumber={setPageNumber}
+            total={total}
+            pageNumber={pageNumber}
+            currentPage={currentPage}
+            perPage={perPage}
+            HandleFetch={HandleFetch}
+            setCurrentPage={setCurrentPage}
+            GetNewItem={GetNewItem}
           />
         </div>
       </div>

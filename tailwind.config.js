@@ -105,12 +105,8 @@ module.exports = {
         "98p": "98%",
         "99p": "99%",
       },
-      fontFamily: {
-        nunito: ["Nunito", "sans-serif"],
-        dm: ["DM Sans", "sans-serif"],
-      },
       boxShadow: {
-        "3xl": "14px 17px 40px 4px",
+        "3xl": "14px 17px 80px 4px",
         inset: "inset 0px 18px 22px",
         darkinset: "0px 4px 4px inset",
       },
@@ -136,12 +132,17 @@ module.exports = {
     },
     colors: () => ({
       white: "#ffffff",
-      black:'#000000',
+      black: "#000000",
       lightPrimary: "#F4F7FE",
       blueSecondary: "#4318FF",
       brandLinear: "#868CFF",
       lightGray: "#D3D3D3",
-      lightGrayy:"#6842EF",
+      lightGrayy: "#6842EF",
+      myCard: "#1b263b",
+      myBlak: "#0d1b2a",
+      myModal: "#0a0908",
+      myPrimary: "#4361ee",
+      mySecondary: "#4895ef",
       gray: {
         50: "#f8f9fa",
         100: "#edf2f7",

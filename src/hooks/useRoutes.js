@@ -4,17 +4,17 @@ import Buildings from "pages/Buildings";
 import Needs from "pages/Needs";
 import Items from "pages/Items";
 import Dashboard from "views/dashboard";
-
-import { BsFillBuildingFill } from "react-icons/bs";
-import { SiMaterialdesignicons } from "react-icons/si";
-import { GiCargoCrane } from "react-icons/gi";
 import { useTranslation } from "react-i18next";
-import { GoPackage } from "react-icons/go";
-import { TbUsers } from "react-icons/tb";
 import Orders from "pages/Orders";
 import Users from "pages/Users";
 import { useNavigate } from "react-router-dom";
-import DashIcon from "components/icons/DashIcon";
+import BuildingsSvg from "assets/icons/BuildingsSvg";
+import NeedsSvg from "assets/icons/NeedsSvg";
+import ItemsSvg from "assets/icons/itemsSvg";
+import OrdersSvg from "assets/icons/OrdersSvg";
+import UsersSvg from "assets/icons/UsersSvg";
+import HomeSvg from "assets/icons/HomeSvg";
+import { BsCart } from "react-icons/bs";
 
 function useRoutes() {
   const { t } = useTranslation();
@@ -31,13 +31,13 @@ function useRoutes() {
       {
         name: t("sidebarLinks.dashboard"),
         path: "/",
-        icon: <DashIcon className="h-4 w-4" />,
+        icon: <HomeSvg />,
         component: <Dashboard />,
       },
       {
         name: t("sidebarLinks.buildings"),
         path: "/buildings",
-        icon: <BsFillBuildingFill className="h-4 w-4" />,
+        icon: <BuildingsSvg />,
         component: <Buildings />,
       }
     );
@@ -46,19 +46,19 @@ function useRoutes() {
     {
       name: t("sidebarLinks.needs"),
       path: "/needs",
-      icon: <SiMaterialdesignicons className="h-4 w-4" />,
+      icon: <NeedsSvg />,
       component: <Needs />,
     },
     {
       name: t("sidebarLinks.items"),
       path: "/items",
-      icon: <GiCargoCrane className="h-4 w-4" />,
+      icon: <ItemsSvg />,
       component: <Items />,
     },
     {
       name: t("sidebarLinks.orders"),
       path: "/orders",
-      icon: <GoPackage className="h-4 w-4" />,
+      icon: <OrdersSvg />,
       component: <Orders />,
     }
   );
@@ -66,7 +66,7 @@ function useRoutes() {
     routes.push({
       name: t("sidebarLinks.users"),
       path: "/users",
-      icon: <TbUsers className="h-4 w-4" />,
+      icon: <UsersSvg />,
       component: <Users />,
     });
   }

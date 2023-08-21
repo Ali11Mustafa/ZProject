@@ -78,7 +78,7 @@ export default function SignIn({ userCredentials }) {
   return (
     <div className="flex h-full w-full items-center justify-center px-2">
       <form
-        className=" w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]"
+        className="mx-4 mt-[200px] w-full max-w-full flex-col items-center md:mx-0 md:mt-0 md:pl-4 lg:pl-0 xl:max-w-[420px]"
         onSubmit={handleSubmit(handleLogin)}
       >
         <h4 className="mb-10 text-center text-3xl font-medium text-navy-700 dark:text-white">
@@ -90,7 +90,6 @@ export default function SignIn({ userCredentials }) {
           variant="auth"
           extra="mb-3"
           label={t("signin.email")}
-          placeholder="Email"
           id="email"
           type="email"
           name="email"
@@ -102,7 +101,6 @@ export default function SignIn({ userCredentials }) {
           variant="auth"
           extra="mb-3"
           label={t("signin.password")}
-          placeholder="****"
           id="password"
           type="password"
           name="password"
@@ -113,7 +111,7 @@ export default function SignIn({ userCredentials }) {
           <div className="my-4 text-red-500">{errorMessage}</div>
         )}
         <button
-          className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+          className="linear mt-2 w-full rounded-md bg-myPrimary py-[12px] text-base font-medium text-white  transition duration-200   hover:bg-mySecondary "
           disabled={loading}
         >
           {loading ? (
@@ -145,8 +143,8 @@ export default function SignIn({ userCredentials }) {
           )}
         </button>
       </form>
-      <div className="absolute top-5 right-5 ">
-        <LangSelector />
+      <div className="absolute top-5 ">
+        <LangSelector dropdownPosition={true} />
       </div>
     </div>
   );

@@ -9,16 +9,8 @@ export default function useApartmentsTableColumns() {
       accessor: "apartment_number",
     },
     {
-      Header: t("apartmentsTable.columns.building"),
-      accessor: "building",
-    },
-    {
-      Header: t("apartmentsTable.columns.description"),
-      accessor: "description",
-    },
-    {
-      Header: t("apartmentsTable.columns.floor"),
-      accessor: "floor",
+      Header: t("apartmentsTable.columns.floor_number"),
+      accessor: "floor_number",
     },
     {
       Header: t("apartmentsTable.columns.area"),

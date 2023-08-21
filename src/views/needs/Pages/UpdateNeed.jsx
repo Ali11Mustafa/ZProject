@@ -8,6 +8,7 @@ import useFetchItems from "hooks/useFetchItems";
 import { useMemo, useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 
 function UpdateNeed() {
   const [itemNames, setNames] = useState([]);
@@ -140,10 +141,26 @@ function UpdateNeed() {
 
   return (
     <Layout>
-      <Card extra={"w-full h-full sm:overflow-auto px-5 p-5"}>
-        <h1 className="mb-10 text-xl font-bold">{t("updatePage.needs")}</h1>
+      <Card
+        extra={
+          "w-full h-full sm:overflow-auto px-5 mt-10 p-5 mt-10 max-w-[1800px] mx-auto"
+        }
+      >
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => {
+              navigate(-1);
+            }}
+            className="text-lg text-white"
+          >
+            {language === "en" ? <BsArrowLeft /> : <BsArrowRight />}
+          </button>
+          <div className="text-xl font-semibold text-navy-700 dark:text-white">
+            {t("updatePage.needs")}
+          </div>
+        </div>
         <form
-          className="mb-4 rounded bg-white px-8 pt-6 pb-8"
+          className="mb-4 rounded px-8 pt-6 pb-8"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="mb-4">
@@ -154,7 +171,7 @@ function UpdateNeed() {
               {t("newNeed.need_amount")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="need_amount"
               name="need_amount"
               type="text"
@@ -170,7 +187,7 @@ function UpdateNeed() {
               {t("newNeed.description")}
             </label>
             <textarea
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="description"
               name="description"
               type="text"
@@ -186,7 +203,7 @@ function UpdateNeed() {
               {t("newNeed.item_name")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="name"
               name="name"
               type="string"
@@ -208,7 +225,7 @@ function UpdateNeed() {
               {t("newNeed.item_type")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="type"
               name="type"
               {...register("type", { required: true })}
@@ -230,7 +247,7 @@ function UpdateNeed() {
               {t("newNeed.building")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="building"
               name="building"
               type="string"
@@ -250,14 +267,19 @@ function UpdateNeed() {
               language === "en" ? "justify-end" : "justify-start"
             } rounded-b pt-5`}
           >
-            <Link
-              to="/needs"
-              className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+            <button
               type="button"
+              className="background-transparent mb-1 mr-1 px-6 py-2 text-sm font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+              onClick={() => {
+                navigate(-1);
+              }}
             >
-              {t("formButtons.close")}
-            </Link>
-            <button className="active:bg-emerald-600 mb-1 mr-1 rounded bg-indigo-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none">
+              {t("formButtons.cancel")}
+            </button>
+            <button
+              type="submit"
+              className="active:bg-emerald-600 mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:bg-mySecondary hover:shadow-lg focus:outline-none"
+            >
               {t("formButtons.update")}
             </button>
           </div>

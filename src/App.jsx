@@ -8,7 +8,6 @@ import Needs from "pages/Needs";
 import Items from "pages/Items";
 import { useTranslation } from "react-i18next";
 import UpdateItem from "views/items/pages/UpdateItem";
-import DeleteItem from "views/items/pages/DeleteItem";
 import Updateblock from "views/buildings/Pages/Updateblock";
 import Orders from "pages/Orders";
 import Users from "pages/Users";
@@ -17,8 +16,8 @@ import UpdateNeed from "./views/needs/Pages/UpdateNeed";
 import UpdateOrder from "./views/orders/pages/UpdateOrder";
 import UpdateUser from "./views/users/pages/UpdateUser";
 import Contract from "views/apartments/Pages/Contract";
-import View from "views/apartments/Pages/View";
 import Pdf from "views/apartments/components/Pdf";
+import UpdateApartment from "views/apartments/Pages/UpdateApartment";
 
 export const useSearchStore = create((set) => ({
   searchText: "",
@@ -33,8 +32,12 @@ export const useAuthStore = create((set) => ({
 }));
 
 export const useLanguageStore = create((set) => ({
-  language: "en",
-  changeLanguage: (language) => set(() => ({ language: language })),
+  language: localStorage.getItem("language") || "en",
+  changeLanguage: (language) =>
+    set(() => {
+      localStorage.setItem("language", language);
+      return { language: language };
+    }),
 }));
 
 export const useItemsStore = create((set) => ({
@@ -45,38 +48,43 @@ export const useItemsStore = create((set) => ({
 }));
 
 export const useDarkModeStore = create((set) => ({
-  darkMode: true,
-  toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
+  darkMode: localStorage.getItem("darkMode") === "true",
+  toggleDarkMode: () =>
+    set((state) => {
+      const newDarkMode = !state.darkMode;
+      localStorage.setItem("darkMode", newDarkMode);
+      return { darkMode: newDarkMode };
+    }),
 }));
 
 export const usePdfStore = create((set) => ({
-  owner: "",
+  ownerName: "",
   contractDate: "",
-  total: "",
-  remainingMoney: "",
+  totalPaymentPrice: "",
+  pendingPrice: "",
   phoneNumber: "",
   apartmentPrice: "",
   apartmentNumber: "",
-  building: "",
-  floor: "",
+  buildingName: "",
+  floorNumber: "",
   area: "",
-  buyerIdNumber:"",
-  buyerAddress:"",
+  buyerCardId: "",
+  buyerAddress: "",
 
-  setOwner: (owner) => set({ owner }),
-  setContractDate: (contractDate) => set({ contractDate }),
-  setTotal: (total) => set({ total }),
-  setRemainingMoney: (remainingMoney) => set({ remainingMoney }),
-  setPhoneNumber: (phoneNumber) => set({ phoneNumber }),
-  setApartmentPrice: (apartmentPrice) => set({ apartmentPrice }),
-  setApartmentNumber: (apartmentNumber) => set({ apartmentNumber }),
-  setBuilding: (building) => set({ building }),
-  setFloor: (floor) => set({ floor }),
+  setOwnerName: (name) => set({ ownerName: name }),
+  setContractDate: (date) => set({ contractDate: date }),
+  setTotalPaymentPrice: (total) => set({ totalPaymentPrice: total }),
+  setPendingPrice: (pendingPrice) => set({ pendingPrice: pendingPrice }),
+  setPhoneNumber: (phoneNumber) => set({ phoneNumber: phoneNumber }),
+  setApartmentPrice: (apartmentPrice) =>
+    set({ apartmentPrice: apartmentPrice }),
+  setApartmentNumber: (apartmentNumber) =>
+    set({ apartmentNumber: apartmentNumber }),
+  setBuildingName: (buildingName) => set({ buildingName: buildingName }),
+  setFloorNumber: (floorNumber) => set({ floorNumber: floorNumber }),
   setArea: (area) => set({ area }),
-  setbuyerIdNumber:(buyerIdNumber)=>set({buyerIdNumber}),
-  setbuyerAddress:(buyerAddress)=>set({buyerAddress}),
-
-
+  setbuyerCardId: (buyerCardId) => set({ buyerCardId: buyerCardId }),
+  setbuyerAddress: (buyerAddress) => set({ buyerAddress: buyerAddress }),
 }));
 
 const App = () => {
@@ -85,6 +93,11 @@ const App = () => {
 
   useEffect(() => {
     i18n.changeLanguage(language);
+    if (language !== "en") {
+      document.querySelector("html").style.fontFamily = "Rudaw";
+    } else {
+      document.querySelector("html").style.fontFamily = "Nunito";
+    }
   }, [language, i18n]);
 
   const darkMode = useDarkModeStore((state) => state.darkMode);
@@ -97,6 +110,16 @@ const App = () => {
     }
   }, [darkMode]);
 
+  useEffect(() => {
+    useDarkModeStore.setState({
+      darkMode: localStorage.getItem("darkMode") === "true",
+    });
+
+    useLanguageStore.setState({
+      language: localStorage.getItem("language") || "en",
+    });
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<DashboardPage />} />
@@ -105,21 +128,20 @@ const App = () => {
       <Route path="/buildings/update/:buildingId" element={<Updateblock />} />
       <Route path="buildings/:buildingId/apartments" element={<Apartments />} />
       <Route
-        path="buildings/:buildingId/apartments/:apartmentId/details"
-        element={<View />}
-      />
-      <Route
         path="buildings/:buildingId/apartments/:apartmentId/contract"
         element={<Contract />}
+      />
+      <Route
+        path="buildings/:buildingId/apartments/:apartmentId/update"
+        element={<UpdateApartment />}
       />
       <Route path="/needs" element={<Needs />} />
       <Route path="/items" element={<Items />} />
       <Route path="/items/update/:itemId" element={<UpdateItem />} />
-      <Route path="/items/delete/:itemId" element={<DeleteItem />} />
       <Route path="/orders" element={<Orders />} />
       <Route path="/users" element={<Users />} />
       <Route path="/needs/update/:needId" element={<UpdateNeed />} />
-      <Route path="/users/update/:useId" element={<UpdateUser />} />
+      <Route path="/users/update/:userId" element={<UpdateUser />} />
       <Route path="/orders/update/:orderId" element={<UpdateOrder />} />
       <Route path="/download-pdf" element={<Pdf />} />
     </Routes>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Card from "components/card";
 
 import {
@@ -11,32 +11,46 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FiEdit } from "react-icons/fi";
 import { FaEye, FaFileContract } from "react-icons/fa";
 import NewApartment from "./NewApartment";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSearchStore } from "App";
 import { useTranslation } from "react-i18next";
 import { useLanguageStore } from "App";
 import axios from "axios";
 import { usePdfStore } from "App";
+import ReactPaginate from "react-paginate";
+import {
+  BsArrowLeft,
+  BsArrowRight,
+  BsChevronLeft,
+  BsChevronRight,
+} from "react-icons/bs";
+import Swal from "sweetalert2";
+import { IoArrowBackOutline } from "react-icons/io5";
 
 const ApartmentsTable = (props) => {
   const resetSearchText = useSearchStore((state) => state.resetSearchText);
   const searchText = useSearchStore((state) => state.searchText);
 
+  const navigate = useNavigate();
+  function goback() {
+    navigate(-1);
+  }
+
   useEffect(() => {
     resetSearchText();
   }, [resetSearchText]);
 
-  const { columnsData, tableData } = props;
+  const {
+    columnsData,
+    tableData,
+    total,
+    currentPage,
+    HandleFetch,
+    perPage,
+    GetNewItem,
+  } = props;
 
   const columns = useMemo(() => columnsData, [columnsData]);
-
-  // const filteredData = useMemo(
-  //   () =>
-  //     tableData.filter((item) =>
-  //       item.name.toLowerCase().includes(searchText.toLowerCase())
-  //     ),
-  //   [tableData, searchText]
-  // );
 
   const tableInstance = useTable(
     {
@@ -58,28 +72,82 @@ const ApartmentsTable = (props) => {
   } = tableInstance;
   initialState.pageSize = 11;
 
-  function handleDelete(rowId) {}
+  function handleDelete(apartmentId) {
+    Swal.fire({
+      title: t("alerts.buildings.deleteAlerts.confirmation"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: t("alerts.apartments.deleteAlerts.confirmButtonText"),
+      cancelButtonText: t("alerts.apartments.deleteAlerts.cancelButtonText"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(
+            `https://api.hirari-iq.com/api/apartments/${apartmentId}`,
 
-  function handleUpdate(rowId) {}
+            config
+          )
+          .then((response) => {
+            GetNewItem(Math.random());
+            Swal.fire(
+              t("alerts.apartments.deleteAlerts.success.title"),
+              t("alerts.apartments.deleteAlerts.success.message"),
+              "success"
+            );
+          })
+          .catch((error) => {
+            Swal.fire(
+              t("alerts.apartments.deleteAlerts.error.title"),
+              t("alerts.apartments.deleteAlerts.error.message"),
+              "error"
+            );
+          });
+      }
+    });
+  }
 
   const { t } = useTranslation();
 
   const language = useLanguageStore((state) => state.language);
-
-  const apartmentId = 1;
   const { buildingId } = useParams();
 
+  const handlePageclick = (data) => {
+    HandleFetch(data.selected + 1);
+  };
+  const showNextButton = currentPage !== total - 1;
+  const showPrevButton = currentPage !== 1 || currentPage !== 0;
+
+  let usr = JSON.parse(sessionStorage.getItem("user"));
+  let token = usr?.token;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  function goBack() {
+    navigate(-1);
+  }
+
   return (
-    <Card extra={"w-full h-full sm:overflow-auto px-5"}>
+    <Card extra={"w-full h-full sm:o px-5 mt-10 mt-10"}>
       <header className="relative flex items-center justify-between pt-4">
-        <div className="text-xl font-semibold text-navy-700 dark:text-white">
-          {t("apartmentsTable.title")}
+        <div className="flex items-center gap-2">
+          <button onClick={goBack} className="text-lg text-white">
+            {language === "en" ? <BsArrowLeft /> : <BsArrowRight />}
+          </button>
+          <div className="text-xl font-semibold text-navy-700 dark:text-white">
+            {t("apartmentsTable.title")}
+          </div>
         </div>
 
-        <NewApartment />
+        <NewApartment GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8 overflow-x-scroll xl:overflow-x-hidden">
+      <div className="mt-8 ">
         <table
           {...getTableProps()}
           className="w-full"
@@ -94,7 +162,7 @@ const ApartmentsTable = (props) => {
                   {headerGroup.headers.map((column, index) => (
                     <th
                       {...column.getHeaderProps(column.getSortByToggleProps())}
-                      className={`border-b border-gray-200  pb-[10px] text-start  dark:!border-navy-700 ${
+                      className={`border-b !border-gray-300 pb-[10px] text-start  dark:!border-gray-700 ${
                         language !== "en"
                           ? "lg:pl-auto pl-[40px] text-right"
                           : "lg:pr-auto pr-[40px]"
@@ -113,13 +181,11 @@ const ApartmentsTable = (props) => {
           <tbody {...getTableBodyProps()}>
             {page.map((row, index) => {
               prepareRow(row);
-              console.log(row.original);
               return (
                 <tr {...row.getRowProps()} key={index}>
                   {row.cells.map((cell, index) => {
                     let data = "";
                     if (cell.column.id === "apartment_number") {
-                      // pdfStore.setApartmentNumber(cell.value);
                       data = (
                         <div className="flex items-center gap-4">
                           <p className="text-sm font-medium text-black dark:text-white">
@@ -128,7 +194,6 @@ const ApartmentsTable = (props) => {
                         </div>
                       );
                     } else if (cell.column.id === "building") {
-                      // pdfStore.setBuilding(cell.value);
                       data = (
                         <div className="flex items-center">
                           <Link
@@ -139,15 +204,13 @@ const ApartmentsTable = (props) => {
                           </Link>
                         </div>
                       );
-                    } else if (cell.column.id === "floor") {
-                      // pdfStore.setFloor(cell.value);
+                    } else if (cell.column.id === "floor_number") {
                       data = (
                         <p className="text-sm font-medium text-black dark:text-white">
                           {cell.value}
                         </p>
                       );
                     } else if (cell.column.id === "area") {
-                      // pdfStore.setArea(cell.value);
                       data = (
                         <p className="text-sm font-medium text-black dark:text-white">
                           {cell.value}
@@ -170,7 +233,7 @@ const ApartmentsTable = (props) => {
                         <div className="flex items-center gap-4">
                           <button
                             className="flex items-center gap-1 text-red-600"
-                            onClick={() => handleDelete(row.id)}
+                            onClick={() => handleDelete(row.original.id)}
                           >
                             <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl ">
                               <MdDeleteOutline />
@@ -179,19 +242,19 @@ const ApartmentsTable = (props) => {
                               {t("actions.delete")}
                             </p>
                           </button>
-                          <button
+                          <Link
+                            to={`/buildings/${buildingId}/apartments/${row.original.id}/update`}
                             className="flex items-center gap-1 text-green-600"
-                            onClick={() => handleUpdate(row.original.id)}
                           >
-                            <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
+                            <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg">
                               <FiEdit />
                             </div>
                             <p className="text-start text-sm font-medium text-black dark:text-white">
                               {t("actions.update")}
                             </p>
-                          </button>
+                          </Link>
                           <Link
-                            to={`/buildings/${buildingId}/apartments/${apartmentId}/details`}
+                            to={`/buildings/${buildingId}/apartments/${row.original.id}/contract`}
                             className="flex items-center gap-1 text-green-600"
                           >
                             <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
@@ -219,6 +282,32 @@ const ApartmentsTable = (props) => {
             })}
           </tbody>
         </table>
+        {total > perPage && (
+          <ReactPaginate
+            breakLabel={<span className="mx-2">...</span>}
+            nextLabel={
+              showNextButton ? (
+                <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+                  {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
+                </button>
+              ) : null
+            }
+            onPageChange={handlePageclick}
+            pageRangeDisplayed={3}
+            pageCount={Math.ceil(total / 10)}
+            previousLabel={
+              showPrevButton ? (
+                <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+                  {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
+                </button>
+              ) : null
+            }
+            containerClassName="flex items-center justify-center mt-8 mb-4"
+            pageClassName="flex w-full h-full border-solid  items-center justify-center hover:bg-myPrimary rounded-md mx-2 "
+            pageLinkClassName="h-10 w-10 mr-4 flex items-center justify-center"
+            activeClassName="bg-myPrimary text-white"
+          />
+        )}
       </div>
     </Card>
   );

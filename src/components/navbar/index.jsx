@@ -4,6 +4,8 @@ import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import { useSearchStore, useDarkModeStore } from "App";
 import { useTranslation } from "react-i18next";
 import LangSelector from "components/langSelector/LangSelector";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { useLanguageStore } from "App";
 
 const Navbar = (props) => {
   const { onOpenSidenav } = props;
@@ -23,34 +25,30 @@ const Navbar = (props) => {
   const handleDarkModeToggle = () => {
     toggleDarkMode();
   };
-  let usr = JSON.parse(sessionStorage.getItem("user"));
-  let username = usr?.name;
 
+  const language = useLanguageStore((state) => state.language);
   return (
     <nav
-      className={`sticky top-4 z-40 flex flex-col  items-center gap-2 rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d] md:flex-row `}
+      className={`sticky top-4 z-40 flex  items-center  gap-2 rounded-xl bg-white p-2 shadow-md shadow-shadow-500 backdrop-blur-xl dark:bg-myCard md:mx-4 md:flex-row`}
     >
-      <h1 className="text-2xl font-bold text-white">{username}</h1>
-      <div className="relative ml-auto mt-[3px] flex h-[61px] w-fit flex-grow items-center justify-between gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500 dark:!bg-navy-800 dark:shadow-none md:flex-grow-0 md:gap-1 xl:gap-2">
-        <div className="flex h-full flex-1 items-center rounded-full bg-lightPrimary text-navy-700 dark:bg-navy-900 dark:text-white">
-          <p className="pl-3 pr-2 text-xl">
-            <FiSearch className="h-4 w-4 text-gray-400 dark:text-white" />
-          </p>
+      <h1 className="mx-5 hidden text-xl font-bold text-black dark:text-white md:block">
+        {t("zTower")}
+      </h1>
+      <div
+        className={`relative mt-[3px] flex h-[61px] w-fit flex-grow items-center justify-between  gap-2 rounded-full py-2 dark:shadow-none  ${
+          language === "en" ? "md:ml-auto" : "md:mr-auto"
+        } md:flex-grow-0 md:gap-1 xl:gap-2`}
+      >
+        <div className="flex h-full flex-1 items-center rounded-full  text-navy-700 dark:text-white md:w-[300px]">
           <input
             type="text"
             placeholder={`${t("search")}...`}
             value={searchText}
             onChange={handleSearch}
-            class="block h-full w-full rounded-full bg-lightPrimary text-sm font-medium text-navy-700 outline-none placeholder:!text-gray-400 dark:bg-navy-900 dark:text-white dark:placeholder:!text-white sm:w-fit"
+            className=" block h-full rounded-full   border border-gray-400 px-4 text-sm font-medium text-navy-700 outline-none placeholder:!text-gray-400 dark:bg-myCard dark:text-white  dark:placeholder:!text-white sm:w-fit md:!w-[300px]"
           />
         </div>
 
-        <span
-          className="flex cursor-pointer text-xl text-gray-600 dark:text-white xl:hidden"
-          onClick={onOpenSidenav}
-        >
-          <FiAlignJustify className="h-5 w-5" />
-        </span>
         <LangSelector />
         <button
           className="cursor-pointer px-2 text-gray-600"
@@ -65,6 +63,12 @@ const Navbar = (props) => {
               className={`h-4 w-4 ${darkMode ? "text-white" : "text-gray-700"}`}
             />
           )}
+        </button>
+        <button
+          className="flex cursor-pointer px-2 text-xl text-gray-600 dark:text-white lg:hidden"
+          onClick={onOpenSidenav}
+        >
+          <HiOutlineMenuAlt3 className="h-5 w-5" />
         </button>
       </div>
     </nav>

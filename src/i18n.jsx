@@ -4,8 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
-      "logo text part1": "Z",
-      "logo text part2": "Tower",
+      zTower: "Z Tower",
       sidebarLinks: {
         buildings: "Buildings",
         needs: "Needs",
@@ -15,6 +14,7 @@ const resources = {
         dashboard: "Dashboard",
       },
       dashboard: "Dashboard",
+      contract: "Contract",
       logout: "Logout",
       search: "Search",
       signin: {
@@ -23,6 +23,19 @@ const resources = {
         password: "Password",
         button: "Sign In",
       },
+      contractForm: {
+        ownerName: "Owner Name",
+        phoneNumber: "Phone Number",
+        adress: "Address",
+        idCardNumber: "ID Card Number",
+        contractDate: "Contract Date",
+        apartmentNumber: "Apartment Number",
+        totalPaymentPrice: "Total Payment Price",
+        pendingPrice: "Pending Price",
+        apartmentPrice: "Apartment Price",
+        contractType: "Contract Type",
+        description: "Description",
+      },
       buildingsTable: {
         title: "Buildings",
         columns: {
@@ -30,8 +43,8 @@ const resources = {
           numberOfFloors: "NUMBER OF FLOORS",
           apartmentsPerFloor: "APARTMENTS PER FLOOR",
           numberOfApartments: "NUMBER OF APARTMENTS",
-          TotalSold: "Total sold",
-          TotalAvailable:"Total Available",
+          soldApartments: "Sold Apartments",
+          totalApartments: "Total Apartments",
           level: "LEVEL",
           actions: "ACTIONS",
         },
@@ -151,7 +164,7 @@ const resources = {
           status: "Status",
           building: "Building",
           description: "Description",
-          floor: "Floor",
+          floor_number: "Floor Number",
           area: "Area",
           actions: "ACTIONS",
         },
@@ -178,12 +191,15 @@ const resources = {
         close: "Close",
         cancel: "Cancle",
         submit: "Submit",
+        edit: "Edit",
+        delete: "Delete",
       },
       updatePage: {
         buildings: "Update Building",
         needs: "Update Need",
         items: "Update Item",
         orders: "Update Order",
+        users: "Update User",
       },
       alerts: {
         buildings: {
@@ -211,6 +227,37 @@ const resources = {
           updateAlerts: {
             success: {
               title: "The building has been updated",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+        },
+        apartments: {
+          deleteAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Deleted!",
+              message: "Apartment has been deleted.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "Apartment was not deleted.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "New apartment has been created.",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "The apartment has been updated",
             },
             error: {
               title: "Something went wrong",
@@ -427,6 +474,13 @@ const resources = {
           },
         },
       },
+      updateApartment: {
+        title: "Update Apartment",
+        apartmentNumber: "Aapartment Number",
+        description: "Description",
+        floorNumber: "Floor Number",
+        area: "Area",
+      },
       dashboardPage: {
         total_users: "Total Users",
         total_blocks: "Total Buildings",
@@ -438,8 +492,7 @@ const resources = {
   },
   ku: {
     translation: {
-      "logo text part1": "زی",
-      "logo text part2": "تاوەر",
+      zTower: "زی تاوەر",
       sidebarLinks: {
         buildings: "باڵەخانەکان",
         needs: "پێداویستیەکان",
@@ -449,6 +502,7 @@ const resources = {
         dashboard: "داشبۆرد",
       },
       dashboard: "داشبۆرد",
+      contract: "گرێبەست",
       logout: "چوونە دەرەوە",
       search: "گەڕان",
       signin: {
@@ -456,6 +510,19 @@ const resources = {
         email: "ئیمەیڵ",
         password: "ژمارەی نهێنی",
         button: "بچۆ ژوورەوە",
+      },
+      contractForm: {
+        ownerName: "ناوی خاوەنەکەی",
+        phoneNumber: "ژمارەی تەلەفۆن",
+        adress: "ناونیشان",
+        idCardNumber: "ژمارەی کارتی ناسنامە",
+        contractDate: "بەرواری گرێبەست",
+        apartmentNumber: "ژمارەی شوقە",
+        totalPaymentPrice: "کۆی گشتی نرخی پارەدان",
+        pendingPrice: "نرخی چاوەڕوانکراو",
+        apartmentPrice: "نرخی شوقە",
+        contractType: "جۆری گرێبەست",
+        description: "باسکردن",
       },
       buildingsTable: {
         title: "باڵەخانەکان",
@@ -465,8 +532,8 @@ const resources = {
           apartmentsPerFloor: "ژمارەی شوقەکان بەپێی هەر نهۆمێک",
           numberOfApartments: "کۆی ژمارەی شوقەکان",
           description: "باسکردن",
-          TotalSold: "کۆی گشتی فرۆشراو",
-          TotalAvailable:"کۆی گشتی بەردەست",
+          soldApartments: "شوقە فرۆشراوەکان",
+          totalApartments: "کۆی گشتی شوقەکان",
           level: "ئاست",
           actions: "کردارەکان",
         },
@@ -515,13 +582,12 @@ const resources = {
       apartmentsTable: {
         title: "شوقەکان",
         columns: {
-          owner_name: "ناوی خاوەن",
-          phone_number: "ژمارەی مۆبایل",
-          contract_date: "بەرواری گرێبەست",
           apartment_number: "ژمارەی شوقە",
-          total: "کۆی گشتی",
-          apartment_price: "نرخی شوقە",
-          remaining_money: "پارەی ماوە",
+          status: "دۆخ",
+          building: "باڵەخانە",
+          description: "باسکردن",
+          floor_number: "ژمارەی نهۆم",
+          area: "ڕووبەر",
           actions: "کردارەکان",
         },
       },
@@ -605,12 +671,15 @@ const resources = {
         close: "دابخە",
         cancel: "پەشیمانبوونەوە",
         submit: "ناردن",
+        edit: "دەستکاریکردن",
+        delete: "سڕینەوە",
       },
       updatePage: {
         buildings: "نوێکرندەوەی باڵەخانە",
         needs: "نوێکردنەوەی پێداویستی",
         items: "نوێکردنەوەی کەرەستە",
         orders: "نوێکردنەوەی داواکاری",
+        users: "نوێکردنەوەی بەکارهێنەر",
       },
       alerts: {
         buildings: {
@@ -854,6 +923,16 @@ const resources = {
           },
         },
       },
+      updateApartment: {
+        title: "نوێکردنەوەی شوقە",
+        apartmentNumber: "ژمارەی شوقە",
+        description: "وەسف",
+        floorNumber: "ژمارەی نهۆم",
+        area: "ڕووبەر",
+      },
+      updateBlock: {
+        title: "نوێکردنەوەی باڵەخانە",
+      },
       dashboardPage: {
         total_users: "کۆی گشتی بەکارهێنەرەکان",
         total_blocks: "کۆی گشتی باڵەخانەکان",
@@ -865,17 +944,17 @@ const resources = {
   },
   ar: {
     translation: {
-      "logo text part1": "ز‌‌‌ى",
-      "logo text part2": "تاور",
+      zTower: "زي تاور",
       sidebarLinks: {
         buildings: "البنايات",
         needs: "الاحتياجات",
         items: "أغراض",
-        users: "المستعملون",
+        users: "المستخدمون",
         orders: "اوامر",
         dashboard: "داشبورد",
       },
       dashboard: "داشبورد",
+      contract: "عقد",
       logout: "تسجيل خروج",
       search: "يبحث",
       signin: {
@@ -884,6 +963,19 @@ const resources = {
         password: "كلمة المرور",
         button: "يدخل",
       },
+      contractForm: {
+        ownerName: "اسم المالك",
+        phoneNumber: "رقم التليفون",
+        adress: "عنوان",
+        idCardNumber: "رقم بطاقة الهوية",
+        contractDate: "تاريخ العقد",
+        apartmentNumber: "رقم الشقة",
+        totalPaymentPrice: "إجمالي سعر السداد",
+        pendingPrice: "السعر المعلق",
+        apartmentPrice: "سعر الشقة",
+        contractType: "نوع العقد",
+        description: "وصف",
+      },
       buildingsTable: {
         title: "البنايات",
         columns: {
@@ -891,8 +983,8 @@ const resources = {
           numberOfFloors: "عدد الطوابق",
           apartmentsPerFloor: "شقق في الطابق",
           numberOfApartments: "  عدد الشقق",
-          TotalSold: "إجمالي بيعها",
-          TotalAvailable:"مجموعه متاحة",
+          soldApartments: "إجمالي بيعها",
+          totalApartments: "مجموعه متاحة",
           level: "مستوى",
           actions: "أجراءات",
         },
@@ -939,20 +1031,19 @@ const resources = {
         },
       },
       apartmentsTable: {
-        title: "شقق",
+        title: "الشقق",
         columns: {
-          owner_name: "اسم المالك",
-          phone_number: "رقم الهاتف",
-          contract_date: "تاريخ العقد",
           apartment_number: "رقم الشقة",
-          total: "المجموع",
-          apartment_price: "سعر الشقة",
-          remaining_money: "المبلغ المتبقي",
+          status: "الحالة",
+          building: "المبنى",
+          description: "الوصف",
+          floor_number: "رقم الطابق",
+          area: "المساحة",
           actions: "الإجراءات",
         },
       },
       usersTable: {
-        title: "المستعملون",
+        title: "المستخدمون",
         columns: {
           username: "اسم المستخدم",
           email: "البريد الإلكتروني",
@@ -1016,7 +1107,16 @@ const resources = {
         contract: "العقد",
         view: "شاهده",
       },
-
+      updateApartment: {
+        title: "تحديث الشقة",
+        apartmentNumber: "رقم الشقة",
+        description: "الوصف",
+        floorNumber: "رقم الطابق",
+        area: "المنطقة",
+      },
+      updateBlock: {
+        title: "تحديث البینا",
+      },
       langs: {
         en: "الإنكليزية",
         ku: "الكردية",
@@ -1032,12 +1132,15 @@ const resources = {
         close: "يغلق",
         cancel: "يلغي",
         submit: "ارسال",
+        edit: "تعديل",
+        delete: "حذف",
       },
       updatePage: {
         buildings: "تحديث المبنى",
         needs: "تحديث الحاجة",
         items: "تحديث العنصر",
         orders: "تحديث الطلب",
+        users: "تحديث المستخدم",
       },
       alerts: {
         buildings: {
