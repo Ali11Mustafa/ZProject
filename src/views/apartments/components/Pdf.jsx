@@ -407,7 +407,7 @@ function Pdf({ contractPdfData }) {
               </Text>
               <Text style={{}}> {ownerName} کڕیار / </Text>
               <Text style={{}}>{buyerCardId}ژمارەی ناسنامە / </Text>
-              <Text style={{}}>{buyerAddress}ناونیشان / هەولێر - </Text>
+              <Text style={{}}>{buyerAddress}ناونیشان / </Text>
               <Text style={{}}> {phoneNumber} ژ. مۆبایل /</Text>
             </View>
           </View>
