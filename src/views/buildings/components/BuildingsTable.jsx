@@ -135,7 +135,7 @@ const BuildingsTable = (props) => {
         </div>
       </header>
 
-      <div className="mt-8 overflow-scroll">
+      <div className="mt-8">
         <table
           {...getTableProps()}
           className="w-full"

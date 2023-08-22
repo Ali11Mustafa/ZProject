@@ -150,7 +150,7 @@ const ApartmentsTable = (props) => {
         <NewApartment GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8 overflow-scroll">
+      <div className="mt-8 ">
         <table
           {...getTableProps()}
           className="w-full"

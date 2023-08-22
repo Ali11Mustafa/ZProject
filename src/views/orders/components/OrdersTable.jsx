@@ -185,7 +185,7 @@ const OrdersTable = (props) => {
         <NewOrder GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8 overflow-x-scroll overflow-y-scroll xl:overflow-x-hidden">
+      <div className="mt-8">
         <table
           {...getTableProps()}
           className="w-full"
