@@ -1,11 +1,8 @@
-import ApartmentsTable from "./components/ApartmentsTable";
-import { useParams } from "react-router-dom";
-import useApartmentsTableColumns from "./variables/useApartmentsTableColumns";
-import { usePdfStore } from "App";
-import { useEffect, useState } from "react";
 import axios from "axios";
-import { useBuildingData } from "App";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import ApartmentsTable from "./components/ApartmentsTable";
+import useApartmentsTableColumns from "./variables/useApartmentsTableColumns";
 
 const ApartmentsDashbaord = () => {
   const { apartmentsTableColumns } = useApartmentsTableColumns();
@@ -63,34 +60,6 @@ const ApartmentsDashbaord = () => {
   const HandleFetch = (pageNumber) => {
     fetchData(pageNumber);
   };
-
-  const { setBuildingName } = usePdfStore();
-  const [buildingNameFromApi, setBuildingNameFromApi] = useState("");
-  const memoizedBuildingName = useMemo(
-    () => ({
-      buildingNameFromApi,
-    }),
-    [buildingNameFromApi]
-  );
-
-  useEffect(() => {
-    const API = `https://api.hirari-iq.com/api/blocks`;
-    axios
-      .get(API, config)
-      .then((response) => {
-        const currentBuilding = response.data.data.filter(
-          (block) => block.id === buildingId
-        );
-        setBuildingNameFromApi(currentBuilding[0].name);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [buildingId]);
-
-  useEffect(() => {
-    setBuildingName(memoizedBuildingName.buildingNameFromApi);
-  }, [buildingNameFromApi]);
 
   return (
     <div>

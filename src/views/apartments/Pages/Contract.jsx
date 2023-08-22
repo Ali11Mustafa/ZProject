@@ -1,23 +1,21 @@
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useLanguageStore, usePdfStore } from "App";
 import Layout from "Layout";
-import { useTranslation } from "react-i18next";
-import { useNavigate, useParams } from "react-router-dom";
-import { useForm, Controller } from "react-hook-form";
-import { useEffect, useRef, useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
-import Pdf from "../components/Pdf";
-import { saveAs } from "file-saver";
 import axios from "axios";
-import { useMemo } from "react";
 import Card from "components/card";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
+import Pdf from "../components/Pdf";
 
 function Contract() {
   const { t } = useTranslation();
   const language = useLanguageStore((state) => state.language);
   const navigate = useNavigate();
-  const { apartmentId } = useParams();
+  const { apartmentId, buildingId } = useParams();
   const { handleSubmit, control, setValue, watch } = useForm({
     shouldUnregister: false,
   });
@@ -30,6 +28,8 @@ function Contract() {
   const downloadPdfRef = useRef();
   const [contractId, setContractId] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isOnHold, setIsOnHold] = useState(false);
+  const [isSold, setIsSold] = useState(false);
 
   function goBack() {
     navigate(-1);
@@ -57,6 +57,7 @@ function Contract() {
     setArea,
     setbuyerCardId,
     setbuyerAddress,
+    setBuildingName,
     ownerName,
     contractDate,
     totalPaymentPrice,
@@ -71,6 +72,80 @@ function Contract() {
     pendingPrice,
   } = usePdfStore();
 
+  useEffect(() => {
+    const API = `https://api.hirari-iq.com/api/blocks`;
+    axios
+      .get(API, config)
+      .then((response) => {
+        const currentBuilding = response.data.data.filter(
+          (block) => block.id === buildingId
+        );
+        if (currentBuilding) {
+          setBuildingName(currentBuilding[0]?.name);
+        } else {
+          setBuildingName("");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [buildingId]);
+
+  function onHold() {
+    const API = `https://api.hirari-iq.com/api/apartments/${apartmentId}/on_hold`;
+    axios
+      .put(API, config)
+      .then((response) => {
+        setIsOnHold(true);
+        setIsEditable(true);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsOnHold(false);
+        setIsEditable(false);
+      });
+  }
+
+  function unHold() {
+    const API = `https://api.hirari-iq.com/api/apartments/${apartmentId}/un_hold`;
+    axios
+      .put(API, config)
+      .then((response) => {
+        setIsOnHold(false);
+        setIsEditable(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsOnHold(true);
+        setIsEditable(true);
+      });
+  }
+
+  useEffect(() => {
+    const API = `https://api.hirari-iq.com/api/apartments/${apartmentId}`;
+    axios
+      .put(API, config)
+      .then((response) => {
+        const apartmentDetail = response.data.data;
+        // is on hold
+        if (apartmentDetail.status === "onHold") {
+          setIsOnHold(true);
+        } else {
+          setIsOnHold(false);
+        }
+
+        // is sold
+        if (apartmentDetail.status === "notAvailabe") {
+          setIsSold(true);
+        } else {
+          setIsSold(false);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [apartmentId]);
+
   // get the contract data function
   async function getContractData() {
     const API = `https://api.hirari-iq.com/api/contract/${apartmentId}`;
@@ -81,6 +156,7 @@ function Contract() {
         setIsEditable(true);
         setContractData(response.data.data);
         setContractId(response.data.data.id.toString());
+
         if (response.data.data) {
           setValue("contract_date", response.data.data.contract_date);
           setValue("owner_name", response.data.data.owner_name);
@@ -134,7 +210,6 @@ function Contract() {
       apartment_description: data.apartment_description.toString(),
       apartment_id: apartmentId.toString(),
     };
-    console.log(contractData);
 
     try {
       await axios.post(API, contractData, config);
@@ -155,13 +230,29 @@ function Contract() {
         setPhoneNumber(res.data.data.phone_number);
         setTotalPaymentPrice(res.data.data.total_payment_price);
         setPendingPrice(res.data.data.pending_price);
+        setIsSold(true);
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: t("alerts.contract.addAlerts.success.title"),
+          showConfirmButton: true,
+          timer: 1500,
+        });
       }
     } catch (error) {
       setIsSubmitted(false);
       setIsReserved(false);
       setIsUpdatable(false);
       setIsEditable(false);
-      console.error(error);
+      setIsSold(false);
+
+      Swal.fire({
+        position: "top-center",
+        icon: "error",
+        title: t("alerts.contract.addAlerts.error.title"),
+        showConfirmButton: true,
+        timer: 1500,
+      });
     }
   }
 
@@ -174,17 +265,38 @@ function Contract() {
     setIsReserved(false);
 
     const API = `https://api.hirari-iq.com/api/contract/${contractId}`;
-    axios
-      .delete(API, config)
-      .then((response) => {
-        console.log("deleted successfully");
-        goBack();
-      })
-      .catch((error) => {
-        console.error(error);
-        setIsEditable(true);
-        setIsReserved(true);
-      });
+    Swal.fire({
+      title: t("alerts.buildings.deleteAlerts.confirmation"),
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: t("alerts.contract.deleteAlerts.confirmButtonText"),
+      cancelButtonText: t("alerts.contract.deleteAlerts.cancelButtonText"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(API, config)
+          .then((response) => {
+            goBack();
+            Swal.fire(
+              t("alerts.contract.deleteAlerts.success.title"),
+              t("alerts.contract.deleteAlerts.success.message"),
+              "success"
+            );
+          })
+          .catch((error) => {
+            console.error(error);
+            setIsEditable(true);
+            setIsReserved(true);
+            Swal.fire(
+              t("alerts.contract.deleteAlerts.error.title"),
+              t("alerts.contract.deleteAlerts.error.message"),
+              "error"
+            );
+          });
+      }
+    });
   }
 
   async function updateContract() {
@@ -221,12 +333,25 @@ function Contract() {
     try {
       await axios.put(API, contractData, config);
       setIsReserved(true);
-      console.log("updated successfully");
       await waitForPdfButton();
       downloadPdf();
+      Swal.fire({
+        position: "top-center",
+        icon: "success",
+        title: t("alerts.contract.updateAlerts.success.title"),
+        showConfirmButton: true,
+        timer: 1500,
+      });
     } catch (error) {
       console.error(error);
       setIsEditable(false);
+      Swal.fire({
+        position: "top-center",
+        icon: "error",
+        title: t("alerts.contract.updateAlerts.error.title"),
+        showConfirmButton: true,
+        timer: 1500,
+      });
     }
   }
 
@@ -315,7 +440,10 @@ function Contract() {
       >
         <header className="relative mb-10 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={goBack} className="text-lg text-white">
+            <button
+              onClick={goBack}
+              className="text-lg text-black dark:text-white"
+            >
               {language === "en" ? <BsArrowLeft /> : <BsArrowRight />}
             </button>
             <div className="text-xl font-semibold text-navy-700 dark:text-white">
@@ -339,12 +467,13 @@ function Contract() {
                       name="owner_name"
                       control={control}
                       defaultValue=""
+                      rules={{ required: true }}
                       render={({ field }) => (
                         <input
                           {...field}
                           type="text"
                           className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
-                          disabled={isEditable}
+                          disabled={isEditable || isOnHold}
                         />
                       )}
                     />
@@ -361,12 +490,13 @@ function Contract() {
                       name="phone_number"
                       control={control}
                       defaultValue=""
+                      rules={{ required: true }}
                       render={({ field }) => (
                         <input
                           {...field}
                           type="text"
                           className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
-                          disabled={isEditable}
+                          disabled={isEditable || isOnHold}
                         />
                       )}
                     />
@@ -382,13 +512,14 @@ function Contract() {
                       name="buyer_address"
                       control={control}
                       defaultValue=""
+                      rules={{ required: true }}
                       render={({ field }) => (
                         <input
                           {...field}
                           type="text"
                           className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                           placeholder=""
-                          disabled={isEditable}
+                          disabled={isEditable || isOnHold}
                         />
                       )}
                     />
@@ -405,39 +536,42 @@ function Contract() {
                       name="buyer_card_id"
                       control={control}
                       defaultValue=""
+                      rules={{ required: true }}
                       render={({ field }) => (
                         <input
                           {...field}
                           type="text"
                           className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                           placeholder=""
-                          disabled={isEditable}
+                          disabled={isEditable || isOnHold}
                         />
                       )}
                     />
                   </div>
 
                   <div className="md:col-span-6">
-  <label
-    className="font-medium text-gray-900 dark:text-white"
-    htmlFor="contract_date"
-  >
-    {t("contractForm.contractDate")}
-  </label>
-  <Controller
-    name="contract_date"
-    control={control}
-    defaultValue=""
-    render={({ field }) => (
-      <input
-        type="date" 
-        {...field}
-        className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
-        placeholder=""
-      />
-    )}
-  />
-</div>
+                    <label
+                      className="font-medium text-gray-900 dark:text-white"
+                      htmlFor="contract_date"
+                    >
+                      {t("contractForm.contractDate")}
+                    </label>
+                    <Controller
+                      name="contract_date"
+                      control={control}
+                      defaultValue=""
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="date"
+                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
+                          placeholder=""
+                          disabled={isEditable || isOnHold}
+                        />
+                      )}
+                    />
+                  </div>
 
                   <div className="md:col-span-3">
                     <label
@@ -450,13 +584,14 @@ function Contract() {
                       name="apartment_number"
                       control={control}
                       defaultValue=""
+                      rules={{ required: true }}
                       render={({ field }) => (
                         <input
                           {...field}
                           type="text"
                           className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                           placeholder=""
-                          disabled={isEditable}
+                          disabled={isEditable || isOnHold}
                         />
                       )}
                     />
@@ -474,12 +609,13 @@ function Contract() {
                         name="total_payment_price"
                         control={control}
                         defaultValue=""
+                        rules={{ required: true }}
                         render={({ field }) => (
                           <input
                             {...field}
                             type="number"
                             className="flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
-                            disabled={isEditable}
+                            disabled={isEditable || isOnHold}
                           />
                         )}
                       />
@@ -498,12 +634,13 @@ function Contract() {
                         name="apartment_price"
                         control={control}
                         defaultValue=""
+                        rules={{ required: true }}
                         render={({ field }) => (
                           <input
                             {...field}
                             type="number"
                             className="flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
-                            disabled={isEditable}
+                            disabled={isEditable || isOnHold}
                           />
                         )}
                       />
@@ -521,12 +658,13 @@ function Contract() {
                       name="pending_price"
                       control={control}
                       defaultValue=""
+                      rules={{ required: true }}
                       render={({ field }) => (
                         <input
                           {...field}
                           type="number"
                           className="mt-1 flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
-                          disabled={isEditable}
+                          disabled={isEditable || isOnHold}
                         />
                       )}
                     />
@@ -542,11 +680,12 @@ function Contract() {
                       name="contract_type"
                       control={control}
                       defaultValue="cash"
+                      rules={{ required: true }}
                       render={({ field }) => (
                         <select
                           {...field}
                           className="mt-1 flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
-                          disabled={isEditable}
+                          disabled={isEditable || isOnHold}
                         >
                           <option value="cash">Cash</option>
                           <option value="installment">Installment</option>
@@ -565,12 +704,13 @@ function Contract() {
                       name="apartment_description"
                       control={control}
                       defaultValue=""
+                      rules={{ required: true }}
                       render={({ field }) => (
                         <textarea
                           {...field}
                           rows={4}
                           className="mt-1 flex w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
-                          disabled={isEditable}
+                          disabled={isEditable || isOnHold}
                         />
                       )}
                     />
@@ -582,40 +722,66 @@ function Contract() {
                           language === "en" ? "justify-end" : "justify-start"
                         } rounded-b pt-5`}
                       >
-                        {!isReserved && (
-                          <button
-                            type="submit"
-                            className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
-                          >
-                            {t("formButtons.submit")}
-                          </button>
+                        {!isOnHold && (
+                          <>
+                            {!isReserved && (
+                              <button
+                                type="submit"
+                                className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                              >
+                                {t("formButtons.submit")}
+                              </button>
+                            )}
+                            {isUpdatable && !isEditable && (
+                              <button
+                                type="button"
+                                className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                onClick={updateContract}
+                              >
+                                {t("formButtons.update")}
+                              </button>
+                            )}
+                            {isEditable && isReserved && (
+                              <button
+                                type="button"
+                                className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                onClick={editContract}
+                              >
+                                {t("formButtons.edit")}
+                              </button>
+                            )}
+                            {isReserved && (
+                              <button
+                                type="button"
+                                className="active:bg-emerald-600 mb-1 mr-1 rounded bg-red-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                onClick={deleteContract}
+                              >
+                                {t("formButtons.delete")}
+                              </button>
+                            )}
+                          </>
                         )}
-                        {isUpdatable && !isEditable && (
-                          <button
-                            type="button"
-                            className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
-                            onClick={updateContract}
-                          >
-                            {t("formButtons.update")}
-                          </button>
-                        )}
-                        {isEditable && isReserved && (
-                          <button
-                            type="button"
-                            className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
-                            onClick={editContract}
-                          >
-                            {t("formButtons.edit")}
-                          </button>
-                        )}
-                        {isReserved && (
-                          <button
-                            type="button"
-                            className="active:bg-emerald-600 mb-1 mr-1 rounded bg-red-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
-                            onClick={deleteContract}
-                          >
-                            {t("formButtons.delete")}
-                          </button>
+
+                        {!isSold && (
+                          <>
+                            {!isOnHold ? (
+                              <button
+                                type="button"
+                                className="active:bg-emerald-600 mb-1 mr-1 rounded bg-orange-500 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                onClick={onHold}
+                              >
+                                {t("formButtons.hold")}
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                className="active:bg-emerald-600 mb-1 mr-1 rounded bg-red-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                onClick={unHold}
+                              >
+                                {t("formButtons.unHold")}
+                              </button>
+                            )}
+                          </>
                         )}
                       </div>
                     </div>

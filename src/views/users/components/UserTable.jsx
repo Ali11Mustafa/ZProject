@@ -117,7 +117,7 @@ const ItemsTable = (props) => {
         <NewItem GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8">
+      <div className="mt-8 overflow-scroll">
         <table
           {...getTableProps()}
           className="w-full"
@@ -235,33 +235,33 @@ const ItemsTable = (props) => {
             <p className="mx-center"></p>
           )}
         </table>
-        {total > perPage && (
-          <ReactPaginate
-            breakLabel={<span className="mx-2">...</span>}
-            nextLabel={
-              showNextButton ? (
-                <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
-                  {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
-                </button>
-              ) : null
-            }
-            onPageChange={handlePageclick}
-            pageRangeDisplayed={3}
-            pageCount={Math.ceil(total / 10)}
-            previousLabel={
-              showPrevButton ? (
-                <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
-                  {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
-                </button>
-              ) : null
-            }
-            containerClassName="flex items-center justify-center mt-8 mb-4"
-            pageClassName="flex w-full h-full border-solid  items-center justify-center hover:bg-myPrimary rounded-md mx-2 "
-            pageLinkClassName="h-10 w-10 mr-4 flex items-center justify-center"
-            activeClassName="bg-myPrimary text-white"
-          />
-        )}
       </div>
+      {total > perPage && (
+        <ReactPaginate
+          breakLabel={<span className="mx-2">...</span>}
+          nextLabel={
+            showNextButton ? (
+              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+                {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
+              </button>
+            ) : null
+          }
+          onPageChange={handlePageclick}
+          pageRangeDisplayed={3}
+          pageCount={Math.ceil(total / 10)}
+          previousLabel={
+            showPrevButton ? (
+              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+                {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
+              </button>
+            ) : null
+          }
+          containerClassName="flex items-center justify-center mt-8 mb-4"
+          pageClassName="flex w-full h-full border-solid  items-center justify-center hover:bg-myPrimary rounded-md mx-2 "
+          pageLinkClassName="h-10 w-10 mr-4 flex items-center justify-center"
+          activeClassName="bg-myPrimary text-white"
+        />
+      )}
     </Card>
   );
 };

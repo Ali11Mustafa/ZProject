@@ -1,18 +1,23 @@
-import React from "react";
+import { useLanguageStore } from "App";
+import Footer from "components/footer/Footer";
 import Navbar from "components/navbar";
 import Sidebar from "components/sidebar";
-import Footer from "components/footer/Footer";
-import { useLanguageStore } from "App";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 
 export default function Layout({ children }) {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(window.innerWidth >= 1000);
 
-  // Navbar
-  React.useEffect(() => {
-    window.addEventListener("resize", () =>
-      window.innerWidth < 1000 ? setOpen(false) : setOpen(true)
-    );
+  useEffect(() => {
+    const handleResize = () => {
+      setOpen(window.innerWidth >= 1000);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   const language = useLanguageStore((state) => state.language);

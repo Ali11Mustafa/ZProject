@@ -38,7 +38,7 @@ function UpdateApartment() {
           Swal.fire({
             position: "top-center",
             icon: "success",
-            title: t("alerts.buildings.updateAlerts.success.title"),
+            title: t("alerts.apartments.updateAlerts.success.title"),
             showConfirmButton: true,
             timer: 1500,
           });
@@ -49,7 +49,7 @@ function UpdateApartment() {
           Swal.fire({
             position: "top-center",
             icon: "error",
-            title: t("alerts.buildings.updateAlerts.error.title"),
+            title: t("alerts.apartments.updateAlerts.error.title"),
             showConfirmButton: true,
             timer: 1500,
           });
@@ -70,6 +70,7 @@ function UpdateApartment() {
           setValue("apartment_number", apartment[0].apartment_number);
           setValue("floor_number", apartment[0].floor_number);
           setValue("area", apartment[0].area);
+          setValue("description", apartment[0].description);
         }
       })
       .catch((error) => {
@@ -92,7 +93,7 @@ function UpdateApartment() {
             onClick={() => {
               navigate(-1);
             }}
-            className="text-lg text-white"
+            className="text-lg text-black dark:text-white"
           >
             {language === "en" ? <BsArrowLeft /> : <BsArrowRight />}
           </button>
@@ -119,7 +120,20 @@ function UpdateApartment() {
               {...register("apartment_number", { required: true })}
             />
           </div>
-         
+          <div className="mb-4">
+            <label
+              className="mb-2 block font-medium text-gray-700"
+              htmlFor="description"
+            >
+              {t("updateApartment.description")}
+            </label>
+            <textarea
+              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              id="description"
+              name="description"
+              {...register("description", { required: true })}
+            />
+          </div>
           <div className="mb-4">
             <label
               className="mb-2 block font-medium text-gray-700"

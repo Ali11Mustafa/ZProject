@@ -106,7 +106,6 @@ export default function NewItem({ GetNewItem }) {
                         className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="name"
                         type="text"
-                        placeholder="Enter name"
                         name="name"
                         {...register("name", { required: true })}
                       />
@@ -123,9 +122,9 @@ export default function NewItem({ GetNewItem }) {
                         id="type"
                         name="type"
                         type="string"
+                        defaultValue="10mm"
                         {...register("type", { required: true })}
                       >
-                        <option value="">Select a unit</option>
                         <option value="10mm">10mm</option>
                         <option value="12mm">12mm</option>
                         <option value="20mm">20mm</option>

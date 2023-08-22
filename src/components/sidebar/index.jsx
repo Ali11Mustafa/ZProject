@@ -1,16 +1,13 @@
 /* eslint-disable */
 
-import { HiX } from "react-icons/hi";
-import { Link } from "react-router-dom";
-import { useAuthStore } from "App";
-import { useTranslation } from "react-i18next";
 import { useLanguageStore } from "App";
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
 import Links from "./components/Links";
-import { useNavigate } from "react-router-dom";
 
-import logoImg from "../../assets/img/logo.png";
 import useRoutes from "hooks/useRoutes";
 import { TiTimes } from "react-icons/ti";
+import logoImg from "../../assets/img/logo.png";
 
 const Sidebar = ({ open, onClose }) => {
   const navigate = useNavigate();

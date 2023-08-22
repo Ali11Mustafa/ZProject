@@ -5,6 +5,7 @@ const resources = {
   en: {
     translation: {
       zTower: "Z Tower",
+      loading: "Loading...",
       sidebarLinks: {
         buildings: "Buildings",
         needs: "Needs",
@@ -71,7 +72,6 @@ const resources = {
         remainingAmount: "REMAINING AMOUNT",
         totalPrice: "TOTAL PRICE",
         pricePerBuilding: "PRICE PER BUILDING",
-        actions: "ACTIONS",
       },
       itemsTable: {
         title: "Items",
@@ -119,11 +119,10 @@ const resources = {
       },
       newApartment: {
         title: "Add New Apartment",
-        name: "Name",
-        buildingId: "Building ID",
-        typeOfInstallments: "Type of Installments",
-        numberOfInstallments: "Number of Installments",
+        apartmentNumber: "Aapartment Number",
         description: "Description",
+        floorNumber: "Floor Number",
+        area: "Area",
       },
       newNeed: {
         title: "Add New Need",
@@ -193,6 +192,8 @@ const resources = {
         submit: "Submit",
         edit: "Edit",
         delete: "Delete",
+        hold: "Hold",
+        unHold: "Un Hold",
       },
       updatePage: {
         buildings: "Update Building",
@@ -258,6 +259,37 @@ const resources = {
           updateAlerts: {
             success: {
               title: "The apartment has been updated",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+        },
+        contract: {
+          deleteAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Deleted!",
+              message: "Contract has been deleted.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "Contract was not deleted.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "New contract has been created.",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "The contract has been updated",
             },
             error: {
               title: "Something went wrong",
@@ -492,7 +524,8 @@ const resources = {
   },
   ku: {
     translation: {
-      zTower: "زی تاوەر",
+      zTower: "زێد تاوەر",
+      loading: "بارکردن...",
       sidebarLinks: {
         buildings: "باڵەخانەکان",
         needs: "پێداویستیەکان",
@@ -609,12 +642,11 @@ const resources = {
         description: "باسکردن",
       },
       newApartment: {
-        title: "شوقەی نوێ زیاد بکە",
-        name: "ناو",
-        buildingId: "ئایدی باڵەخانە",
-        typeOfInstallments: "جۆری قیستەکان",
-        numberOfInstallments: "ژمارەی قیستەکان",
+        title: "زیادکردنی شوقەی نوێ",
+        apartmentNumber: "ژمارەی شوقە",
         description: "باسکردن",
+        floorNumber: "ژمارەی نهۆم",
+        area: "ڕووبەر",
       },
       newNeed: {
         title: "پێداویستی نوێ زیادبکە",
@@ -673,6 +705,8 @@ const resources = {
         submit: "ناردن",
         edit: "دەستکاریکردن",
         delete: "سڕینەوە",
+        hold: "گرتن",
+        unHold: "هەڵوەشێنەرەوە",
       },
       updatePage: {
         buildings: "نوێکرندەوەی باڵەخانە",
@@ -707,6 +741,68 @@ const resources = {
           updateAlerts: {
             success: {
               title: "باڵەخانەکە نوێکرایەوە",
+            },
+            error: {
+              title: "کێشیەک ڕوویدا",
+            },
+          },
+        },
+        apartments: {
+          deleteAlerts: {
+            confirmation: "دڵنیایی؟",
+            confirmButtonText: "سڕینەوە",
+            cancelButtonText: "پەشیمانبوونەوە",
+            success: {
+              title: "سڕایەوە",
+              message: "شوقەکە سڕایەوە",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا",
+              message: "شوقەکە نەسڕایەوە",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "شوقەکە نوێکە زیادکرا",
+            },
+            error: {
+              title: "کێشیەک ڕوویدا",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "شوقەکە نوێکرایەوە",
+            },
+            error: {
+              title: "کێشیەک ڕوویدا",
+            },
+          },
+        },
+        contract: {
+          deleteAlerts: {
+            confirmation: "دڵنیایی؟",
+            confirmButtonText: "سڕینەوە",
+            cancelButtonText: "پەشیمانبوونەوە",
+            success: {
+              title: "سڕایەوە",
+              message: "گرێبەستەکە سڕایەوە",
+            },
+            error: {
+              title: "کێشەیەک ڕوویدا",
+              message: "گرێبەستەکە نەسڕایەوە",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "گرێبەستەکە ئەنجامدرا",
+            },
+            error: {
+              title: "کێشیەک ڕوویدا",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "گرێبەستەکە نوێکرایەوە",
             },
             error: {
               title: "کێشیەک ڕوویدا",
@@ -944,7 +1040,8 @@ const resources = {
   },
   ar: {
     translation: {
-      zTower: "زي تاور",
+      zTower: "زيد تاور",
+      loading: "تحميل...",
       sidebarLinks: {
         buildings: "البنايات",
         needs: "الاحتياجات",
@@ -1068,12 +1165,11 @@ const resources = {
         description: "وصف",
       },
       newApartment: {
-        title: "أضف شقة جديدة",
-        name: "اسم",
-        buildingId: "معرف البناء",
-        typeOfInstallments: "نوع الأقساط",
-        numberOfInstallments: "عدد الأقساط",
-        description: "وصف",
+        title: "تحديث الشقة",
+        apartmentNumber: "رقم الشقة",
+        description: "الوصف",
+        floorNumber: "رقم الطابق",
+        area: "المنطقة",
       },
       newNeed: {
         title: "أضف حاجة جديدة",
@@ -1134,6 +1230,8 @@ const resources = {
         submit: "ارسال",
         edit: "تعديل",
         delete: "حذف",
+        hold: "عقد",
+        unHold: "فك",
       },
       updatePage: {
         buildings: "تحديث المبنى",
@@ -1157,6 +1255,7 @@ const resources = {
               message: "لم يتم حذف المبنى.",
             },
           },
+
           addAlerts: {
             success: {
               title: "تم إنشاء مبنى جديد.",
@@ -1168,6 +1267,70 @@ const resources = {
           updateAlerts: {
             success: {
               title: "تم تحديث المبنى",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+        },
+        apartments: {
+          deleteAlerts: {
+            confirmation: "هل أنت متأكد؟",
+            confirmButtonText: "حذف",
+            cancelButtonText: "إلغاء",
+            success: {
+              title: "تم الحذف!",
+              message: "تم حذف الشوقة.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+              message: "لم يتم حذف الشوقة.",
+            },
+          },
+
+          addAlerts: {
+            success: {
+              title: "تم إنشاء الشوقة جديد.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "تم تحديث الشوقة",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+        },
+        contract: {
+          deleteAlerts: {
+            confirmation: "هل أنت متأكد؟",
+            confirmButtonText: "حذف",
+            cancelButtonText: "إلغاء",
+            success: {
+              title: "تم الحذف!",
+              message: "تم حذف العقد.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+              message: "لم يتم حذف العقد.",
+            },
+          },
+
+          addAlerts: {
+            success: {
+              title: "تم إنشاء العقد جديد.",
+            },
+            error: {
+              title: "حدث خطأ ما",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "تم تحديث العقد",
             },
             error: {
               title: "حدث خطأ ما",

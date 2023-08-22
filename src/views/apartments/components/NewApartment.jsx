@@ -103,7 +103,7 @@ export default function NewApartment({ GetNewItem }) {
                         className="mb-2 block text-black dark:font-medium dark:text-white"
                         htmlFor="apartment_number"
                       >
-                        Apartment Number
+                        {t("newApartment.apartmentNumber")}
                       </label>
                       <input
                         className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
@@ -113,34 +113,27 @@ export default function NewApartment({ GetNewItem }) {
                         {...register("apartment_number", { required: true })}
                       />
                     </div>
-                    {/* <div className="mb-4">
+
+                    <div className="mb-4">
                       <label
-                        className="block mb-2 font-medium text-gray-700"
-                        htmlFor="building"
+                        className="mb-2 block text-black dark:font-medium dark:text-white"
+                        htmlFor="description"
                       >
-                        Building
+                        {t("newApartment.description")}
                       </label>
-                      <select
-                        className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:shadow-outline focus:outline-none"
-                        id="building"
-                        name="building"
-                        {...register("building", { required: true })}
-                      >
-                        <option value="">Select a building</option>
-                        <option value="B001">B001</option>
-                        <option value="B002">B002</option>
-                        <option value="B003">B003</option>
-                        <option value="B004">B004</option>
-                        <option value="B005">B005</option>
-                      </select>
-                    </div> */}
-                    
+                      <textarea
+                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        id="description"
+                        name="description"
+                        {...register("description", { required: true })}
+                      />
+                    </div>
                     <div className="mb-4">
                       <label
                         className="mb-2 block text-black dark:font-medium dark:text-white"
                         htmlFor="floor_number"
                       >
-                        Floor
+                        {t("newApartment.floorNumber")}
                       </label>
                       <input
                         className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
@@ -155,7 +148,7 @@ export default function NewApartment({ GetNewItem }) {
                         className="mb-2 block text-black dark:font-medium dark:text-white"
                         htmlFor="area"
                       >
-                        Area
+                        {t("newApartment.area")}
                       </label>
                       <input
                         className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
@@ -165,28 +158,7 @@ export default function NewApartment({ GetNewItem }) {
                         {...register("area", { required: true })}
                       />
                     </div>
-                    {/* <div className="mb-4">
-                      <label
-                        className="block mb-2 font-medium text-gray-700"
-                        htmlFor="status"
-                      >
-                        Status
-                      </label>
-                      <select
-                        className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:shadow-outline focus:outline-none"
-                        id="status"
-                        name="status"
-                        {...register("status", { required: true })}
-                      >
-                        <option value="">Select status</option>
-                        <option value="available">Available</option>
-                        <option value="occupied">Occupied</option>
-                        <option value="under_maintenance">
-                          Under Maintenance
-                        </option>
-                      </select>
-                    </div> */}
-                    {/* Footer */}
+
                     <div
                       className={`border-slate-200 flex items-center ${
                         language === "en" ? "justify-end" : "justify-start"

@@ -1,23 +1,23 @@
-import React, { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
 import Apartments from "pages/Apartments";
-import { create } from "zustand";
-import Buildings from "pages/Buildings";
 import Auth from "pages/Auth";
-import Needs from "pages/Needs";
+import Buildings from "pages/Buildings";
+import DashboardPage from "pages/DashboardPage";
 import Items from "pages/Items";
-import { useTranslation } from "react-i18next";
-import UpdateItem from "views/items/pages/UpdateItem";
-import Updateblock from "views/buildings/Pages/Updateblock";
+import Needs from "pages/Needs";
 import Orders from "pages/Orders";
 import Users from "pages/Users";
-import DashboardPage from "pages/DashboardPage";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { Route, Routes } from "react-router-dom";
+import Contract from "views/apartments/Pages/Contract";
+import UpdateApartment from "views/apartments/Pages/UpdateApartment";
+import Pdf from "views/apartments/components/Pdf";
+import Updateblock from "views/buildings/Pages/Updateblock";
+import UpdateItem from "views/items/pages/UpdateItem";
+import { create } from "zustand";
 import UpdateNeed from "./views/needs/Pages/UpdateNeed";
 import UpdateOrder from "./views/orders/pages/UpdateOrder";
 import UpdateUser from "./views/users/pages/UpdateUser";
-import Contract from "views/apartments/Pages/Contract";
-import Pdf from "views/apartments/components/Pdf";
-import UpdateApartment from "views/apartments/Pages/UpdateApartment";
 
 export const useSearchStore = create((set) => ({
   searchText: "",
@@ -48,15 +48,16 @@ export const useItemsStore = create((set) => ({
 }));
 
 export const useDarkModeStore = create((set) => ({
-  darkMode: localStorage.getItem("darkMode") === "true",
-  toggleDarkMode: () =>
-    set((state) => {
-      const newDarkMode = !state.darkMode;
-      localStorage.setItem("darkMode", newDarkMode);
-      return { darkMode: newDarkMode };
-    }),
-}));
+  isDarkMode: JSON.parse(localStorage.getItem("darkMode")) ?? true,
 
+  toggleDarkMode: () => {
+    set((state) => {
+      const newDarkMode = !state.isDarkMode;
+      localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
+      return { isDarkMode: newDarkMode };
+    });
+  },
+}));
 export const usePdfStore = create((set) => ({
   ownerName: "",
   contractDate: "",
@@ -100,25 +101,25 @@ const App = () => {
     }
   }, [language, i18n]);
 
-  const darkMode = useDarkModeStore((state) => state.darkMode);
-
   useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("dark");
-    } else {
-      document.body.classList.remove("dark");
-    }
-  }, [darkMode]);
-
-  useEffect(() => {
-    useDarkModeStore.setState({
-      darkMode: localStorage.getItem("darkMode") === "true",
-    });
-
     useLanguageStore.setState({
       language: localStorage.getItem("language") || "en",
     });
   }, []);
+
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode);
+
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(isDarkMode));
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [isDarkMode]);
 
   return (
     <Routes>

@@ -1,3 +1,4 @@
+import { useLanguageStore } from "App";
 import InputField from "components/fields/InputField";
 import LangSelector from "components/langSelector/LangSelector";
 import { useState } from "react";
@@ -75,6 +76,8 @@ export default function SignIn({ userCredentials }) {
     }
   };
 
+  const language = useLanguageStore((state) => state.language);
+
   return (
     <div className="flex h-full w-full items-center justify-center px-2">
       <form
@@ -115,7 +118,10 @@ export default function SignIn({ userCredentials }) {
           disabled={loading}
         >
           {loading ? (
-            <span className="flex items-center justify-center">
+            <span
+              className="flex items-center justify-center gap-2"
+              style={{ direction: `${language !== "en" ? "rtl" : "ltr"}` }}
+            >
               <svg
                 className="mr-2 -ml-1 h-5 w-5 animate-spin text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +142,7 @@ export default function SignIn({ userCredentials }) {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              Loading...
+              {t("loading")}
             </span>
           ) : (
             t("signin.button")

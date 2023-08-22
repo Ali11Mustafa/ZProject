@@ -1,11 +1,11 @@
 import {
   Document,
+  Font,
+  Image,
   Page,
+  StyleSheet,
   Text,
   View,
-  StyleSheet,
-  Image,
-  Font,
 } from "@react-pdf/renderer";
 
 import sadyarLogo from "../../../assets/img/sadyar-2.png";
@@ -352,9 +352,18 @@ function Pdf({ contractPdfData }) {
               ٤- ئەم گرێبەستە لە حەوت بەشى سەرەكى پێك هاتووە بەسێ وێنەى ئەسلى و
               كە هێزى یاسای یەكسانیان هەیە لە شارى هەولێر
             </Text>
-            <Text>
-              ٠٢ ئیمزاکرا.{"      "} / {"      "}/ {"      "}لە ڕێکەوتی
-            </Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "5px",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Text>ئیمزاکرا</Text>
+              <Text>{contractDate}</Text>
+              <Text>لە ڕێکەوتی</Text>
+            </View>
           </View>
 
           <View

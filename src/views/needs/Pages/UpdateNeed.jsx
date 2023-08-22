@@ -151,7 +151,7 @@ function UpdateNeed() {
             onClick={() => {
               navigate(-1);
             }}
-            className="text-lg text-white"
+            className="text-lg text-black dark:text-white"
           >
             {language === "en" ? <BsArrowLeft /> : <BsArrowRight />}
           </button>

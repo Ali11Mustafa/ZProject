@@ -1,13 +1,13 @@
+import { useLanguageStore } from "App";
 import Layout from "Layout";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Card from "components/card";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useLanguageStore } from "App";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Swal from "sweetalert2";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function UpdateBlock() {
   const { buildingId } = useParams();
@@ -39,7 +39,7 @@ function UpdateBlock() {
             showConfirmButton: true,
             timer: 1500,
           });
-          navigate("/");
+          navigate(-1);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -98,7 +98,7 @@ function UpdateBlock() {
             onClick={() => {
               navigate(-1);
             }}
-            className="text-lg text-white"
+            className="text-lg text-black dark:text-white"
           >
             {language === "en" ? <BsArrowLeft /> : <BsArrowRight />}
           </button>

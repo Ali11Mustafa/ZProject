@@ -1,8 +1,8 @@
+import { useItemsStore } from "App";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import ItemsTable from "./components/UserTable";
 import useItemsTableColumns from "./variables/useItemsTableColumns";
-import { useItemsStore } from "App";
-import axios from "axios";
 
 const ItemsDashboard = () => {
   const { itemsTableColumns } = useItemsTableColumns();
@@ -40,7 +40,6 @@ const ItemsDashboard = () => {
     axios
       .get(API, config)
       .then((response) => {
-        console.log(response.data.data);
         setTotal(response.data.meta.total);
         setCurrentPage(pageNumber);
         setPerPage(response.data.meta.per_page);

@@ -133,10 +133,13 @@ const ApartmentsTable = (props) => {
   }
 
   return (
-    <Card extra={"w-full h-full sm:o px-5 mt-10 mt-10"}>
+    <Card extra={"w-full h-full sm:overflow-auto px-5 mt-10 mt-10"}>
       <header className="relative flex items-center justify-between pt-4">
         <div className="flex items-center gap-2">
-          <button onClick={goBack} className="text-lg text-white">
+          <button
+            onClick={goBack}
+            className="text-lg text-black dark:text-white"
+          >
             {language === "en" ? <BsArrowLeft /> : <BsArrowRight />}
           </button>
           <div className="text-xl font-semibold text-navy-700 dark:text-white">
@@ -147,7 +150,7 @@ const ApartmentsTable = (props) => {
         <NewApartment GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8 ">
+      <div className="mt-8 overflow-scroll">
         <table
           {...getTableProps()}
           className="w-full"
@@ -282,33 +285,33 @@ const ApartmentsTable = (props) => {
             })}
           </tbody>
         </table>
-        {total > perPage && (
-          <ReactPaginate
-            breakLabel={<span className="mx-2">...</span>}
-            nextLabel={
-              showNextButton ? (
-                <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
-                  {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
-                </button>
-              ) : null
-            }
-            onPageChange={handlePageclick}
-            pageRangeDisplayed={3}
-            pageCount={Math.ceil(total / 10)}
-            previousLabel={
-              showPrevButton ? (
-                <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
-                  {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
-                </button>
-              ) : null
-            }
-            containerClassName="flex items-center justify-center mt-8 mb-4"
-            pageClassName="flex w-full h-full border-solid  items-center justify-center hover:bg-myPrimary rounded-md mx-2 "
-            pageLinkClassName="h-10 w-10 mr-4 flex items-center justify-center"
-            activeClassName="bg-myPrimary text-white"
-          />
-        )}
       </div>
+      {total > perPage && (
+        <ReactPaginate
+          breakLabel={<span className="mx-2">...</span>}
+          nextLabel={
+            showNextButton ? (
+              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+                {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
+              </button>
+            ) : null
+          }
+          onPageChange={handlePageclick}
+          pageRangeDisplayed={3}
+          pageCount={Math.ceil(total / 10)}
+          previousLabel={
+            showPrevButton ? (
+              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+                {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
+              </button>
+            ) : null
+          }
+          containerClassName="flex items-center justify-center mt-8 mb-4"
+          pageClassName="flex w-full h-full border-solid  items-center justify-center hover:bg-myPrimary rounded-md mx-2 "
+          pageLinkClassName="h-10 w-10 mr-4 flex items-center justify-center"
+          activeClassName="bg-myPrimary text-white"
+        />
+      )}
     </Card>
   );
 };

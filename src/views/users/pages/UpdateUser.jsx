@@ -1,14 +1,13 @@
+import { useLanguageStore } from "App";
 import Layout from "Layout";
-import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Card from "components/card";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useLanguageStore } from "App";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
-import Swal from "sweetalert2";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function UpdateItem() {
   const { userId } = useParams();
@@ -34,7 +33,6 @@ function UpdateItem() {
       .get(`https://api.hirari-iq.com/api/users/${userId}`, config)
       .then((response) => {
         setData(response.data.data);
-        console.log(response.data.data);
       })
       .catch((error) => {
         console.error(error);
@@ -101,7 +99,7 @@ function UpdateItem() {
             onClick={() => {
               navigate(-1);
             }}
-            className="text-lg text-white"
+            className="text-lg text-black dark:text-white"
           >
             {language === "en" ? <BsArrowLeft /> : <BsArrowRight />}
           </button>

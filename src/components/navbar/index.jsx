@@ -1,16 +1,13 @@
-import React, { useEffect } from "react";
-import { FiAlignJustify, FiSearch } from "react-icons/fi";
-import { RiMoonFill, RiSunFill } from "react-icons/ri";
-import { useSearchStore, useDarkModeStore } from "App";
-import { useTranslation } from "react-i18next";
+import { useDarkModeStore, useLanguageStore, useSearchStore } from "App";
 import LangSelector from "components/langSelector/LangSelector";
+import { useTranslation } from "react-i18next";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { useLanguageStore } from "App";
+import { RiMoonFill, RiSunFill } from "react-icons/ri";
 
 const Navbar = (props) => {
   const { onOpenSidenav } = props;
 
-  const darkMode = useDarkModeStore((state) => state.darkMode);
+  const isDarkMode = useDarkModeStore((state) => state.isDarkMode);
   const toggleDarkMode = useDarkModeStore((state) => state.toggleDarkMode);
 
   const searchText = useSearchStore((state) => state.searchText);
@@ -54,13 +51,17 @@ const Navbar = (props) => {
           className="cursor-pointer px-2 text-gray-600"
           onClick={handleDarkModeToggle}
         >
-          {darkMode ? (
+          {isDarkMode ? (
             <RiSunFill
-              className={`h-4 w-4 ${darkMode ? "text-white" : "text-gray-700"}`}
+              className={`h-4 w-4 ${
+                isDarkMode ? "text-white" : "text-gray-700"
+              }`}
             />
           ) : (
             <RiMoonFill
-              className={`h-4 w-4 ${darkMode ? "text-white" : "text-gray-700"}`}
+              className={`h-4 w-4 ${
+                isDarkMode ? "text-white" : "text-gray-700"
+              }`}
             />
           )}
         </button>
