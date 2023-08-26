@@ -1,31 +1,28 @@
-import React, { useEffect, useMemo, useState } from "react";
 import Card from "components/card";
+import { useEffect, useMemo } from "react";
 
-import {
-  useGlobalFilter,
-  usePagination,
-  useSortBy,
-  useTable,
-} from "react-table";
-import { MdDeleteOutline } from "react-icons/md";
-import { FiEdit } from "react-icons/fi";
-import { FaEye, FaFileContract } from "react-icons/fa";
-import NewApartment from "./NewApartment";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useSearchStore } from "App";
-import { useTranslation } from "react-i18next";
-import { useLanguageStore } from "App";
+import { useLanguageStore, useSearchStore } from "App";
 import axios from "axios";
-import { usePdfStore } from "App";
-import ReactPaginate from "react-paginate";
+import { useTranslation } from "react-i18next";
 import {
   BsArrowLeft,
   BsArrowRight,
   BsChevronLeft,
   BsChevronRight,
 } from "react-icons/bs";
+import { FaEye } from "react-icons/fa";
+import { FiEdit } from "react-icons/fi";
+import { MdDeleteOutline } from "react-icons/md";
+import ReactPaginate from "react-paginate";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  useGlobalFilter,
+  usePagination,
+  useSortBy,
+  useTable,
+} from "react-table";
 import Swal from "sweetalert2";
-import { IoArrowBackOutline } from "react-icons/io5";
+import NewApartment from "./NewApartment";
 
 const ApartmentsTable = (props) => {
   const resetSearchText = useSearchStore((state) => state.resetSearchText);
@@ -121,6 +118,7 @@ const ApartmentsTable = (props) => {
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
+  let role = usr?.role;
 
   const config = {
     headers: {
@@ -150,7 +148,7 @@ const ApartmentsTable = (props) => {
         <NewApartment GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8 ">
+      <div className="mt-8 overflow-scroll">
         <table
           {...getTableProps()}
           className="w-full"

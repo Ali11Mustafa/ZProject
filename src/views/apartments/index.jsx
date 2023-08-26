@@ -1,3 +1,4 @@
+import { useUserConfigStore } from "App";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -8,15 +9,15 @@ const ApartmentsDashbaord = () => {
   const { apartmentsTableColumns } = useApartmentsTableColumns();
 
   const { buildingId } = useParams();
+  const userConfig = useUserConfigStore((state) => state.userConfig);
+  // let usr = JSON.parse(sessionStorage.getItem("user"));
+  // let token = usr?.token;
 
-  let usr = JSON.parse(sessionStorage.getItem("user"));
-  let token = usr?.token;
-
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  // const config = {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // };
 
   const [total, setTotal] = useState(0);
   const [perPage, setPerPage] = useState(0);
@@ -32,12 +33,12 @@ const ApartmentsDashbaord = () => {
   useEffect(() => {
     const storedCurrentPage = currentPage;
     fetchData(storedCurrentPage);
-  }, [newItem, currentPage]);
+  }, [newItem, currentPage, buildingId]);
 
   const fetchData = (pageNumber = 1) => {
     const API = `https://api.hirari-iq.com/api/apartments/${buildingId}?page=${pageNumber}`;
     axios
-      .get(API, config)
+      .get(API, userConfig)
       .then((response) => {
         setTotal(response.data.meta.total);
         setCurrentPage(pageNumber);

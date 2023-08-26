@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 import { useLanguageStore } from "App";
 import axios from "axios";
+import Spinner from "components/Spinner";
 import { useTranslation } from "react-i18next";
 import { FiEdit } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
@@ -17,7 +18,6 @@ import {
   useTable,
 } from "react-table";
 import NewOrder from "./NewOrder";
-import Spinner from "components/Spinner";
 
 const OrdersTable = (props) => {
   const {
@@ -182,10 +182,12 @@ const OrdersTable = (props) => {
         <div className="text-xl font-semibold text-navy-700 dark:text-white">
           {t("ordersTable.title")}
         </div>
-        <NewOrder GetNewItem={GetNewItem} />
+        {(role === "admin" || role === "engineer") && (
+          <NewOrder GetNewItem={GetNewItem} />
+        )}
       </header>
 
-      <div className="mt-8">
+      <div className="mt-8 overflow-scroll">
         <table
           {...getTableProps()}
           className="w-full"
@@ -268,7 +270,7 @@ const OrdersTable = (props) => {
                           }
                         } else if (
                           usr.role === "admin" ||
-                          usr.role === "officer_eng"
+                          usr.role === "accountant"
                         ) {
                           data = (
                             <div className="flex items-center gap-2">
@@ -322,35 +324,53 @@ const OrdersTable = (props) => {
                       } else if (cell.column.id === "actions") {
                         data = (
                           <div className="flex items-center gap-4">
-                            <button
-                              value={row.original.id}
-                              onClick={deleteMe}
-                              className="flex items-center gap-1 text-red-600"
-                            >
-                              <div
-                                value={row.original.id}
-                                className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
-                              >
-                                <MdDeleteOutline value={row.original.id} />
-                              </div>
-                              <p
-                                value={row.original.id}
-                                className="text-start text-sm font-medium text-black dark:text-white"
-                              >
-                                {t("actions.delete")}
-                              </p>
-                            </button>
-                            <Link
-                              to={`/orders/update/${row.original.id}`}
-                              className="flex items-center gap-1 text-green-600"
-                            >
-                              <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
-                                <FiEdit />
-                              </div>
-                              <p className="text-start text-sm font-medium text-black dark:text-white">
-                                {t("actions.update")}
-                              </p>
-                            </Link>
+                            {usr.role === "admin" || usr.role === "engineer" ? (
+                              <>
+                                <button
+                                  value={row.original.id}
+                                  onClick={deleteMe}
+                                  className="flex items-center gap-1 text-red-600"
+                                >
+                                  <div
+                                    value={row.original.id}
+                                    className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
+                                  >
+                                    <MdDeleteOutline value={row.original.id} />
+                                  </div>
+                                  <p
+                                    value={row.original.id}
+                                    className="text-start text-sm font-medium text-black dark:text-white"
+                                  >
+                                    {t("actions.delete")}
+                                  </p>
+                                </button>
+                                <Link
+                                  to={`/orders/update/${row.original.id}`}
+                                  className="flex items-center gap-1 text-green-600"
+                                >
+                                  <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
+                                    <FiEdit />
+                                  </div>
+                                  <p className="text-start text-sm font-medium text-black dark:text-white">
+                                    {t("actions.update")}
+                                  </p>
+                                </Link>
+                              </>
+                            ) : (
+                              usr.role === "accountant" && (
+                                <Link
+                                  to={`/orders/update/${row.original.id}`}
+                                  className="flex items-center gap-1 text-green-600"
+                                >
+                                  <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
+                                    <FiEdit />
+                                  </div>
+                                  <p className="text-start text-sm font-medium text-black dark:text-white">
+                                    {t("actions.update")}
+                                  </p>
+                                </Link>
+                              )
+                            )}
                           </div>
                         );
                       }

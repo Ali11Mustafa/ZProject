@@ -1,15 +1,13 @@
-
-
 import { useTranslation } from "react-i18next";
 
 export default function useItemsTableColumns() {
-  const {t} = useTranslation()
-  let usr = JSON.parse(sessionStorage.getItem('user'));
-        let userName = usr?.fullname;
-        let email = usr?.email;
-        let role = usr?.role;
-        let usrId = usr?.id;
-        let token = usr?.token;
+  const { t } = useTranslation();
+  let usr = JSON.parse(sessionStorage.getItem("user"));
+  let userName = usr?.fullname;
+  let email = usr?.email;
+  let role = usr?.role;
+  let usrId = usr?.id;
+  let token = usr?.token;
   const itemsTableColumns = [
     {
       Header: t("ordersTable.columns.amount"),
@@ -43,21 +41,14 @@ export default function useItemsTableColumns() {
       Header: t("ordersTable.columns.remaining_item"),
       accessor: "item_info.remaining_item",
     },
-    
-  
   ];
-  if(role==="admin"){
-    itemsTableColumns.push(  {
-      Header: t("ordersTable.columns.actions"),
-      accessor: "actions",
-      
-    },
-   )
-    
-  }
-  
+  // if(role==="admin"){
+  itemsTableColumns.push({
+    Header: t("ordersTable.columns.actions"),
+    accessor: "actions",
+  });
 
-  
+  // }
 
-  return {itemsTableColumns}
+  return { itemsTableColumns };
 }

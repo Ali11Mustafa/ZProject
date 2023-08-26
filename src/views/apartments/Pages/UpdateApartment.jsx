@@ -1,13 +1,13 @@
+import { useLanguageStore } from "App";
 import Layout from "Layout";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Card from "components/card";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useLanguageStore } from "App";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import Swal from "sweetalert2";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function UpdateApartment() {
   const { buildingId, apartmentId } = useParams();
@@ -70,7 +70,6 @@ function UpdateApartment() {
           setValue("apartment_number", apartment[0].apartment_number);
           setValue("floor_number", apartment[0].floor_number);
           setValue("area", apartment[0].area);
-          setValue("description", apartment[0].description);
         }
       })
       .catch((error) => {
@@ -120,20 +119,7 @@ function UpdateApartment() {
               {...register("apartment_number", { required: true })}
             />
           </div>
-          <div className="mb-4">
-            <label
-              className="mb-2 block font-medium text-gray-700"
-              htmlFor="description"
-            >
-              {t("updateApartment.description")}
-            </label>
-            <textarea
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
-              id="description"
-              name="description"
-              {...register("description", { required: true })}
-            />
-          </div>
+
           <div className="mb-4">
             <label
               className="mb-2 block font-medium text-gray-700"

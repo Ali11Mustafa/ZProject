@@ -30,7 +30,7 @@ export default function NewNeed({ GetNewItem }) {
   const API = "https://api.hirari-iq.com/api/blocks";
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let role = "engineer";
+  let role = usr?.role;
   let token = usr?.token;
 
   const config = {

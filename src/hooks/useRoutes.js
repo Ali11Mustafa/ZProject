@@ -1,20 +1,17 @@
-import React from "react";
-
-import Buildings from "pages/Buildings";
-import Needs from "pages/Needs";
-import Items from "pages/Items";
-import Dashboard from "views/dashboard";
-import { useTranslation } from "react-i18next";
-import Orders from "pages/Orders";
-import Users from "pages/Users";
-import { useNavigate } from "react-router-dom";
 import BuildingsSvg from "assets/icons/BuildingsSvg";
+import HomeSvg from "assets/icons/HomeSvg";
 import NeedsSvg from "assets/icons/NeedsSvg";
-import ItemsSvg from "assets/icons/itemsSvg";
 import OrdersSvg from "assets/icons/OrdersSvg";
 import UsersSvg from "assets/icons/UsersSvg";
-import HomeSvg from "assets/icons/HomeSvg";
-import { BsCart } from "react-icons/bs";
+import ItemsSvg from "assets/icons/itemsSvg";
+import Buildings from "pages/Buildings";
+import Items from "pages/Items";
+import Needs from "pages/Needs";
+import Orders from "pages/Orders";
+import Users from "pages/Users";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import Dashboard from "views/dashboard";
 
 function useRoutes() {
   const { t } = useTranslation();
@@ -26,7 +23,54 @@ function useRoutes() {
   const navigate = useNavigate();
   if (!usr) navigate("/Login");
 
-  if (role === "only_read" || role === "admin" || role === "officer_eng") {
+  if (role === "sales") {
+    routes.push({
+      name: t("sidebarLinks.buildings"),
+      path: "/buildings",
+      icon: <BuildingsSvg />,
+      component: <Buildings />,
+    });
+  }
+
+  if (role === "engineer" || role === "officer_eng") {
+    routes.push(
+      {
+        name: t("sidebarLinks.items"),
+        path: "/items",
+        icon: <ItemsSvg />,
+        component: <Items />,
+      },
+      {
+        name: t("sidebarLinks.needs"),
+        path: "/needs",
+        icon: <NeedsSvg />,
+        component: <Needs />,
+      },
+      {
+        name: t("sidebarLinks.orders"),
+        path: "/orders",
+        icon: <OrdersSvg />,
+        component: <Orders />,
+      }
+    );
+  }
+
+  if (role === "accountant") {
+    routes.push({
+      name: t("sidebarLinks.orders"),
+      path: "/orders",
+      icon: <OrdersSvg />,
+      component: <Orders />,
+    });
+    routes.push({
+      name: t("sidebarLinks.users"),
+      path: "/users",
+      icon: <UsersSvg />,
+      component: <Users />,
+    });
+  }
+
+  if (role === "admin" || role === "only_read") {
     routes.push(
       {
         name: t("sidebarLinks.dashboard"),
@@ -39,36 +83,32 @@ function useRoutes() {
         path: "/buildings",
         icon: <BuildingsSvg />,
         component: <Buildings />,
+      },
+      {
+        name: t("sidebarLinks.items"),
+        path: "/items",
+        icon: <ItemsSvg />,
+        component: <Items />,
+      },
+      {
+        name: t("sidebarLinks.orders"),
+        path: "/orders",
+        icon: <OrdersSvg />,
+        component: <Orders />,
+      },
+      {
+        name: t("sidebarLinks.needs"),
+        path: "/needs",
+        icon: <NeedsSvg />,
+        component: <Needs />,
+      },
+      {
+        name: t("sidebarLinks.users"),
+        path: "/users",
+        icon: <UsersSvg />,
+        component: <Users />,
       }
     );
-  }
-  routes.push(
-    {
-      name: t("sidebarLinks.needs"),
-      path: "/needs",
-      icon: <NeedsSvg />,
-      component: <Needs />,
-    },
-    {
-      name: t("sidebarLinks.items"),
-      path: "/items",
-      icon: <ItemsSvg />,
-      component: <Items />,
-    },
-    {
-      name: t("sidebarLinks.orders"),
-      path: "/orders",
-      icon: <OrdersSvg />,
-      component: <Orders />,
-    }
-  );
-  if (usr?.role === "admin" || usr?.role === "only_read") {
-    routes.push({
-      name: t("sidebarLinks.users"),
-      path: "/users",
-      icon: <UsersSvg />,
-      component: <Users />,
-    });
   }
 
   return { routes };

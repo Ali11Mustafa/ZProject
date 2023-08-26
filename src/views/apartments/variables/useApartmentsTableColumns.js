@@ -2,6 +2,8 @@ import { useTranslation } from "react-i18next";
 
 export default function useApartmentsTableColumns() {
   const { t } = useTranslation();
+  let usr = JSON.parse(sessionStorage.getItem("user"));
+  let role = usr?.role;
 
   const apartmentsTableColumns = [
     {
@@ -20,11 +22,14 @@ export default function useApartmentsTableColumns() {
       Header: t("apartmentsTable.columns.status"),
       accessor: "status",
     },
-    {
+  ];
+
+  if (role === "admin") {
+    apartmentsTableColumns.push({
       Header: t("apartmentsTable.columns.actions"),
       accessor: "actions",
-    },
-  ];
+    });
+  }
 
   return { apartmentsTableColumns };
 }

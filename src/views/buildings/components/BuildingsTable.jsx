@@ -1,17 +1,17 @@
-import React, { useMemo, useState } from "react";
-import Card from "components/card";
-import { useGlobalFilter, usePagination, useTable } from "react-table";
-import { MdDeleteOutline } from "react-icons/md";
-import { FiEdit, FiExternalLink } from "react-icons/fi";
-import NewBuilding from "./NewBuilding";
-import { Link } from "react-router-dom";
-import { useSearchStore, useLanguageStore } from "App";
-import { useTranslation } from "react-i18next";
+import { useLanguageStore, useSearchStore } from "App";
 import axios from "axios";
-import Swal from "sweetalert2";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import ReactPaginate from "react-paginate";
 import Spinner from "components/Spinner";
+import Card from "components/card";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { FiEdit, FiExternalLink } from "react-icons/fi";
+import { MdDeleteOutline } from "react-icons/md";
+import ReactPaginate from "react-paginate";
+import { Link } from "react-router-dom";
+import { useGlobalFilter, usePagination, useTable } from "react-table";
+import Swal from "sweetalert2";
+import NewBuilding from "./NewBuilding";
 
 const BuildingsTable = (props) => {
   const {
@@ -62,6 +62,7 @@ const BuildingsTable = (props) => {
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
+  let role = usr?.role;
 
   const config = {
     headers: {
@@ -135,7 +136,7 @@ const BuildingsTable = (props) => {
         </div>
       </header>
 
-      <div className="mt-8">
+      <div className="mt-8 overflow-scroll">
         <table
           {...getTableProps()}
           className="w-full"
@@ -222,35 +223,41 @@ const BuildingsTable = (props) => {
                         } else if (cell.column.id === "actions") {
                           data = (
                             <div className="flex items-center gap-4">
-                              <button
-                                value={row.original.id}
-                                onClick={deleteMe}
-                                className="flex items-center gap-1 text-red-600"
-                              >
-                                <div
-                                  value={row.original.id}
-                                  className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
-                                >
-                                  <MdDeleteOutline value={row.original.id} />
-                                </div>
-                                <p
-                                  value={row.original.id}
-                                  className="text-start text-sm font-medium text-black dark:text-white"
-                                >
-                                  {t("actions.delete")}
-                                </p>
-                              </button>
-                              <Link
-                                to={`/buildings/update/${row.original.id}`}
-                                className="flex items-center gap-1 text-green-600"
-                              >
-                                <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg">
-                                  <FiEdit />
-                                </div>
-                                <p className="text-start text-sm font-medium text-black dark:text-white">
-                                  {t("actions.update")}
-                                </p>
-                              </Link>
+                              {role === "admin" && (
+                                <>
+                                  <button
+                                    value={row.original.id}
+                                    onClick={deleteMe}
+                                    className="flex items-center gap-1 text-red-600"
+                                  >
+                                    <div
+                                      value={row.original.id}
+                                      className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
+                                    >
+                                      <MdDeleteOutline
+                                        value={row.original.id}
+                                      />
+                                    </div>
+                                    <p
+                                      value={row.original.id}
+                                      className="text-start text-sm font-medium text-black dark:text-white"
+                                    >
+                                      {t("actions.delete")}
+                                    </p>
+                                  </button>
+                                  <Link
+                                    to={`/buildings/update/${row.original.id}`}
+                                    className="flex items-center gap-1 text-green-600"
+                                  >
+                                    <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg">
+                                      <FiEdit />
+                                    </div>
+                                    <p className="text-start text-sm font-medium text-black dark:text-white">
+                                      {t("actions.update")}
+                                    </p>
+                                  </Link>
+                                </>
+                              )}
                               <Link
                                 to={`${row.original.id}/apartments`}
                                 className="flex items-center gap-1 text-blue-600"

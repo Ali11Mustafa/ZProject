@@ -170,11 +170,12 @@ export default function NewItem({ GetNewItem }) {
                         defaultValue="admin"
                         {...register("role", { required: true })}
                       >
-                        <option value="admin">admin</option>
-                        <option value="only_read">only red</option>
-                        <option value="officer_eng">officer Eng</option>
-                        <option value="engineer">engineer</option>
-                        <option value="accountant">accountant</option>
+                        <option value="admin">Admin</option>
+                        <option value="only_read">Only Read User</option>
+                        <option value="sales">Sales User</option>
+                        <option value="officer_eng">Officer Engineer</option>
+                        <option value="engineer">Engineer</option>
+                        <option value="accountant">Accountant</option>
                       </select>
                     </div>
 

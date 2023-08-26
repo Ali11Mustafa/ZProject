@@ -32,14 +32,14 @@ const Sidebar = ({ open, onClose }) => {
         language === "en" && open
           ? "translate-x-0"
           : language === "en" && !open
-          ? "-translate-x-[30rem]"
+          ? "-translate-x-[100rem]"
           : ""
       }
       ${
         language !== "en" && open
           ? "-translate-x-0"
           : language !== "en" && !open
-          ? "translate-x-[30rem]"
+          ? "translate-x-[100rem]"
           : ""
       }
       `}

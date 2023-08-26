@@ -118,7 +118,7 @@ const ItemsTable = (props) => {
         <NewItem GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8">
+      <div className="mt-8 overflow-scroll">
         <table
           {...getTableProps()}
           className="w-full"

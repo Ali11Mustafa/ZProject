@@ -4,9 +4,12 @@ import Swal from "sweetalert2";
 
 import { useLanguageStore } from "App";
 import axios from "axios";
+import Spinner from "components/Spinner";
 import { useTranslation } from "react-i18next";
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
+import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import {
   useGlobalFilter,
@@ -15,9 +18,6 @@ import {
   useTable,
 } from "react-table";
 import NewItem from "./NewUser";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import ReactPaginate from "react-paginate";
-import Spinner from "components/Spinner";
 
 const ItemsTable = (props) => {
   const {
@@ -57,6 +57,9 @@ const ItemsTable = (props) => {
   const { t } = useTranslation();
 
   const language = useLanguageStore((state) => state.language);
+
+  let usr = JSON.parse(sessionStorage.getItem("user"));
+  let role = usr?.role;
 
   function deleteMe(e) {
     Swal.fire({
@@ -117,7 +120,7 @@ const ItemsTable = (props) => {
         <NewItem GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8">
+      <div className="mt-8 overflow-scroll">
         <table
           {...getTableProps()}
           className="w-full"
@@ -184,24 +187,26 @@ const ItemsTable = (props) => {
                       } else if (cell.column.id === "actions") {
                         data = (
                           <div className="flex items-center gap-4">
-                            <button
-                              value={row.original.id}
-                              onClick={deleteMe}
-                              className="flex items-center gap-1 text-red-600"
-                            >
-                              <div
+                            {role === "admin" && (
+                              <button
                                 value={row.original.id}
-                                className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
+                                onClick={deleteMe}
+                                className="flex items-center gap-1 text-red-600"
                               >
-                                <MdDeleteOutline value={row.original.id} />
-                              </div>
-                              <p
-                                value={row.original.id}
-                                className="text-start text-sm font-medium text-black dark:text-white"
-                              >
-                                {t("actions.delete")}
-                              </p>
-                            </button>
+                                <div
+                                  value={row.original.id}
+                                  className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
+                                >
+                                  <MdDeleteOutline value={row.original.id} />
+                                </div>
+                                <p
+                                  value={row.original.id}
+                                  className="text-start text-sm font-medium text-black dark:text-white"
+                                >
+                                  {t("actions.delete")}
+                                </p>
+                              </button>
+                            )}
                             <Link
                               to={`/users/update/${row.original.id}`}
                               className="flex items-center gap-1 text-green-600"

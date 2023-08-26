@@ -1,4 +1,4 @@
-import { useLanguageStore } from "App";
+import { useLanguageStore, useUserConfigStore } from "App";
 import InputField from "components/fields/InputField";
 import LangSelector from "components/langSelector/LangSelector";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 
-export default function SignIn({ userCredentials }) {
+export default function SignIn() {
   const navigate = useNavigate();
 
   let [inputs, setInputs] = useState({
@@ -30,6 +30,7 @@ export default function SignIn({ userCredentials }) {
   const [loading, setLoading] = useState(false);
 
   const { register, handleSubmit } = useForm();
+  const setUserConfig = useUserConfigStore((state) => state.setUserConfig);
 
   const { t } = useTranslation();
 
@@ -65,6 +66,13 @@ export default function SignIn({ userCredentials }) {
       } else {
         navigate("/", { replace: true });
       }
+      let token = usr?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      setUserConfig(config);
       return;
     } catch (e) {
       console.log(e);

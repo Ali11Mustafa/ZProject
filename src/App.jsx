@@ -19,6 +19,34 @@ import UpdateNeed from "./views/needs/Pages/UpdateNeed";
 import UpdateOrder from "./views/orders/pages/UpdateOrder";
 import UpdateUser from "./views/users/pages/UpdateUser";
 
+export const useApartmentsAnaylyticsStore = create((set) => ({
+  apartmentsAnalyticsData: {
+    totalApartments: 0,
+    soldApartments: 0,
+    availableApartments: 0,
+    onHoldApartments: 0,
+  },
+
+  setApartmentsAnalyticsData: (data) =>
+    set(() => ({
+      apartmentsAnalyticsData: {
+        ...data,
+      },
+    })),
+}));
+
+export const useUserConfigStore = create((set) => ({
+  userConfig: JSON.parse(localStorage.getItem("userConfig")) || {},
+  // setUserConfig: (config) => set({ userConfig: config }),
+  setUserConfig: (config) => {
+    // Update the userConfig in the store
+    set({ userConfig: config });
+
+    // Store the config in localStorage
+    localStorage.setItem("userConfig", JSON.stringify(config));
+  },
+}));
+
 export const useSearchStore = create((set) => ({
   searchText: "",
   setSearchText: (text) => set({ searchText: text }),
@@ -120,6 +148,12 @@ const App = () => {
       document.body.classList.remove("dark");
     }
   }, [isDarkMode]);
+
+  const userConfig = useUserConfigStore((state) => state.userConfig);
+
+  useEffect(() => {
+    console.log(userConfig);
+  }, [userConfig]);
 
   return (
     <Routes>

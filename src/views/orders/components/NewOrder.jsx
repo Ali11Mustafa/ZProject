@@ -53,7 +53,7 @@ export default function NewOrders({ GetNewItem }) {
       let newData = {
         amount: data.amount,
         unit: data.unit,
-        price: data.price,
+        price: data.price || "0",
         user_id: usrId,
         item_id: itemId,
       };
@@ -91,15 +91,14 @@ export default function NewOrders({ GetNewItem }) {
 
   return (
     <>
-      {(role === "admin" || role === "engineer" || role === "officer_eng") && (
-        <button
-          className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
-          type="button"
-          onClick={() => setShowModal(true)}
-        >
-          <BsPlus fontSize={32} />
-        </button>
-      )}
+      <button
+        className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
+        type="button"
+        onClick={() => setShowModal(true)}
+      >
+        <BsPlus fontSize={32} />
+      </button>
+
       {showModal && (
         <>
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">
@@ -163,21 +162,23 @@ export default function NewOrders({ GetNewItem }) {
                         <option value="barrel">barrel</option>
                       </select>
                     </div>
-                    <div className="mb-4">
-                      <label
-                        className="mb-2 block font-medium text-black dark:text-white"
-                        htmlFor="price"
-                      >
-                        {t("newOrder.order_price")}
-                      </label>
-                      <input
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
-                        id="price"
-                        name="price"
-                        type="number"
-                        {...register("price", { required: true })}
-                      />
-                    </div>
+                    {(role !== "accountant" || role !== "only_read") && (
+                      <div className="mb-4">
+                        <label
+                          className="mb-2 block font-medium text-black dark:text-white"
+                          htmlFor="price"
+                        >
+                          {t("newOrder.order_price")}
+                        </label>
+                        <input
+                          className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                          id="price"
+                          name="price"
+                          type="number"
+                          {...register("price", { required: true })}
+                        />
+                      </div>
+                    )}
                     <div className="mb-4">
                       <label
                         className="mb-2 block font-medium text-black dark:text-white"

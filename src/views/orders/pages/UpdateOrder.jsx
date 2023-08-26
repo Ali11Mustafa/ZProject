@@ -1,32 +1,32 @@
+import { useLanguageStore } from "App";
 import Layout from "Layout";
+import axios from "axios";
 import Card from "components/card";
+import useFetchItems from "hooks/useFetchItems";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useLanguageStore } from "App";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import useFetchItems from "hooks/useFetchItems";
-import axios from "axios";
-import React, { useState, useMemo, useEffect } from "react";
-import Swal from "sweetalert2";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function UpdateOrder() {
   const { orderId } = useParams();
   const { Data } = useFetchItems();
 
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const { register, handleSubmit, reset, setValue, watch } = useForm();
   const [itemNames, setNames] = useState([]);
   const navigate = useNavigate();
 
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
-
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
 
+  // const formData = watch();
   const onSubmit = (data) => {
     const API = `https://api.hirari-iq.com/api/orders/${orderId}`;
 
@@ -89,7 +89,7 @@ function UpdateOrder() {
       .catch((err) => {
         console.log(err);
       });
-  }, [orderId, config, setValue]);
+  }, [orderId]);
 
   return (
     <Layout>
@@ -127,6 +127,7 @@ function UpdateOrder() {
               id="amount"
               name="amount"
               type="number"
+              disabled={usr.role === "accountant"}
               {...register("amount", { required: true })}
             />
           </div>
@@ -141,6 +142,7 @@ function UpdateOrder() {
               className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="unit"
               name="unit"
+              disabled={usr.role === "accountant"}
               {...register("unit", { required: true })}
             >
               <option value="ton">ton</option>
@@ -165,28 +167,47 @@ function UpdateOrder() {
               {...register("price", { required: true })}
             />
           </div>
-          <div className="mb-4">
-            <label
-              className="mb-2 block font-medium text-gray-700"
-              htmlFor="name"
-            >
-              {t("newOrder.item_name")}
-            </label>
-            <select
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
-              id="name"
-              name="name"
-              type="string"
-              {...register("name", { required: true })}
-            >
-              <option value="">Select a name</option>
+          {usr.role !== "accountant" ? (
+            <div className="mb-4">
+              <label
+                className="mb-2 block font-medium text-gray-700"
+                htmlFor="name"
+              >
+                {t("newOrder.item_name")}
+              </label>
 
-              {memoizedItemNames &&
-                memoizedItemNames.map((name) => {
-                  return <option value={name}>{name}</option>;
-                })}
-            </select>
-          </div>
+              <select
+                className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+                id="name"
+                name="name"
+                type="string"
+                disabled={usr.role === "accountant"}
+                {...register("name", { required: true })}
+              >
+                {memoizedItemNames &&
+                  memoizedItemNames.map((name) => {
+                    return <option value={name}>{name}</option>;
+                  })}
+              </select>
+            </div>
+          ) : (
+            <div className="mb-4">
+              <label
+                className="mb-2 block font-medium text-gray-700"
+                htmlFor="name"
+              >
+                {t("newOrder.item_name")}
+              </label>
+              <input
+                className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+                id="name"
+                name="name"
+                type="text"
+                disabled={usr.role === "accountant"}
+                {...register("name", { required: true })}
+              />
+            </div>
+          )}
 
           {/*footer*/}
           <div

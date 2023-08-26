@@ -17,6 +17,7 @@ function UpdateItem() {
   let usr = JSON.parse(sessionStorage.getItem("user"));
 
   let token = usr?.token;
+  let role = usr?.role;
 
   const config = {
     headers: {
@@ -123,6 +124,7 @@ function UpdateItem() {
               id="name"
               type="text"
               name="name"
+              disabled={role === "accountant"}
               {...register("name", { required: true })}
             />
           </div>
@@ -138,6 +140,7 @@ function UpdateItem() {
               id="email"
               type="text"
               name="email"
+              disabled={role === "accountant"}
               {...register("email", { required: true })}
             />
           </div>
@@ -169,6 +172,7 @@ function UpdateItem() {
               id="role"
               name="role"
               type="text"
+              disabled={role === "accountant"}
               {...register("role", { required: true })}
             >
               <option value="admin">admin</option>

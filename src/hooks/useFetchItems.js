@@ -1,25 +1,23 @@
+import { useUserConfigStore } from "App";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 function useFetchItems() {
   const [Data, setData] = useState([]);
   const API = "https://api.hirari-iq.com/api/items";
-  useEffect(() => {
-    FetchData();
-  }, []);
-
+  const userConfig = useUserConfigStore((state) => state.userConfig);
   let usr = JSON.parse(sessionStorage.getItem("user"));
-  let token = usr?.token;
+  let role = usr?.role;
 
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  useEffect(() => {
+    if (role !== "accountant" || role !== "officer_enginner") {
+      FetchData();
+    }
+  }, []);
 
   const FetchData = async () => {
     await axios
-      .get(API, config)
+      .get(API, userConfig)
       .then((response) => {
         response.data.data.map((item) => {
           if (item.is_deleted !== 1) {

@@ -24,7 +24,11 @@ export default function NewBuilding({ GetNewItem }) {
 
     const PostData = () => {
       axios
-        .post(API, { ...data, level: "0" }, config)
+        .post(
+          API,
+          { ...data, level: "0", description: "no description" },
+          config
+        )
         .then((response) => {
           GetNewItem(Math.random());
           Swal.fire({
@@ -142,21 +146,7 @@ export default function NewBuilding({ GetNewItem }) {
                         {...register("apartment_per_floor", { required: true })}
                       />
                     </div>
-                    <div className="mb-4">
-                      <label
-                        className="mb-2 block font-medium text-black dark:text-white"
-                        htmlFor="description"
-                      >
-                        {t("newBuilding.description")}
-                      </label>
-                      <textarea
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
-                        id="description"
-                        name="description"
-                        type="text"
-                        {...register("description", { required: true })}
-                      />
-                    </div>
+
                     {/*footer*/}
                     <div
                       className={`border-slate-200 flex items-center ${

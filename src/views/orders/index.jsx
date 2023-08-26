@@ -1,7 +1,7 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import OrdersTable from "./components/OrdersTable";
 import useItemsTableColumns from "./variables/useItemsTableColumns";
-import axios from "axios";
 
 const OrdersDashboard = () => {
   const { itemsTableColumns } = useItemsTableColumns();
@@ -37,6 +37,7 @@ const OrdersDashboard = () => {
     axios
       .get(API, config)
       .then((response) => {
+        console.log(response.data.data);
         setTotal(response.data.meta.total);
         setCurrentPage(pageNumber);
         setPerPage(response.data.meta.per_page);

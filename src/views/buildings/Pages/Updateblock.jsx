@@ -30,7 +30,7 @@ function UpdateBlock() {
 
     const PostData = () => {
       axios
-        .put(API, { ...data, usrId }, config)
+        .put(API, { ...data, usrId, description: "no description" }, config)
         .then((response) => {
           Swal.fire({
             position: "top-center",
@@ -78,7 +78,6 @@ function UpdateBlock() {
         setValue("name", block[0].name);
         setValue("number_of_floor", block[0].number_of_floor);
         setValue("apartment_per_floor", block[0].apartment_per_floor);
-        setValue("description", block[0].description);
       }
     }
   }, [setValue, Data, buildingId]);
@@ -158,22 +157,7 @@ function UpdateBlock() {
               {...register("apartment_per_floor", { required: true })}
             />
           </div>
-          <div className="mb-4">
-            <label
-              className="mb-2 block font-medium text-gray-700"
-              htmlFor="description"
-            >
-              {t("newBuilding.description")}
-            </label>
-            <textarea
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
-              id="description"
-              name="description"
-              type="text"
-              placeholder="Write a description for the building"
-              {...register("description", { required: true })}
-            />
-          </div>
+
           {/*footer*/}
           <div
             className={`border-slate-200 flex items-center ${
