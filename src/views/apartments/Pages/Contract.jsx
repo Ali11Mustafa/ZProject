@@ -94,7 +94,7 @@ function Contract() {
   function onHold() {
     const API = `https://api.hirari-iq.com/api/apartments/${apartmentId}/on_hold`;
     axios
-      .put(API, config)
+      .put(API,{},config)
       .then((response) => {
         setIsOnHold(true);
         setIsEditable(true);
