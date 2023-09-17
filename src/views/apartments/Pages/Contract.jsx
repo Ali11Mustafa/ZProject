@@ -109,7 +109,7 @@ function Contract() {
   function unHold() {
     const API = `https://api.hirari-iq.com/api/apartments/${apartmentId}/un_hold`;
     axios
-      .put(API, config)
+      .put(API,{},config)
       .then((response) => {
         setIsOnHold(false);
         setIsEditable(false);
