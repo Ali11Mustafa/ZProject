@@ -6,6 +6,7 @@ import ReactPaginate from "react-paginate";
 import Swal from "sweetalert2";
 
 import { useLanguageStore } from "App";
+import Spinner from "components/Spinner";
 import { useTranslation } from "react-i18next";
 import { FiEdit } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
@@ -17,7 +18,6 @@ import {
   useTable,
 } from "react-table";
 import NewNeed from "./NewNeed";
-import Spinner from "components/Spinner";
 
 const NeedsTable = (props) => {
   const {
@@ -192,7 +192,11 @@ const NeedsTable = (props) => {
         <NewNeed GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8 overflow-scroll">
+      <div
+        className={`mt-8  ${
+          tableData.length > 0 ? "overflow-scroll" : "overflow-hidden"
+        }`}
+      >
         <table
           {...getTableProps()}
           className="w-full"
@@ -253,13 +257,13 @@ const NeedsTable = (props) => {
                         ) {
                           if (cell.value === "accept") {
                             data = (
-                              <p className="text-md font-medium text-green-600">
+                              <p className="font-medium text-green-600 text-md">
                                 Accepted
                               </p>
                             );
                           } else if (cell.value === "reject") {
                             data = (
-                              <p className="text-md font-medium text-red-600">
+                              <p className="font-medium text-red-600 text-md">
                                 Rejected
                               </p>
                             );
@@ -272,13 +276,13 @@ const NeedsTable = (props) => {
                             <div className="flex items-center gap-2">
                               <button
                                 onClick={() => onAccept(row.original.id)}
-                                className="rounded-md bg-green-400 px-2 py-1 dark:text-black"
+                                className="px-2 py-1 bg-green-400 rounded-md dark:text-black"
                               >
                                 {t("alerts.needs.acceptAlerts.buttons.accept")}
                               </button>
                               <button
                                 onClick={() => onReject(row.original.id)}
-                                className="rounded-md bg-red-400 px-2 py-1 dark:text-black"
+                                className="px-2 py-1 bg-red-400 rounded-md dark:text-black"
                               >
                                 {t("alerts.needs.rejectAlerts.buttons.reject")}
                               </button>
@@ -333,13 +337,13 @@ const NeedsTable = (props) => {
                             >
                               <div
                                 value={row.original.id}
-                                className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
+                                className="flex items-center justify-center text-xl rounded-sm from-brandLinear to-brand-500 "
                               >
                                 <MdDeleteOutline value={row.original.id} />
                               </div>
                               <p
                                 value={row.original.id}
-                                className="text-start text-sm font-medium text-black dark:text-white"
+                                className="text-sm font-medium text-black text-start dark:text-white"
                               >
                                 {t("actions.delete")}
                               </p>
@@ -348,10 +352,10 @@ const NeedsTable = (props) => {
                               to={`/needs/update/${row.original.id}`}
                               className="flex items-center gap-1 text-green-600"
                             >
-                              <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
+                              <div className="flex items-center justify-center text-lg rounded-sm from-brandLinear to-brand-500 ">
                                 <FiEdit />
                               </div>
-                              <p className="text-start text-sm font-medium text-black dark:text-white">
+                              <p className="text-sm font-medium text-black text-start dark:text-white">
                                 {t("actions.update")}
                               </p>
                             </Link>
@@ -383,7 +387,7 @@ const NeedsTable = (props) => {
           breakLabel={<span className="mx-2">...</span>}
           nextLabel={
             showNextButton ? (
-              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+              <button className="flex items-center justify-center w-10 h-10 mx-2 text-center text-white rounded-md text-md bg-mySecondary hover:bg-myPrimary">
                 {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
               </button>
             ) : null
@@ -393,7 +397,7 @@ const NeedsTable = (props) => {
           pageCount={Math.ceil(total / 10)}
           previousLabel={
             showPrevButton ? (
-              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+              <button className="flex items-center justify-center w-10 h-10 mx-2 text-center text-white rounded-md text-md bg-mySecondary hover:bg-myPrimary">
                 {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
               </button>
             ) : null

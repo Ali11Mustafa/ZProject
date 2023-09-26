@@ -1,14 +1,14 @@
+import { useLanguageStore } from "App";
 import Layout from "Layout";
+import axios from "axios";
 import Card from "components/card";
+import useFetchItems from "hooks/useFetchItems";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useLanguageStore } from "App";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import useFetchItems from "hooks/useFetchItems";
-import { useMemo, useState, useEffect } from "react";
-import axios from "axios";
-import Swal from "sweetalert2";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function UpdateNeed() {
   const [itemNames, setNames] = useState([]);
@@ -171,7 +171,7 @@ function UpdateNeed() {
               {t("newNeed.need_amount")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="need_amount"
               name="need_amount"
               type="text"
@@ -187,7 +187,7 @@ function UpdateNeed() {
               {t("newNeed.description")}
             </label>
             <textarea
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="description"
               name="description"
               type="text"
@@ -203,7 +203,7 @@ function UpdateNeed() {
               {t("newNeed.item_name")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="name"
               name="name"
               type="string"
@@ -225,7 +225,7 @@ function UpdateNeed() {
               {t("newNeed.item_type")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="type"
               name="type"
               {...register("type", { required: true })}
@@ -247,7 +247,7 @@ function UpdateNeed() {
               {t("newNeed.building")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="building"
               name="building"
               type="string"

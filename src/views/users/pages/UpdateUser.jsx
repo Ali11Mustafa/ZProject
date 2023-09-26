@@ -120,7 +120,7 @@ function UpdateItem() {
               {t("newUser.username")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="name"
               type="text"
               name="name"
@@ -136,7 +136,7 @@ function UpdateItem() {
               {t("newUser.email")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="email"
               type="text"
               name="email"
@@ -153,7 +153,7 @@ function UpdateItem() {
               {t("newUser.salary")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="salary"
               type="text"
               name="salry"
@@ -168,7 +168,7 @@ function UpdateItem() {
               {t("newUser.role")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="role"
               name="role"
               type="text"

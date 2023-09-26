@@ -2,11 +2,11 @@ import { useLanguageStore } from "App";
 import Layout from "Layout";
 import axios from "axios";
 import Card from "components/card";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function UpdateApartment() {
@@ -112,7 +112,7 @@ function UpdateApartment() {
               {t("updateApartment.apartmentNumber")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="apartment_number"
               type="text"
               name="apartment_number"
@@ -128,7 +128,7 @@ function UpdateApartment() {
               {t("updateApartment.floorNumber")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="floor_number"
               name="floor_number"
               type="number"
@@ -143,7 +143,7 @@ function UpdateApartment() {
               {t("updateApartment.area")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="area"
               name="area"
               type="number"

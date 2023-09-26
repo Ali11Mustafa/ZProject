@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useLanguageStore } from "App";
 import axios from "axios";
 import React from "react";
@@ -5,11 +6,30 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
 import Swal from "sweetalert2";
+import * as yup from "yup";
+
+let newUserSchema = yup.object({
+  name: yup.string().required("Name is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+    ),
+  salary: yup.number().positive().min(1).required(),
+});
 
 export default function NewItem({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
 
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(newUserSchema) });
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let role = usr?.role;
 
@@ -60,7 +80,7 @@ export default function NewItem({ GetNewItem }) {
     <>
       {role === "admin" && (
         <button
-          className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800 "
+          className="bg-gray-200 rounded-md rounded-xs dark:bg-white dark:text-blue-800 "
           type="button"
           onClick={() => setShowModal(true)}
         >
@@ -69,12 +89,12 @@ export default function NewItem({ GetNewItem }) {
       )}
       {showModal ? (
         <>
-          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden shadow-xl outline-none focus:outline-none">
+          <div className="fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto shadow-xl outline-none focus:outline-none">
             <div className="relative  my-6 mx-auto w-[90%] max-w-xl">
               {/*content*/}
-              <div className="relative flex w-full flex-col rounded-lg border-0 bg-white outline-none focus:outline-none dark:bg-myCard">
+              <div className="relative flex flex-col w-full bg-white border-0 rounded-lg outline-none focus:outline-none dark:bg-myCard">
                 {/*header*/}
-                <div className="border-slate-200 flex items-center justify-between rounded-t py-5 px-7">
+                <div className="flex items-center justify-between py-5 rounded-t border-slate-200 px-7">
                   <h3 className="text-xl font-semibold dark:text-[#778da9]">
                     {t("newUser.title")}
                   </h3>
@@ -92,78 +112,91 @@ export default function NewItem({ GetNewItem }) {
                 {/*body*/}
                 <div>
                   <form
-                    className="mb-4 rounded bg-white px-8 pt-6 pb-8 dark:bg-myCard"
+                    className="px-8 pt-6 pb-8 mb-4 bg-white rounded dark:bg-myCard"
                     onSubmit={handleSubmit(onSubmit)}
                   >
                     <div className="mb-4">
                       <label
-                        className="mb-2 block text-black dark:font-medium dark:text-white"
+                        className="block mb-2 text-black dark:font-medium dark:text-white"
                         htmlFor="name"
                       >
                         {t("newItem.name")}
                       </label>
                       <input
-                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="w-full px-3 py-2 leading-tight text-gray-700 bg-white rounded shadow focus:shadow-outline appearance-dark:none focus:outline-none dark:bg-myBlak"
                         id="name"
                         type="text"
                         name="name"
                         {...register("name", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.name?.message}
+                      </p>
                     </div>
                     <div className="mb-4">
                       <label
-                        className="mb-2 block text-black dark:font-medium dark:text-white"
+                        className="block mb-2 text-black dark:font-medium dark:text-white"
                         htmlFor="email"
                       >
                         {t("newUser.email")}
                       </label>
                       <input
-                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="w-full px-3 py-2 leading-tight text-gray-700 bg-white rounded shadow focus:shadow-outline appearance-dark:none focus:outline-none dark:bg-myBlak"
                         id="email"
                         type="text"
                         name="email"
                         {...register("email", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.email?.message}
+                      </p>
                     </div>
                     <div className="mb-4">
                       <label
-                        className="mb-2 block text-black dark:font-medium dark:text-white"
+                        className="block mb-2 text-black dark:font-medium dark:text-white"
                         htmlFor="password"
                       >
                         {t("newUser.password")}
                       </label>
                       <input
-                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="w-full px-3 py-2 leading-tight text-gray-700 bg-white rounded shadow focus:shadow-outline appearance-dark:none focus:outline-none dark:bg-myBlak"
                         id="password"
                         type="text"
                         name="password"
                         {...register("password", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.password?.message}
+                      </p>
                     </div>
                     <div className="mb-4">
                       <label
-                        className="mb-2 block text-black dark:font-medium dark:text-white"
+                        className="block mb-2 text-black dark:font-medium dark:text-white"
                         htmlFor="salary"
                       >
                         {t("newUser.salary")}
                       </label>
                       <input
-                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="w-full px-3 py-2 leading-tight text-gray-700 bg-white rounded shadow focus:shadow-outline appearance-dark:none focus:outline-none dark:bg-myBlak"
                         id="salary"
-                        type="text"
-                        name="salry"
+                        type="number"
+                        name="salary"
+                        defaultValue="0"
                         {...register("salary", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.salary?.message}
+                      </p>
                     </div>
                     <div className="mb-4">
                       <label
-                        className="mb-2 block text-black dark:font-medium dark:text-white"
+                        className="block mb-2 text-black dark:font-medium dark:text-white"
                         htmlFor="role"
                       >
                         {t("newUser.role")}
                       </label>
                       <select
-                        className="focus:shadow-outline appearance-dark:none w-full rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="w-full px-3 py-2 leading-tight text-gray-700 bg-white rounded shadow focus:shadow-outline appearance-dark:none focus:outline-none dark:bg-myBlak"
                         id="role"
                         name="role"
                         type="text"
@@ -186,13 +219,13 @@ export default function NewItem({ GetNewItem }) {
                       } rounded-b pt-5`}
                     >
                       <button
-                        className="background-transparent text-md mb-1 mr-1 px-6 py-2 font-medium uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
+                        className="px-6 py-2 mb-1 mr-1 font-medium text-red-500 uppercase transition-all duration-150 ease-linear outline-none background-transparent text-md focus:outline-none"
                         type="button"
                         onClick={() => setShowModal(false)}
                       >
                         {t("formButtons.close")}
                       </button>
-                      <button className="active:bg-emerald-600 mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none md:hover:bg-mySecondary">
+                      <button className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none active:bg-emerald-600 bg-myPrimary hover:shadow-lg focus:outline-none md:hover:bg-mySecondary">
                         {t("formButtons.create")}
                       </button>
                     </div>

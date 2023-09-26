@@ -117,7 +117,7 @@ function UpdateBlock() {
               {t("newBuilding.name")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="name"
               type="text"
               placeholder="Enter name"
@@ -133,7 +133,7 @@ function UpdateBlock() {
               {t("newBuilding.numberOfFloors")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="number_of_floor"
               name="number_of_floor"
               type="text"
@@ -149,7 +149,7 @@ function UpdateBlock() {
               {t("newBuilding.numberOfApartmentsPerFloor")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="apartment_per_floor"
               name="apartment_per_floor"
               type="text"

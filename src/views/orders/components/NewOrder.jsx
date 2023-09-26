@@ -1,12 +1,26 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useLanguageStore } from "App";
 import axios from "axios";
+import useFetchItems from "hooks/useFetchItems";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
 import Swal from "sweetalert2";
+import * as yup from "yup";
 
-import useFetchItems from "hooks/useFetchItems";
+let newOrderSchema = yup.object({
+  amount: yup
+    .number()
+    .positive("Order amount should be a positive number")
+    .min(1, "Order amount must be equal or greater than 1")
+    .required("Order amount is required"),
+  price: yup
+    .number()
+    .positive("Order price should be a positive number")
+    .min(1, "Order price must be equal or greater than 1")
+    .required("Order price is required"),
+});
 
 export default function NewOrders({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
@@ -36,7 +50,14 @@ export default function NewOrders({ GetNewItem }) {
     }
   }, [Data]);
 
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(newOrderSchema),
+  });
   const onSubmit = (data) => {
     let itemName = data.item_name;
     let itemId;
@@ -135,12 +156,16 @@ export default function NewOrders({ GetNewItem }) {
                         {t("newOrder.order_amount")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="focus:shadow-outline w-full rounded bg-white px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none dark:bg-myBlak"
                         id="amount"
                         name="amount"
                         type="number"
+                        defaultValue="0"
                         {...register("amount", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.amount?.message}
+                      </p>
                     </div>
                     <div className="mb-4">
                       <label
@@ -150,7 +175,7 @@ export default function NewOrders({ GetNewItem }) {
                         {t("newOrder.order_unit")}
                       </label>
                       <select
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="focus:shadow-outline w-full rounded bg-white px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none dark:bg-myBlak"
                         id="unit"
                         name="unit"
                         {...register("unit", { required: true })}
@@ -171,12 +196,16 @@ export default function NewOrders({ GetNewItem }) {
                           {t("newOrder.order_price")}
                         </label>
                         <input
-                          className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                          className="focus:shadow-outline w-full rounded bg-white px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none dark:bg-myBlak"
                           id="price"
                           name="price"
                           type="number"
+                          defaultValue="0"
                           {...register("price", { required: true })}
                         />
+                        <p className="mt-1 text-sm text-red-400">
+                          {errors.price?.message}
+                        </p>
                       </div>
                     )}
                     <div className="mb-4">
@@ -187,7 +216,7 @@ export default function NewOrders({ GetNewItem }) {
                         {t("newOrder.item_name")}
                       </label>
                       <select
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="focus:shadow-outline w-full rounded bg-white px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none dark:bg-myBlak"
                         id="item_name"
                         name="item_name"
                         type="string"

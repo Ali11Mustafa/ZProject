@@ -4,9 +4,12 @@ import Swal from "sweetalert2";
 
 import { useLanguageStore } from "App";
 import axios from "axios";
+import Spinner from "components/Spinner";
 import { useTranslation } from "react-i18next";
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { MdDeleteOutline } from "react-icons/md";
+import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 import {
   useGlobalFilter,
@@ -15,9 +18,6 @@ import {
   useTable,
 } from "react-table";
 import NewItem from "./NewItem";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import ReactPaginate from "react-paginate";
-import Spinner from "components/Spinner";
 
 const ItemsTable = (props) => {
   const {
@@ -118,7 +118,11 @@ const ItemsTable = (props) => {
         <NewItem GetNewItem={GetNewItem} />
       </header>
 
-      <div className="mt-8 overflow-scroll">
+      <div
+        className={`mt-8  ${
+          tableData.length > 0 ? "overflow-scroll" : "overflow-hidden"
+        }`}
+      >
         <table
           {...getTableProps()}
           className="w-full"
@@ -187,13 +191,13 @@ const ItemsTable = (props) => {
                             >
                               <div
                                 value={row.original.id}
-                                className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
+                                className="flex items-center justify-center text-xl rounded-sm from-brandLinear to-brand-500 "
                               >
                                 <MdDeleteOutline value={row.original.id} />
                               </div>
                               <p
                                 value={row.original.id}
-                                className="text-start text-sm font-medium text-black dark:text-white"
+                                className="text-sm font-medium text-black text-start dark:text-white"
                               >
                                 {t("actions.delete")}
                               </p>
@@ -202,10 +206,10 @@ const ItemsTable = (props) => {
                               to={`/items/update/${row.original.id}`}
                               className="flex items-center gap-1 text-green-600"
                             >
-                              <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
+                              <div className="flex items-center justify-center text-lg rounded-sm from-brandLinear to-brand-500 ">
                                 <FiEdit />
                               </div>
-                              <p className="text-start text-sm font-medium text-black dark:text-white">
+                              <p className="text-sm font-medium text-black text-start dark:text-white">
                                 {t("actions.update")}
                               </p>
                             </Link>
@@ -237,7 +241,7 @@ const ItemsTable = (props) => {
           breakLabel={<span className="mx-2">...</span>}
           nextLabel={
             showNextButton ? (
-              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+              <button className="flex items-center justify-center w-10 h-10 mx-2 text-center text-white rounded-md text-md bg-mySecondary hover:bg-myPrimary">
                 {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
               </button>
             ) : null
@@ -247,7 +251,7 @@ const ItemsTable = (props) => {
           pageCount={Math.ceil(total / 10)}
           previousLabel={
             showPrevButton ? (
-              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
+              <button className="flex items-center justify-center w-10 h-10 mx-2 text-center text-white rounded-md text-md bg-mySecondary hover:bg-myPrimary">
                 {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
               </button>
             ) : null

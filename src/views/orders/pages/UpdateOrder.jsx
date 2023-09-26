@@ -123,7 +123,7 @@ function UpdateOrder() {
               {t("newOrder.order_amount")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="amount"
               name="amount"
               type="number"
@@ -139,7 +139,7 @@ function UpdateOrder() {
               {t("newOrder.order_unit")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="unit"
               name="unit"
               disabled={usr.role === "accountant"}
@@ -160,7 +160,7 @@ function UpdateOrder() {
               {t("newOrder.order_price")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="price"
               name="price"
               type="number"
@@ -177,7 +177,7 @@ function UpdateOrder() {
               </label>
 
               <select
-                className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+                className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
                 id="name"
                 name="name"
                 type="string"
@@ -199,7 +199,7 @@ function UpdateOrder() {
                 {t("newOrder.item_name")}
               </label>
               <input
-                className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+                className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
                 id="name"
                 name="name"
                 type="text"

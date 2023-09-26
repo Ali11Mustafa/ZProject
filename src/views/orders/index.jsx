@@ -37,7 +37,6 @@ const OrdersDashboard = () => {
     axios
       .get(API, config)
       .then((response) => {
-        console.log(response.data.data);
         setTotal(response.data.meta.total);
         setCurrentPage(pageNumber);
         setPerPage(response.data.meta.per_page);

@@ -1,14 +1,14 @@
+import { useLanguageStore } from "App";
 import Layout from "Layout";
-import React, { useEffect } from "react";
+import axios from "axios";
 import Card from "components/card";
+import useFetchItems from "hooks/useFetchItems";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useLanguageStore } from "App";
-import useFetchItems from "hooks/useFetchItems";
-import axios from "axios";
-import { useNavigate, Link, useParams } from "react-router-dom";
-import Swal from "sweetalert2";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { useNavigate, useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function UpdateItem() {
   const { itemId } = useParams();
@@ -101,7 +101,7 @@ function UpdateItem() {
               {t("newItem.name")}
             </label>
             <input
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="name"
               type="text"
               placeholder="Enter name"
@@ -117,7 +117,7 @@ function UpdateItem() {
               {t("newItem.type")}
             </label>
             <select
-              className="focus:shadow-outline w-full appearance-none rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
+              className="focus:shadow-outline w-full  rounded px-3 py-2 leading-tight text-gray-700 shadow dark:bg-myBlak dark:text-white"
               id="type"
               name="type"
               type="string"

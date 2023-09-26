@@ -1,15 +1,38 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useLanguageStore } from "App";
 import axios from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
 import Swal from "sweetalert2";
+import * as yup from "yup";
+
+let newBuildingSchema = yup.object({
+  name: yup.string().required("Name is required"),
+  number_of_floor: yup
+    .number()
+    .positive("Number of Floor should be a positive number")
+    .min(1, "Number of Floor must be equal or greater than 1")
+    .required("Number of Floor is required"),
+  apartment_per_floor: yup
+    .number()
+    .positive("Number of Floor should be a positive number")
+    .min(1, "Number of Floor must be equal or greater than 1")
+    .required("Number of Floor is required"),
+});
 
 export default function NewBuilding({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
   const { t } = useTranslation();
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(newBuildingSchema),
+  });
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
   let role = usr?.role;
@@ -53,11 +76,6 @@ export default function NewBuilding({ GetNewItem }) {
     setShowModal(false);
     reset();
   };
-  useEffect(() => {
-    setValue("number_of_floor", 0);
-    setValue("apartment_per_floor", 0);
-  });
-
   const language = useLanguageStore((state) => state.language);
 
   return (
@@ -115,6 +133,9 @@ export default function NewBuilding({ GetNewItem }) {
                         name="name"
                         {...register("name", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.name?.message}
+                      </p>
                     </div>
                     <div className="mb-4">
                       <label
@@ -124,12 +145,16 @@ export default function NewBuilding({ GetNewItem }) {
                         {t("newBuilding.numberOfFloors")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="focus:shadow-outline w-full rounded bg-white px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none dark:bg-myBlak"
                         id="number_of_floor"
                         name="number_of_floor"
                         type="number"
+                        defaultValue="0"
                         {...register("number_of_floor", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.number_of_floor?.message}
+                      </p>
                     </div>
                     <div className="mb-4">
                       <label
@@ -139,12 +164,16 @@ export default function NewBuilding({ GetNewItem }) {
                         {t("newBuilding.numberOfApartmentsPerFloor")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="focus:shadow-outline w-full rounded bg-white px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none dark:bg-myBlak"
                         id="apartment_per_floor"
                         name="apartment_per_floor"
                         type="number"
+                        defaultValue="0"
                         {...register("apartment_per_floor", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.apartment_per_floor?.message}
+                      </p>
                     </div>
 
                     {/*footer*/}

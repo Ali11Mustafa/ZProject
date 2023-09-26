@@ -149,12 +149,6 @@ const App = () => {
     }
   }, [isDarkMode]);
 
-  const userConfig = useUserConfigStore((state) => state.userConfig);
-
-  useEffect(() => {
-    console.log(userConfig);
-  }, [userConfig]);
-
   return (
     <Routes>
       <Route path="/" element={<DashboardPage />} />

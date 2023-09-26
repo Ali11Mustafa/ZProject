@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import { useLanguageStore, usePdfStore } from "App";
 import Layout from "Layout";
@@ -9,16 +10,52 @@ import { useTranslation } from "react-i18next";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import * as yup from "yup";
 import Pdf from "../components/Pdf";
+
+let contractSchema = yup.object({
+  owner_name: yup.string().required("Owner name is required"),
+  phone_number: yup.number().required("Phone number is required"),
+  buyer_address: yup.string().required("Buyer address is required"),
+  buyer_card_id: yup.number().required("Buyer card ID is required"),
+  contract_date: yup.string().required("Contract date is required"),
+  total_payment_price: yup
+    .number()
+    .required("Total payment price is required")
+    .min(1, "Total payment price must be greater than or equal to 1"),
+  apartment_price: yup
+    .number()
+    .required("Apartment price is required")
+    .min(1, "Apartment price must be greater than or equal to 1"),
+  pending_price: yup.number().required("Pending price is required"),
+  contract_type: yup.string().required("Contract type is required"),
+  apartment_description: yup.string().required("Description is required"),
+});
 
 function Contract() {
   const { t } = useTranslation();
   const language = useLanguageStore((state) => state.language);
   const navigate = useNavigate();
   const { apartmentId, buildingId } = useParams();
-  const { handleSubmit, control, setValue, watch } = useForm({
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
     shouldUnregister: false,
+    resolver: yupResolver(contractSchema),
   });
+
+  const { total_payment_price, apartment_price } = watch();
+
+  useEffect(() => {
+    if (total_payment_price && apartment_price) {
+      let pending_price = apartment_price - total_payment_price;
+      setValue("pending_price", pending_price);
+    }
+  }, [total_payment_price, apartment_price]);
 
   const [isReserved, setIsReserved] = useState(false);
   const [contractData, setContractData] = useState(null);
@@ -94,7 +131,7 @@ function Contract() {
   function onHold() {
     const API = `https://api.hirari-iq.com/api/apartments/${apartmentId}/on_hold`;
     axios
-      .put(API,{},config)
+      .put(API, {}, config)
       .then((response) => {
         setIsOnHold(true);
         setIsEditable(true);
@@ -109,7 +146,7 @@ function Contract() {
   function unHold() {
     const API = `https://api.hirari-iq.com/api/apartments/${apartmentId}/un_hold`;
     axios
-      .put(API,{},config)
+      .put(API, {}, config)
       .then((response) => {
         setIsOnHold(false);
         setIsEditable(false);
@@ -123,27 +160,29 @@ function Contract() {
 
   useEffect(() => {
     const API = `https://api.hirari-iq.com/api/apartments/${apartmentId}`;
-    axios
-      .put(API, config)
-      .then((response) => {
-        const apartmentDetail = response.data.data;
-        // is on hold
-        if (apartmentDetail.status === "onHold") {
-          setIsOnHold(true);
-        } else {
-          setIsOnHold(false);
-        }
+    if (config) {
+      axios
+        .put(API, config)
+        .then((response) => {
+          const apartmentDetail = response.data.data;
+          // is on hold
+          if (apartmentDetail.status === "onHold") {
+            setIsOnHold(true);
+          } else {
+            setIsOnHold(false);
+          }
 
-        // is sold
-        if (apartmentDetail.status === "notAvailabe") {
-          setIsSold(true);
-        } else {
-          setIsSold(false);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+          // is sold
+          if (apartmentDetail.status === "notAvailabe") {
+            setIsSold(true);
+          } else {
+            setIsSold(false);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   }, [apartmentId]);
 
   // get the contract data function
@@ -382,6 +421,10 @@ function Contract() {
       setPhoneNumber(contractData?.phone_number);
       setTotalPaymentPrice(contractData?.total_payment_price);
       setPendingPrice(contractData?.pending_price);
+
+      if (contractData?.apartment_detail.status === "onHold") {
+        setIsOnHold(true);
+      }
     }
   }, [contractData]);
 
@@ -438,7 +481,7 @@ function Contract() {
           "w-full h-full sm:overflow-auto px-5 mt-10 p-5 mt-10 max-w-[1800px] mx-auto"
         }
       >
-        <header className="relative mb-10 flex items-center justify-between">
+        <header className="relative flex items-center justify-between mb-10">
           <div className="flex items-center gap-4">
             <button
               onClick={goBack}
@@ -451,11 +494,11 @@ function Contract() {
             </div>
           </div>
         </header>
-        <div className="container mx-auto max-w-screen-lg ">
+        <div className="container max-w-screen-lg mx-auto ">
           <div>
             <form onSubmit={handleSubmit(onSubmit)} className="mb-6">
               <div className="lg:col-span-2">
-                <div className="grid grid-cols-1 gap-4 gap-y-6 text-sm md:grid-cols-6">
+                <div className="grid grid-cols-1 gap-4 text-sm gap-y-6 md:grid-cols-6">
                   <div className="md:col-span-4">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
@@ -469,12 +512,17 @@ function Contract() {
                       defaultValue=""
                       rules={{ required: true }}
                       render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
-                          disabled={isEditable || isOnHold}
-                        />
+                        <>
+                          <input
+                            {...field}
+                            type="text"
+                            className="w-full h-10 px-4 mt-1 bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            disabled={isEditable || isOnHold}
+                          />
+                          <p className="mt-1 text-sm text-red-400">
+                            {errors.owner_name?.message}
+                          </p>
+                        </>
                       )}
                     />
                   </div>
@@ -489,15 +537,20 @@ function Contract() {
                     <Controller
                       name="phone_number"
                       control={control}
-                      defaultValue=""
+                      defaultValue="000000000"
                       rules={{ required: true }}
                       render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
-                          disabled={isEditable || isOnHold}
-                        />
+                        <>
+                          <input
+                            {...field}
+                            type="number"
+                            className="w-full h-10 px-4 mt-1 bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            disabled={isEditable || isOnHold}
+                          />
+                          <p className="mt-1 text-sm text-red-400">
+                            {errors.phone_number?.message}
+                          </p>
+                        </>
                       )}
                     />
                   </div>
@@ -514,13 +567,18 @@ function Contract() {
                       defaultValue=""
                       rules={{ required: true }}
                       render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
-                          placeholder=""
-                          disabled={isEditable || isOnHold}
-                        />
+                        <>
+                          <input
+                            {...field}
+                            type="text"
+                            className="w-full h-10 px-4 mt-1 bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            placeholder=""
+                            disabled={isEditable || isOnHold}
+                          />
+                          <p className="mt-1 text-sm text-red-400">
+                            {errors.buyer_address?.message}
+                          </p>
+                        </>
                       )}
                     />
                   </div>
@@ -535,16 +593,21 @@ function Contract() {
                     <Controller
                       name="buyer_card_id"
                       control={control}
-                      defaultValue=""
+                      defaultValue="0"
                       rules={{ required: true }}
                       render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
-                          placeholder=""
-                          disabled={isEditable || isOnHold}
-                        />
+                        <>
+                          <input
+                            {...field}
+                            type="number"
+                            className="w-full h-10 px-4 mt-1 bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            placeholder=""
+                            disabled={isEditable || isOnHold}
+                          />
+                          <p className="mt-1 text-sm text-red-400">
+                            {errors.buyer_card_id?.message}
+                          </p>
+                        </>
                       )}
                     />
                   </div>
@@ -559,67 +622,54 @@ function Contract() {
                     <Controller
                       name="contract_date"
                       control={control}
-                      defaultValue=""
+                      // defaultValue={getCurrentDate()}
                       rules={{ required: true }}
                       render={({ field }) => (
-                        <input
-                          {...field}
-                          type="date"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
-                          placeholder=""
-                          disabled={isEditable || isOnHold}
-                        />
+                        <>
+                          <input
+                            {...field}
+                            type="date"
+                            className="w-full h-10 px-4 mt-1 bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            placeholder=""
+                            disabled={isEditable || isOnHold}
+                          />
+                          <p className="mt-1 text-sm text-red-400">
+                            {errors.contract_date?.message}
+                          </p>
+                        </>
                       )}
                     />
                   </div>
 
-                  <div className="md:col-span-3">
-                    <label
-                      className="font-medium text-gray-900 dark:text-white"
-                      htmlFor="apartment_number"
-                    >
-                      {t("contractForm.apartmentNumber")}
-                    </label>
-                    <Controller
-                      name="apartment_number"
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: true }}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
-                          placeholder=""
-                          disabled={isEditable || isOnHold}
-                        />
-                      )}
-                    />
-                  </div>
-
-                  <div className="md:col-span-3">
+                  <div className="md:col-span-2">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
                       htmlFor="total_payment_price"
                     >
                       {t("contractForm.totalPaymentPrice")}
                     </label>
-                    <div className="mt-1 flex h-10 items-center rounded ">
+                    <div className="flex items-center h-10 mt-1 rounded ">
                       <Controller
                         name="total_payment_price"
                         control={control}
-                        defaultValue=""
+                        defaultValue="0"
                         rules={{ required: true }}
                         render={({ field }) => (
-                          <input
-                            {...field}
-                            type="number"
-                            className="flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
-                            disabled={isEditable || isOnHold}
-                          />
+                          <>
+                            <input
+                              {...field}
+                              type="number"
+                              defaultValue="0"
+                              className="flex items-center w-full h-10 px-4 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                              disabled={isEditable || isOnHold}
+                            />
+                          </>
                         )}
                       />
                     </div>
+                    <p className="mt-1 text-sm text-red-400">
+                      {errors.total_payment_price?.message}
+                    </p>{" "}
                   </div>
 
                   <div className="md:col-span-2">
@@ -629,25 +679,31 @@ function Contract() {
                     >
                       {t("contractForm.apartmentPrice")}
                     </label>
-                    <div className="mt-1 flex h-10 items-center rounded ">
+                    <div className="flex items-center h-10 mt-1 rounded ">
                       <Controller
                         name="apartment_price"
                         control={control}
-                        defaultValue=""
+                        defaultValue="0"
                         rules={{ required: true }}
                         render={({ field }) => (
-                          <input
-                            {...field}
-                            type="number"
-                            className="flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
-                            disabled={isEditable || isOnHold}
-                          />
+                          <>
+                            <input
+                              {...field}
+                              type="number"
+                              defaultValue="0"
+                              className="flex items-center w-full h-10 px-4 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                              disabled={isEditable || isOnHold}
+                            />
+                          </>
                         )}
                       />
                     </div>
+                    <p className="mt-1 text-sm text-red-400">
+                      {errors.apartment_price?.message}
+                    </p>
                   </div>
 
-                  <div className="md:col-span-2">
+                  <div className="md:col-span-1">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
                       htmlFor="pending_price"
@@ -657,19 +713,25 @@ function Contract() {
                     <Controller
                       name="pending_price"
                       control={control}
-                      defaultValue=""
+                      defaultValue="0"
                       rules={{ required: true }}
                       render={({ field }) => (
-                        <input
-                          {...field}
-                          type="number"
-                          className="mt-1 flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
-                          disabled={isEditable || isOnHold}
-                        />
+                        <>
+                          <input
+                            {...field}
+                            type="number"
+                            defaultValue="0"
+                            className="flex items-center w-full h-10 px-4 mt-1 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            disabled={isEditable || isOnHold}
+                          />
+                          <p className="mt-1 text-sm text-red-400">
+                            {errors.pending_price?.message}
+                          </p>
+                        </>
                       )}
                     />
                   </div>
-                  <div className="md:col-span-2">
+                  <div className="md:col-span-1">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
                       htmlFor="contract_type"
@@ -684,7 +746,7 @@ function Contract() {
                       render={({ field }) => (
                         <select
                           {...field}
-                          className="mt-1 flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
+                          className="flex items-center w-full h-10 px-4 mt-1 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
                           disabled={isEditable || isOnHold}
                         >
                           <option value="cash">Cash</option>
@@ -706,12 +768,17 @@ function Contract() {
                       defaultValue=""
                       rules={{ required: true }}
                       render={({ field }) => (
-                        <textarea
-                          {...field}
-                          rows={4}
-                          className="mt-1 flex w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
-                          disabled={isEditable || isOnHold}
-                        />
+                        <>
+                          <textarea
+                            {...field}
+                            rows={4}
+                            className="flex items-center w-full px-4 mt-1 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            disabled={isEditable || isOnHold}
+                          />
+                          <p className="mt-1 text-sm text-red-400">
+                            {errors.apartment_description?.message}
+                          </p>
+                        </>
                       )}
                     />
                   </div>
@@ -727,7 +794,7 @@ function Contract() {
                             {!isReserved && (
                               <button
                                 type="submit"
-                                className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none active:bg-emerald-600 hover:mySecondary bg-myPrimary hover:shadow-lg focus:outline-none"
                               >
                                 {t("formButtons.submit")}
                               </button>
@@ -735,7 +802,7 @@ function Contract() {
                             {isUpdatable && !isEditable && (
                               <button
                                 type="button"
-                                className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none active:bg-emerald-600 hover:mySecondary bg-myPrimary hover:shadow-lg focus:outline-none"
                                 onClick={updateContract}
                               >
                                 {t("formButtons.update")}
@@ -744,7 +811,7 @@ function Contract() {
                             {isEditable && isReserved && (
                               <button
                                 type="button"
-                                className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none active:bg-emerald-600 hover:mySecondary bg-myPrimary hover:shadow-lg focus:outline-none"
                                 onClick={editContract}
                               >
                                 {t("formButtons.edit")}
@@ -753,7 +820,7 @@ function Contract() {
                             {isReserved && (
                               <button
                                 type="button"
-                                className="active:bg-emerald-600 mb-1 mr-1 rounded bg-red-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear bg-red-700 rounded shadow outline-none active:bg-emerald-600 hover:shadow-lg focus:outline-none"
                                 onClick={deleteContract}
                               >
                                 {t("formButtons.delete")}
@@ -767,7 +834,7 @@ function Contract() {
                             {!isOnHold ? (
                               <button
                                 type="button"
-                                className="active:bg-emerald-600 mb-1 mr-1 rounded bg-orange-500 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear bg-orange-500 rounded shadow outline-none active:bg-emerald-600 hover:shadow-lg focus:outline-none"
                                 onClick={onHold}
                               >
                                 {t("formButtons.hold")}
@@ -775,7 +842,7 @@ function Contract() {
                             ) : (
                               <button
                                 type="button"
-                                className="active:bg-emerald-600 mb-1 mr-1 rounded bg-red-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
+                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear bg-red-700 rounded shadow outline-none active:bg-emerald-600 hover:shadow-lg focus:outline-none"
                                 onClick={unHold}
                               >
                                 {t("formButtons.unHold")}

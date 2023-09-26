@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useLanguageStore } from "App";
 import axios from "axios";
 import React from "react";
@@ -5,11 +6,23 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsPlus } from "react-icons/bs";
 import Swal from "sweetalert2";
+import * as yup from "yup";
+
+let newItemSchema = yup.object({
+  name: yup.string().required("Item name is required"),
+});
 
 export default function NewItem({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
 
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(newItemSchema),
+  });
 
   const { t } = useTranslation();
 
@@ -103,12 +116,15 @@ export default function NewItem({ GetNewItem }) {
                         {t("newItem.name")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline w-full rounded border px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none"
                         id="name"
                         type="text"
                         name="name"
                         {...register("name", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.name?.message}
+                      </p>
                     </div>
                     <div className="mb-4">
                       <label
@@ -118,7 +134,7 @@ export default function NewItem({ GetNewItem }) {
                         {t("newItem.type")}
                       </label>
                       <select
-                        className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                        className="focus:shadow-outline w-full rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                         id="type"
                         name="type"
                         type="string"

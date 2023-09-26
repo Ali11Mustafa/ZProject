@@ -8,6 +8,18 @@ import Swal from "sweetalert2";
 
 import useFetchItems from "hooks/useFetchItems";
 
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+let newNeedSchema = yup.object({
+  need_amount: yup
+    .number()
+    .positive("Need amount should be a positive number")
+    .min(1, "Need amount must be equal or greater than 1")
+    .required("Need amount is required"),
+  description: yup.string().required("Description is required"),
+});
+
 export default function NewNeed({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
   const [itemNames, setNames] = useState([]);
@@ -59,7 +71,14 @@ export default function NewNeed({ GetNewItem }) {
 
   const { t } = useTranslation();
 
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(newNeedSchema),
+  });
   const onSubmit = (data) => {
     let itemName = data.item_name;
     let itemId;
@@ -178,12 +197,16 @@ export default function NewNeed({ GetNewItem }) {
                         {t("newNeed.need_amount")}
                       </label>
                       <input
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="focus:shadow-outline w-full rounded bg-white px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none dark:bg-myBlak"
                         id="need_amount"
                         name="need_amount"
-                        type="text"
+                        type="number"
+                        defaultValue="0"
                         {...register("need_amount", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.need_amount?.message}
+                      </p>
                     </div>
                     <div className="mb-4">
                       <label
@@ -193,12 +216,15 @@ export default function NewNeed({ GetNewItem }) {
                         {t("newNeed.description")}
                       </label>
                       <textarea
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="focus:shadow-outline w-full rounded bg-white px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none dark:bg-myBlak"
                         id="description"
                         name="description"
                         type="text"
                         {...register("description", { required: true })}
                       />
+                      <p className="mt-1 text-sm text-red-400">
+                        {errors.description?.message}
+                      </p>
                     </div>
                     <div className="mb-4">
                       <label
@@ -209,7 +235,7 @@ export default function NewNeed({ GetNewItem }) {
                       </label>
 
                       <select
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="focus:shadow-outline w-full rounded bg-white px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none dark:bg-myBlak"
                         id="item_name"
                         name="item_name"
                         type="string"
@@ -234,7 +260,7 @@ export default function NewNeed({ GetNewItem }) {
                         {t("newNeed.building")}
                       </label>
                       <select
-                        className="focus:shadow-outline w-full appearance-none rounded bg-white px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none dark:bg-myBlak"
+                        className="focus:shadow-outline w-full rounded bg-white px-3 py-2 leading-tight text-gray-700  shadow focus:outline-none dark:bg-myBlak"
                         id="building"
                         name="building"
                         type="string"
