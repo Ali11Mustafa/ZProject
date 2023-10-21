@@ -8,8 +8,8 @@ import {
   View,
 } from "@react-pdf/renderer";
 
+import KGoranFont from "../../../assets/fonts/KGoran.ttf";
 import sadyarLogo from "../../../assets/img/sadyar-2.png";
-import KGoranFont from "./fonts/KGoran.ttf";
 
 Font.register({
   family: "KGoran",

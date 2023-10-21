@@ -1,8 +1,6 @@
 /* eslint-disable */
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
 import { useLanguageStore } from "App";
-import HomeSvg from "assets/icons/HomeSvg";
+import { Link, useLocation } from "react-router-dom";
 // chakra imports
 
 export function SidebarLinks(props) {
@@ -40,13 +38,6 @@ export function SidebarLinks(props) {
                 {route.name}
               </p>
             </li>
-            {/* {activeRoute(route.path) ? (
-              <div
-                className={`absolute ${
-                  language === "en" ? "right-0" : "left-0"
-                } top-px h-9 w-1 rounded-lg bg-myPrimary `}
-              />
-            ) : null} */}
           </div>
         </Link>
       );

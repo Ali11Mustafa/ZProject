@@ -1,10 +1,13 @@
 import BuildingsSvg from "assets/icons/BuildingsSvg";
 import HomeSvg from "assets/icons/HomeSvg";
+import ItemInvoiceSvg from "assets/icons/ItemInvoiceSvg";
 import NeedsSvg from "assets/icons/NeedsSvg";
 import OrdersSvg from "assets/icons/OrdersSvg";
 import UsersSvg from "assets/icons/UsersSvg";
 import ItemsSvg from "assets/icons/itemsSvg";
+import AccountantInvoice from "pages/AccountantInvoice";
 import Buildings from "pages/Buildings";
+import ItemInvoice from "pages/ItemInvoice";
 import Items from "pages/Items";
 import Needs from "pages/Needs";
 import Orders from "pages/Orders";
@@ -109,6 +112,24 @@ function useRoutes() {
         component: <Users />,
       }
     );
+  }
+
+  if (role === "admin") {
+    routes.push({
+      name: t("sidebarLinks.itemInvoice"),
+      path: "/item-invoice",
+      icon: <ItemInvoiceSvg />,
+      component: <ItemInvoice />,
+    });
+  }
+
+  if (role === "admin" || role === "accountant") {
+    routes.push({
+      name: t("sidebarLinks.accountantInvoice"),
+      path: "/accountant-invoice",
+      icon: <ItemInvoiceSvg />,
+      component: <AccountantInvoice />,
+    });
   }
 
   return { routes };

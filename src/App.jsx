@@ -1,7 +1,9 @@
+import AccountantInvoice from "pages/AccountantInvoice";
 import Apartments from "pages/Apartments";
 import Auth from "pages/Auth";
 import Buildings from "pages/Buildings";
 import DashboardPage from "pages/DashboardPage";
+import ItemInvoice from "pages/ItemInvoice";
 import Items from "pages/Items";
 import Needs from "pages/Needs";
 import Orders from "pages/Orders";
@@ -9,10 +11,12 @@ import Users from "pages/Users";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Route, Routes } from "react-router-dom";
+import UpdateAccountantInvoice from "views/accountantInvoice/pages/UpdateAccountantInvoice";
 import Contract from "views/apartments/Pages/Contract";
 import UpdateApartment from "views/apartments/Pages/UpdateApartment";
 import Pdf from "views/apartments/components/Pdf";
 import Updateblock from "views/buildings/Pages/Updateblock";
+import UpdateItemInvoice from "views/iteminvoice/pages/UpdateItemInvoice";
 import UpdateItem from "views/items/pages/UpdateItem";
 import { create } from "zustand";
 import UpdateNeed from "./views/needs/Pages/UpdateNeed";
@@ -116,6 +120,26 @@ export const usePdfStore = create((set) => ({
   setbuyerAddress: (buyerAddress) => set({ buyerAddress: buyerAddress }),
 }));
 
+export const useRecieptStore = create((set) => ({
+  invoiceRemainingPrice: "",
+  invoiceDate: "",
+  invoicePrice: "",
+  paraWargrName: "",
+  paraDarName: "",
+
+  setInvoiceRemainingPrice: (remainingPrice) =>
+    set({ invoiceRemainingPrice: remainingPrice }),
+  setInvoiceDate: (date) => set({ invoiceDate: date }),
+  setInvoicePrice: (price) => set({ invoicePrice: price }),
+  setParaWargrName: (name) => set({ paraWargrName: name }),
+  setParaDarName: (name) => set({ paraDarName: name }),
+}));
+
+export const useReportQueryStore = create((set) => ({
+  queries: {},
+  setQuery: (newQuery) => set((state) => ({ queries: { ...newQuery } })),
+}));
+
 const App = () => {
   const language = useLanguageStore((state) => state.language);
   const { i18n } = useTranslation();
@@ -169,6 +193,17 @@ const App = () => {
       <Route path="/items/update/:itemId" element={<UpdateItem />} />
       <Route path="/orders" element={<Orders />} />
       <Route path="/users" element={<Users />} />
+      <Route path="/item-invoice" element={<ItemInvoice />} />
+      <Route
+        path="/item-invoice/update/:itemInvoiceId"
+        element={<UpdateItemInvoice />}
+      />
+      <Route path="/accountant-invoice" element={<AccountantInvoice />} />
+      <Route
+        path="/accountant-invoice/update/:accountantInvoiceId"
+        element={<UpdateAccountantInvoice />}
+      />
+      <Route path="/invoice/report" element={<UpdateNeed />} />
       <Route path="/needs/update/:needId" element={<UpdateNeed />} />
       <Route path="/users/update/:userId" element={<UpdateUser />} />
       <Route path="/orders/update/:orderId" element={<UpdateOrder />} />

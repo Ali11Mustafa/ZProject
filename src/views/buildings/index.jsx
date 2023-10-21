@@ -1,8 +1,7 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import BuildingsTable from "./components/BuildingsTable";
 import useBuildingsTableColumns from "./variables/useBuildingsTableColumns";
-import { useTranslation } from "react-i18next";
-import { useState, useEffect } from "react";
-import axios from "axios";
 
 const updateBlock = (BlockId, deleted, data) => {
   let usr = JSON.parse(sessionStorage.getItem("user"));
@@ -57,6 +56,7 @@ const BuildingDashboard = () => {
     axios
       .get(API, config)
       .then((response) => {
+        console.log(response);
         setTotal(response.data.meta.total);
         setCurrentPage(pageNumber);
         setPerPage(response.data.meta.per_page);

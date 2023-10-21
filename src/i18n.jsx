@@ -6,6 +6,7 @@ const resources = {
     translation: {
       zTower: "Z Tower",
       loading: "Loading...",
+      downloadReciept: "Download Reciept",
       sidebarLinks: {
         buildings: "Buildings",
         needs: "Needs",
@@ -13,6 +14,8 @@ const resources = {
         users: "Users",
         orders: "Orders",
         dashboard: "Dashboard",
+        itemInvoice: "Item Invoice",
+        accountantInvoice: "Accountant Invoice",
       },
       dashboard: "Dashboard",
       contract: "Contract",
@@ -110,12 +113,43 @@ const resources = {
           actions: "ACTIONS",
         },
       },
+      accountantInvoiceTable: {
+        title: "Accountant Invoice",
+        new: "Add New Accountant Invoice",
+        update: "Update Accountant Invoice",
+        fields: {
+          invoice_item_name: "Item Name",
+          invoice_date: "Invoice Date",
+          invoice_price: "Invoice Price",
+          invoice_remaining_price: "Invoice Remaining Price",
+          para_wargr_name: "Money Receiver",
+          para_dar_name: "Payer",
+          invoice_type: "Invoice Type",
+          is_approved: "Is Approved?",
+          actions: "ACTIONS",
+        },
+      },
+      itemInvoiceTable: {
+        title: "Item Invoice",
+        new: "Add New Item Invoice",
+        update: "Update Item Invoice",
+        fields: {
+          invoice_item_name: "Item Name",
+          invoice_item_need_status: "Item Need Status",
+          actions: "ACTIONS",
+        },
+      },
       newBuilding: {
         title: "Add New Building",
         name: "Name",
         numberOfFloors: "Number of Floors",
         numberOfApartmentsPerFloor: "No. of Apartments per Floor",
         description: "Description",
+      },
+      newItemInvoice: {
+        title: "Add New Invoice",
+        invoice_item_name: "Item Name",
+        invoice_item_need_status: "Need Approval?",
       },
       newApartment: {
         title: "Add New Apartment",
@@ -228,6 +262,37 @@ const resources = {
           updateAlerts: {
             success: {
               title: "The building has been updated",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+        },
+        itemInvoice: {
+          deleteAlerts: {
+            confirmation: "Are you sure?",
+            confirmButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            success: {
+              title: "Deleted!",
+              message: "Invoice has been deleted.",
+            },
+            error: {
+              title: "Something went wrong",
+              message: "Invoice was not deleted.",
+            },
+          },
+          addAlerts: {
+            success: {
+              title: "New invoice has been created.",
+            },
+            error: {
+              title: "Something went wrong",
+            },
+          },
+          updateAlerts: {
+            success: {
+              title: "The invoice has been updated",
             },
             error: {
               title: "Something went wrong",
@@ -526,6 +591,7 @@ const resources = {
     translation: {
       zTower: "زێد تاوەر",
       loading: "بارکردن...",
+      downloadReciept: "دەبەزاندنی پسوولە",
       sidebarLinks: {
         buildings: "باڵەخانەکان",
         needs: "پێداویستیەکان",
@@ -533,6 +599,8 @@ const resources = {
         users: "بەکارهێنەرەکان",
         orders: "داواکاریەکان",
         dashboard: "داشبۆرد",
+        itemInvoice: "فاکتورەی بابەتی",
+        accountantInvoice: "فاکتورەی ژمێریار",
       },
       dashboard: "داشبۆرد",
       contract: "گرێبەست",
@@ -624,6 +692,16 @@ const resources = {
           actions: "کردارەکان",
         },
       },
+      itemInvoiceTable: {
+        title: "پسوولەی کەرەستەکان",
+        new: "زیادکرنی پسوولەی کەرەستەی نوێ",
+        update: "نوێکردنەوەی پسوولەی کەرەستە",
+        fields: {
+          invoice_item_name: "ناوی کەرەستە",
+          invoice_item_need_status: "دۆخی پێویستی پسوولەی کەرەستە",
+          actions: "کردارەکان",
+        },
+      },
       usersTable: {
         title: "بەکارهێنەرەکان",
         columns: {
@@ -634,6 +712,7 @@ const resources = {
           actions: "کردارەکان",
         },
       },
+
       newBuilding: {
         title: "باڵەخانەی نوێ زیاد بکە",
         name: "ناو",
@@ -715,6 +794,22 @@ const resources = {
         orders: "نوێکردنەوەی داواکاری",
         users: "نوێکردنەوەی بەکارهێنەر",
       },
+      accountantInvoiceTable: {
+        title: "فاکتورەی ژمێریار",
+        new: "زیادکردنی پسوولەی ژمێریاری نوێ",
+        update: "نوێکردنەوەی پسوولەی ژمێریاری ",
+        fields: {
+          invoice_item_name: "ناوی کەرەستە",
+          invoice_date: "بەرواری پسوولە",
+          invoice_price: "نرخی پسوولە",
+          invoice_remaining_price: "نرخی ماوەی پسوولە",
+          para_wargr_name: "پارە وەرگر",
+          para_dar_name: "پارەدەر",
+          invoice_type: "جۆری پسوولە",
+          is_approved: " پەسەند کراوە؟",
+          actions: "کردارەکان",
+        },
+      },
       alerts: {
         buildings: {
           deleteAlerts: {
@@ -747,6 +842,7 @@ const resources = {
             },
           },
         },
+
         apartments: {
           deleteAlerts: {
             confirmation: "دڵنیایی؟",
@@ -778,6 +874,7 @@ const resources = {
             },
           },
         },
+
         contract: {
           deleteAlerts: {
             confirmation: "دڵنیایی؟",
@@ -1042,6 +1139,7 @@ const resources = {
     translation: {
       zTower: "زيد تاور",
       loading: "تحميل...",
+      downloadReciept: "إيصال التنزيل",
       sidebarLinks: {
         buildings: "البنايات",
         needs: "الاحتياجات",
@@ -1049,6 +1147,8 @@ const resources = {
         users: "المستخدمون",
         orders: "اوامر",
         dashboard: "داشبورد",
+        itemInvoice: "فاتورة السلعة",
+        accountantInvoice: "فاتورة المحاسب",
       },
       dashboard: "داشبورد",
       contract: "عقد",
@@ -1156,6 +1256,32 @@ const resources = {
         role: "دور",
         password: "كلمة المرور",
         salary: "راتب",
+      },
+      accountantInvoiceTable: {
+        title: "فاتورة المحاسب",
+        new: "إضافة فاتورة محاسب جديدة",
+        update: "تحديث فاتورة المحاسب",
+        fields: {
+          invoice_item_name: "اسم البند",
+          invoice_date: "تاريخ الفاتورة",
+          invoice_price: "سعر الفاتورة",
+          invoice_remaining_price: "المبلغ المتبقي في الفاتورة",
+          para_wargr_name: "مستلم الأموال",
+          para_dar_name: "الدافع",
+          invoice_type: "نوع الفاتورة",
+          is_approved: "هل تمت الموافقة؟",
+          actions: "الإجراءات",
+        },
+      },
+      itemInvoiceTable: {
+        title: "فاتورة البند",
+        new: "أضف فاتورة عنصر جديد",
+        update: "تحديث فاتورة السلعة",
+        fields: {
+          invoice_item_name: "اسم البند",
+          invoice_item_need_status: "حالة احتياج البند",
+          actions: "الإجراءات",
+        },
       },
       newBuilding: {
         title: "أضف مبنى جديد",

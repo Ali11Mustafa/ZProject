@@ -1,36 +1,40 @@
-import { useUserConfigStore } from "App";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import ApartmentsTable from "./components/ApartmentsTable";
-import useApartmentsTableColumns from "./variables/useApartmentsTableColumns";
+import InvoicesTable from "./components/InvoicesTable";
+import useInvoicesTableColumns from "./variables/useInvoicesTableColumns";
 
-const ApartmentsDashbaord = () => {
-  const { apartmentsTableColumns } = useApartmentsTableColumns();
-
-  const { buildingId } = useParams();
-  const userConfig = useUserConfigStore((state) => state.userConfig);
-
+const InvoicesDashbaord = () => {
+  const [newItem, setNewItem] = useState("");
   const [total, setTotal] = useState(0);
   const [perPage, setPerPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  const [apartmentsData, setApartmentsData] = useState([]);
-  const [newItem, setNewItem] = useState("");
 
   const GetNewItem = (item) => {
     setNewItem(item);
+    //Math.random
   };
+
+  const [invoices, setInvoices] = useState([]);
+  const { invoicesTableColumns } = useInvoicesTableColumns();
 
   useEffect(() => {
     const storedCurrentPage = currentPage;
-    fetchData(storedCurrentPage);
-  }, [newItem, currentPage, buildingId]);
+    fetchInvoices(storedCurrentPage);
+  }, [newItem, currentPage]);
 
-  const fetchData = (pageNumber = 1) => {
-    const API = `https://api.hirari-iq.com/api/apartments/${buildingId}?page=${pageNumber}`;
+  let usr = JSON.parse(sessionStorage.getItem("user"));
+  let token = usr?.token;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const fetchInvoices = (pageNumber = 1) => {
+    const API = `https://api.hirari-iq.com/api/invoice/item?page=${pageNumber}`;
     axios
-      .get(API, userConfig)
+      .get(API, config)
       .then((response) => {
         setTotal(response.data.meta.total);
         setCurrentPage(pageNumber);
@@ -43,7 +47,7 @@ const ApartmentsDashbaord = () => {
           }
         });
 
-        setApartmentsData(arrayNotDeleted);
+        setInvoices(arrayNotDeleted);
       })
       .catch((error) => {
         console.error(error);
@@ -51,17 +55,18 @@ const ApartmentsDashbaord = () => {
   };
 
   const HandleFetch = (pageNumber) => {
-    fetchData(pageNumber);
+    fetchInvoices(pageNumber);
   };
 
   return (
     <div>
+      <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-3 3xl:grid-cols-6"></div>
       <div className="mt-5 grid grid-cols-1 gap-5 xl:grid-cols-1">
-        {/* Check Table */}
         <div>
-          <ApartmentsTable
-            columnsData={apartmentsTableColumns}
-            tableData={apartmentsData}
+          <InvoicesTable
+            columnsData={invoicesTableColumns}
+            tableData={invoices}
+            GetNewItem={GetNewItem}
             setPageNumber={setPageNumber}
             total={total}
             pageNumber={pageNumber}
@@ -69,12 +74,10 @@ const ApartmentsDashbaord = () => {
             perPage={perPage}
             HandleFetch={HandleFetch}
             setCurrentPage={setCurrentPage}
-            GetNewItem={GetNewItem}
           />
         </div>
       </div>
     </div>
   );
 };
-
-export default ApartmentsDashbaord;
+export default InvoicesDashbaord;

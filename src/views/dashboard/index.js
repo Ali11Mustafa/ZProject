@@ -4,7 +4,7 @@ import ApartmentsAnalytics from "components/ApartmentsAnalytics";
 import Widget from "components/widget/widget";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BuildingsSvg from "../../assets/icons/BuildingsSvg";
 import NeedsSvg from "../../assets/icons/NeedsSvg";
 import OrdersSvg from "../../assets/icons/OrdersSvg";
@@ -14,7 +14,6 @@ import ItemsSvg from "../../assets/icons/itemsSvg";
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState([]);
   const API = "https://api.hirari-iq.com/api/dashboard/counts";
-  const { buildingId } = useParams();
   const { t } = useTranslation();
   const userConfig = useUserConfigStore((state) => state.userConfig);
 

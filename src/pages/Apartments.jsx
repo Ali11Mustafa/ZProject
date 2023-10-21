@@ -1,11 +1,8 @@
-import Layout from 'Layout'
-import React from 'react'
-import ApartmentsDashbaord from 'views/apartments'
+import Layout from "Layout";
+import ApartmentsDashbaord from "views/apartments";
 
 function Apartments() {
-  return (
-    <Layout children={<ApartmentsDashbaord/>}/>
-  )
+  return <Layout children={<ApartmentsDashbaord />} />;
 }
 
-export default Apartments
+export default Apartments;

@@ -481,7 +481,7 @@ function Contract() {
           "w-full h-full sm:overflow-auto px-5 mt-10 p-5 mt-10 max-w-[1800px] mx-auto"
         }
       >
-        <header className="relative flex items-center justify-between mb-10">
+        <header className="relative mb-10 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={goBack}
@@ -494,11 +494,11 @@ function Contract() {
             </div>
           </div>
         </header>
-        <div className="container max-w-screen-lg mx-auto ">
+        <div className="container mx-auto max-w-screen-lg ">
           <div>
             <form onSubmit={handleSubmit(onSubmit)} className="mb-6">
               <div className="lg:col-span-2">
-                <div className="grid grid-cols-1 gap-4 text-sm gap-y-6 md:grid-cols-6">
+                <div className="grid grid-cols-1 gap-4 gap-y-6 text-sm md:grid-cols-6">
                   <div className="md:col-span-4">
                     <label
                       className="font-medium text-gray-900 dark:text-white"
@@ -516,7 +516,7 @@ function Contract() {
                           <input
                             {...field}
                             type="text"
-                            className="w-full h-10 px-4 mt-1 bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                             disabled={isEditable || isOnHold}
                           />
                           <p className="mt-1 text-sm text-red-400">
@@ -544,7 +544,7 @@ function Contract() {
                           <input
                             {...field}
                             type="number"
-                            className="w-full h-10 px-4 mt-1 bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                             disabled={isEditable || isOnHold}
                           />
                           <p className="mt-1 text-sm text-red-400">
@@ -571,7 +571,7 @@ function Contract() {
                           <input
                             {...field}
                             type="text"
-                            className="w-full h-10 px-4 mt-1 bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                             placeholder=""
                             disabled={isEditable || isOnHold}
                           />
@@ -600,7 +600,7 @@ function Contract() {
                           <input
                             {...field}
                             type="number"
-                            className="w-full h-10 px-4 mt-1 bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                             placeholder=""
                             disabled={isEditable || isOnHold}
                           />
@@ -629,7 +629,7 @@ function Contract() {
                           <input
                             {...field}
                             type="date"
-                            className="w-full h-10 px-4 mt-1 bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            className="mt-1 h-10 w-full rounded border border-indigo-600 bg-white px-4 dark:border-none dark:bg-myBlak"
                             placeholder=""
                             disabled={isEditable || isOnHold}
                           />
@@ -648,7 +648,7 @@ function Contract() {
                     >
                       {t("contractForm.totalPaymentPrice")}
                     </label>
-                    <div className="flex items-center h-10 mt-1 rounded ">
+                    <div className="mt-1 flex h-10 items-center rounded ">
                       <Controller
                         name="total_payment_price"
                         control={control}
@@ -660,7 +660,7 @@ function Contract() {
                               {...field}
                               type="number"
                               defaultValue="0"
-                              className="flex items-center w-full h-10 px-4 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                              className="flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
                               disabled={isEditable || isOnHold}
                             />
                           </>
@@ -679,7 +679,7 @@ function Contract() {
                     >
                       {t("contractForm.apartmentPrice")}
                     </label>
-                    <div className="flex items-center h-10 mt-1 rounded ">
+                    <div className="mt-1 flex h-10 items-center rounded ">
                       <Controller
                         name="apartment_price"
                         control={control}
@@ -691,7 +691,7 @@ function Contract() {
                               {...field}
                               type="number"
                               defaultValue="0"
-                              className="flex items-center w-full h-10 px-4 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                              className="flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
                               disabled={isEditable || isOnHold}
                             />
                           </>
@@ -721,7 +721,7 @@ function Contract() {
                             {...field}
                             type="number"
                             defaultValue="0"
-                            className="flex items-center w-full h-10 px-4 mt-1 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            className="mt-1 flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
                             disabled={isEditable || isOnHold}
                           />
                           <p className="mt-1 text-sm text-red-400">
@@ -746,7 +746,7 @@ function Contract() {
                       render={({ field }) => (
                         <select
                           {...field}
-                          className="flex items-center w-full h-10 px-4 mt-1 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                          className="mt-1 flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
                           disabled={isEditable || isOnHold}
                         >
                           <option value="cash">Cash</option>
@@ -772,7 +772,7 @@ function Contract() {
                           <textarea
                             {...field}
                             rows={4}
-                            className="flex items-center w-full px-4 mt-1 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
+                            className="mt-1 flex w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
                             disabled={isEditable || isOnHold}
                           />
                           <p className="mt-1 text-sm text-red-400">
@@ -794,7 +794,7 @@ function Contract() {
                             {!isReserved && (
                               <button
                                 type="submit"
-                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none active:bg-emerald-600 hover:mySecondary bg-myPrimary hover:shadow-lg focus:outline-none"
+                                className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                               >
                                 {t("formButtons.submit")}
                               </button>
@@ -802,7 +802,7 @@ function Contract() {
                             {isUpdatable && !isEditable && (
                               <button
                                 type="button"
-                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none active:bg-emerald-600 hover:mySecondary bg-myPrimary hover:shadow-lg focus:outline-none"
+                                className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                                 onClick={updateContract}
                               >
                                 {t("formButtons.update")}
@@ -811,7 +811,7 @@ function Contract() {
                             {isEditable && isReserved && (
                               <button
                                 type="button"
-                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none active:bg-emerald-600 hover:mySecondary bg-myPrimary hover:shadow-lg focus:outline-none"
+                                className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                                 onClick={editContract}
                               >
                                 {t("formButtons.edit")}
@@ -820,7 +820,7 @@ function Contract() {
                             {isReserved && (
                               <button
                                 type="button"
-                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear bg-red-700 rounded shadow outline-none active:bg-emerald-600 hover:shadow-lg focus:outline-none"
+                                className="active:bg-emerald-600 mb-1 mr-1 rounded bg-red-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                                 onClick={deleteContract}
                               >
                                 {t("formButtons.delete")}
@@ -834,7 +834,7 @@ function Contract() {
                             {!isOnHold ? (
                               <button
                                 type="button"
-                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear bg-orange-500 rounded shadow outline-none active:bg-emerald-600 hover:shadow-lg focus:outline-none"
+                                className="active:bg-emerald-600 mb-1 mr-1 rounded bg-orange-500 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                                 onClick={onHold}
                               >
                                 {t("formButtons.hold")}
@@ -842,7 +842,7 @@ function Contract() {
                             ) : (
                               <button
                                 type="button"
-                                className="px-6 py-2 mb-1 mr-1 text-sm font-medium text-white uppercase transition-all duration-150 ease-linear bg-red-700 rounded shadow outline-none active:bg-emerald-600 hover:shadow-lg focus:outline-none"
+                                className="active:bg-emerald-600 mb-1 mr-1 rounded bg-red-700 px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
                                 onClick={unHold}
                               >
                                 {t("formButtons.unHold")}
