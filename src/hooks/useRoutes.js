@@ -6,6 +6,7 @@ import OrdersSvg from "assets/icons/OrdersSvg";
 import UsersSvg from "assets/icons/UsersSvg";
 import ItemsSvg from "assets/icons/itemsSvg";
 import AccountantInvoice from "pages/AccountantInvoice";
+import AccountantReport from "pages/AccountantReport";
 import Buildings from "pages/Buildings";
 import ItemInvoice from "pages/ItemInvoice";
 import Items from "pages/Items";
@@ -13,6 +14,7 @@ import Needs from "pages/Needs";
 import Orders from "pages/Orders";
 import Users from "pages/Users";
 import { useTranslation } from "react-i18next";
+import { HiOutlineDocumentReport } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import Dashboard from "views/dashboard";
 
@@ -129,6 +131,15 @@ function useRoutes() {
       path: "/accountant-invoice",
       icon: <ItemInvoiceSvg />,
       component: <AccountantInvoice />,
+    });
+  }
+
+  if (role === "admin") {
+    routes.push({
+      name: t("sidebarLinks.invoiceReport"),
+      path: "/accountant-invoice-report",
+      icon: <HiOutlineDocumentReport />,
+      component: <AccountantReport />,
     });
   }
 

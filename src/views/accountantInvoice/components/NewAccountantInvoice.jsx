@@ -20,11 +20,11 @@ let accountantInvoiceSchema = yup.object({
     .required("Invoice Remaining Price is required")
     .min(1, "Invoice Remaining Price must be greater than or equal to 0"),
   para_wargr_name: yup.string().required("Money Receiver is required"),
-  para_dar_name: yup.string().required("Payer is required"),
+  // para_dar_name: yup.string().required("Payer is required"),
   invoice_type: yup.string().required("Invoice Type is required"),
 });
 
-export default function NewAccountantInvoice({ GetNewItem, setShowFilter }) {
+export default function NewAccountantInvoice({ GetNewItem }) {
   const [showModal, setShowModal] = React.useState(false);
   const [invoiceItems, setInvoiceItems] = useState([]);
   const { t } = useTranslation();
@@ -34,16 +34,18 @@ export default function NewAccountantInvoice({ GetNewItem, setShowFilter }) {
     formState: { errors },
     reset,
   } = useForm({ resolver: yupResolver(accountantInvoiceSchema) });
+
   let usr = JSON.parse(sessionStorage.getItem("user"));
   let token = usr?.token;
   let role = usr?.role;
+
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
 
-  const onSubmit = (data) => {
+  const submitNewAccountant = (data) => {
     let item = invoiceItems.filter(
       (invoiceItem) => invoiceItem.invoice_item_name === data.invoice_item_name
     );
@@ -54,14 +56,16 @@ export default function NewAccountantInvoice({ GetNewItem, setShowFilter }) {
       invoice_price: data.invoice_price.toString(),
       invoice_remaining_price: data.invoice_remaining_price.toString(),
       para_wargr_name: data.para_wargr_name,
-      para_dar_name: data.para_dar_name,
+      para_dar_name: usr.name,
       invoice_type: data.invoice_type,
       is_approved: "0",
     };
+
     const API = "https://api.hirari-iq.com/api/invoice/accountant";
     axios
       .post(API, modifiedData, config)
       .then((response) => {
+        console.log(response);
         GetNewItem(Math.random());
         Swal.fire({
           position: "top-center",
@@ -72,6 +76,7 @@ export default function NewAccountantInvoice({ GetNewItem, setShowFilter }) {
         });
       })
       .catch((error) => {
+        console.error(error);
         Swal.fire({
           position: "top-center",
           icon: "error",
@@ -112,13 +117,12 @@ export default function NewAccountantInvoice({ GetNewItem, setShowFilter }) {
 
   return (
     <>
-      {role === "admin" && (
+      {role === "accountant" && (
         <button
           className="rounded-xs rounded-md bg-gray-200 dark:bg-white dark:text-blue-800"
           type="button"
           onClick={() => {
             setShowModal(true);
-            setShowFilter(false);
           }}
         >
           <BsPlus fontSize={32} />
@@ -150,7 +154,10 @@ export default function NewAccountantInvoice({ GetNewItem, setShowFilter }) {
                 </div>
                 {/*body*/}
                 <div>
-                  <form onSubmit={handleSubmit(onSubmit)} className="mb-6 p-5">
+                  <form
+                    onSubmit={handleSubmit(submitNewAccountant)}
+                    className="mb-6 p-5"
+                  >
                     <div className="lg:col-span-2">
                       <div className="grid grid-cols-1 gap-4 gap-y-6 text-sm md:grid-cols-6">
                         <div className="md:col-span-2">
@@ -295,7 +302,7 @@ export default function NewAccountantInvoice({ GetNewItem, setShowFilter }) {
                           />
                         </div>
 
-                        <div className="md:col-span-2">
+                        {/* <div className="md:col-span-2">
                           <label
                             className="font-medium text-gray-900 dark:text-white"
                             htmlFor="pending_price"
@@ -312,7 +319,7 @@ export default function NewAccountantInvoice({ GetNewItem, setShowFilter }) {
                                 <input
                                   {...field}
                                   type="text"
-                                  className="mt-1 flex h-10 w-full items-center rounded border border-indigo-600 bg-white px-4 transition-all dark:border-none dark:bg-myBlak"
+                                  className="flex items-center w-full h-10 px-4 mt-1 transition-all bg-white border border-indigo-600 rounded dark:border-none dark:bg-myBlak"
                                 />
                                 <p className="mt-1 text-sm text-red-400">
                                   {errors.para_dar_name?.message}
@@ -320,7 +327,7 @@ export default function NewAccountantInvoice({ GetNewItem, setShowFilter }) {
                               </>
                             )}
                           />
-                        </div>
+                        </div> */}
                         <div className="md:col-span-1">
                           <label
                             className="font-medium text-gray-900 dark:text-white"
@@ -355,10 +362,7 @@ export default function NewAccountantInvoice({ GetNewItem, setShowFilter }) {
                                   : "justify-start"
                               } rounded-b pt-5`}
                             >
-                              <button
-                                type="submit"
-                                className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none"
-                              >
+                              <button className="active:bg-emerald-600 hover:mySecondary mb-1 mr-1 rounded bg-myPrimary px-6 py-2 text-sm font-medium uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none">
                                 {t("formButtons.submit")}
                               </button>
                             </div>

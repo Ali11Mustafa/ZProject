@@ -21,7 +21,7 @@ function CustomPage({ children }) {
     page: {
       backgroundColor: "white",
       color: "black",
-      padding: "20px",
+      padding: "10px",
       fontFamily: "KGoran",
       textAlign: "right",
       fontSize: "12px",

@@ -1,4 +1,5 @@
 import AccountantInvoice from "pages/AccountantInvoice";
+import AccountantReport from "pages/AccountantReport";
 import Apartments from "pages/Apartments";
 import Auth from "pages/Auth";
 import Buildings from "pages/Buildings";
@@ -203,7 +204,7 @@ const App = () => {
         path="/accountant-invoice/update/:accountantInvoiceId"
         element={<UpdateAccountantInvoice />}
       />
-      <Route path="/invoice/report" element={<UpdateNeed />} />
+      <Route path="/accountant-invoice-report" element={<AccountantReport />} />
       <Route path="/needs/update/:needId" element={<UpdateNeed />} />
       <Route path="/users/update/:userId" element={<UpdateUser />} />
       <Route path="/orders/update/:orderId" element={<UpdateOrder />} />

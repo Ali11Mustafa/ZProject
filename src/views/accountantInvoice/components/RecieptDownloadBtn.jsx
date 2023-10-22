@@ -2,6 +2,7 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { BsDownload } from "react-icons/bs";
 import Reciept from "./Reciept";
 
 function RecieptDownloadBtn({ invoiceId }) {
@@ -61,8 +62,9 @@ function RecieptDownloadBtn({ invoiceId }) {
                 <button
                   type="button"
                   id="pdf-download-button"
-                  className="rounded-sm bg-blue-400 p-2 text-sm text-black"
+                  className="flex items-center gap-2 rounded-sm bg-mySecondary p-2 text-xs text-white "
                 >
+                  <BsDownload />
                   {t("downloadReciept")}
                 </button>
               )

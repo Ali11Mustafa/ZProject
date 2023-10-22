@@ -3,7 +3,7 @@ import { useLanguageStore } from "App";
 import Layout from "Layout";
 import axios from "axios";
 import Card from "components/card";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
@@ -31,7 +31,6 @@ function UpdateAccountantInvoice() {
   const { accountantInvoiceId } = useParams();
   const navigate = useNavigate();
   const [itemInvoices, setItemInvoices] = useState([]);
-  const downloadPdfRef = useRef();
 
   const {
     control,

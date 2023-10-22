@@ -1,12 +1,15 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
+let usr = JSON.parse(sessionStorage.getItem("user"));
+let role = usr?.role;
+
 const resources = {
   en: {
     translation: {
       zTower: "Z Tower",
       loading: "Loading...",
-      downloadReciept: "Download Reciept",
+      downloadReciept: "Reciept",
       sidebarLinks: {
         buildings: "Buildings",
         needs: "Needs",
@@ -16,6 +19,7 @@ const resources = {
         dashboard: "Dashboard",
         itemInvoice: "Item Invoice",
         accountantInvoice: "Accountant Invoice",
+        invoiceReport: "Invoice Report",
       },
       dashboard: "Dashboard",
       contract: "Contract",
@@ -114,7 +118,10 @@ const resources = {
         },
       },
       accountantInvoiceTable: {
-        title: "Accountant Invoice",
+        title:
+          role === "admin"
+            ? "Accountant Invoice - Approvement"
+            : "Accountant Invoice",
         new: "Add New Accountant Invoice",
         update: "Update Accountant Invoice",
         fields: {
@@ -591,7 +598,7 @@ const resources = {
     translation: {
       zTower: "زێد تاوەر",
       loading: "بارکردن...",
-      downloadReciept: "دەبەزاندنی پسوولە",
+      downloadReciept: "پسوولە",
       sidebarLinks: {
         buildings: "باڵەخانەکان",
         needs: "پێداویستیەکان",
@@ -795,7 +802,10 @@ const resources = {
         users: "نوێکردنەوەی بەکارهێنەر",
       },
       accountantInvoiceTable: {
-        title: "فاکتورەی ژمێریار",
+        title:
+          role === "admin"
+            ? " فاکتورەی ژمێریار - پەسەندکردن"
+            : "فاکتورەی ژمێریار",
         new: "زیادکردنی پسوولەی ژمێریاری نوێ",
         update: "نوێکردنەوەی پسوولەی ژمێریاری ",
         fields: {
@@ -1139,7 +1149,7 @@ const resources = {
     translation: {
       zTower: "زيد تاور",
       loading: "تحميل...",
-      downloadReciept: "إيصال التنزيل",
+      downloadReciept: "إيصال",
       sidebarLinks: {
         buildings: "البنايات",
         needs: "الاحتياجات",
@@ -1258,7 +1268,10 @@ const resources = {
         salary: "راتب",
       },
       accountantInvoiceTable: {
-        title: "فاتورة المحاسب",
+        title:
+          role === "admin"
+            ? " فاکتورەی ژمێریار - پەسەندکردن"
+            : "فاکتورەی ژمێریار",
         new: "إضافة فاتورة محاسب جديدة",
         update: "تحديث فاتورة المحاسب",
         fields: {
