@@ -237,7 +237,7 @@ function Reciept({ recieptData }) {
             }}
           >
             <Text>{id}ژمارەی گرێبەست #</Text>
-            <Text>پسوولەی پارە وەرگرتن</Text>
+            <Text>پسوولە</Text>
             <Text>{invoice_date}بەروار: </Text>
           </View>
           <View
