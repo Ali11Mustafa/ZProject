@@ -353,7 +353,7 @@ function Reciept({ recieptData }) {
               color: "black",
             }}
           >
-            <Text>075089000000</Text>
+            <Text>0750 890 00 00</Text>
             <Text>Erbil, Zerin City</Text>
           </View>
         </View>
