@@ -24,8 +24,6 @@ function InvoiceTable(props) {
     loading,
   } = props;
 
-  console.log(tableData);
-
   const columns = useMemo(() => columnsData, [columnsData]);
 
   const tableInstance = useTable(
@@ -106,15 +104,19 @@ function InvoiceTable(props) {
   const showPrevButton = currentPage !== 1 || currentPage !== 0;
 
   function onApprove(invoiceId) {
-    let invoice = tableData.find(
-      (invoice) => invoice.invoice_item.id === invoiceId
-    );
+    let invoice = tableData.find((invoice) => invoice.id === invoiceId);
 
     const modifiedData = {
-      invoice_item_name: invoice.invoice_item_name,
-      invoice_item_need_status: 0,
+      invoice_item_id: invoice.invoice_item.id,
+      invoice_date: invoice.invoice_date,
+      invoice_price: invoice.invoice_price.toString(),
+      invoice_remaining_price: invoice.invoice_remaining_price.toString(),
+      para_wargr_name: invoice.para_wargr_name,
+      para_dar_name: invoice.para_dar_name,
+      invoice_type: invoice.invoice_type,
+      is_approved: "1",
     };
-    const API = `https://api.hirari-iq.com/api/invoice/item/${invoiceId}`;
+    const API = `https://api.hirari-iq.com/api/invoice/accountant/${invoiceId}`;
     Swal.fire({
       title: t("alerts.needs.acceptAlerts.confirmation"),
       icon: "warning",
@@ -239,33 +241,26 @@ function InvoiceTable(props) {
                             </p>
                           );
                         } else if (cell.column.id === "is_approved") {
-                          if (
-                            row.original.invoice_item
-                              .invoice_item_need_status === 1
-                          ) {
+                          if (cell.value === 0) {
                             data = (
                               <div className="mx-4 flex items-center gap-2">
-                                {role === "admin" ? (
-                                  <button
-                                    onClick={() =>
-                                      onApprove(row.original.invoice_item.id)
-                                    }
-                                    className="rounded-md bg-green-400 px-2 py-1 dark:text-black"
-                                  >
-                                    Approve
-                                  </button>
-                                ) : (
-                                  <p className="text-orange-500">Pending</p>
-                                )}
+                                <button
+                                  onClick={() => onApprove(row.original.id)}
+                                  className="rounded-md bg-green-400 px-2 py-1 dark:text-black"
+                                >
+                                  Approve
+                                </button>
                               </div>
                             );
                           } else {
-                            data = <p className="text-green-400 ">Approved</p>;
+                            data = (
+                              <p className="mx-4 text-green-400 ">Approved</p>
+                            );
                           }
                         } else if (cell.column.id === "actions") {
                           data = (
                             <div className="flex items-center gap-4">
-                              {role === "accountant" && (
+                              {role === "admin" && (
                                 <>
                                   <button
                                     onClick={() => {
@@ -292,8 +287,7 @@ function InvoiceTable(props) {
                                     </p>
                                   </Link>
                                   <div>
-                                    {!row.original.invoice_item
-                                      .invoice_item_need_status ? (
+                                    {row.original.is_approved ? (
                                       <RecieptDownloadBtn
                                         invoiceId={row.original.id}
                                       />

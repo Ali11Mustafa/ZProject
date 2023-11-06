@@ -31,13 +31,17 @@ function RecieptDownloadBtn({ invoiceId }) {
         (invoice) => invoice.id === invoiceId
       );
 
+      console.log(currentInvoice);
+
       if (currentInvoice) {
         setRecieptData({
+          invoice_id: currentInvoice.id,
           invoice_price: currentInvoice.invoice_price,
           invoice_date: currentInvoice.invoice_date,
           para_dar_name: currentInvoice.para_dar_name,
           para_wargr_name: currentInvoice.para_wargr_name,
           invoice_remaining_price: currentInvoice.invoice_remaining_price,
+          item_name: currentInvoice.invoice_item.invoice_item_name,
         });
       }
     } catch (err) {

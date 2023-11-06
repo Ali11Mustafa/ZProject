@@ -9,7 +9,7 @@ import {
 } from "@react-pdf/renderer";
 
 import KGoranFont from "../../../assets/fonts/KGoran.ttf";
-import skysoft from "../../../assets/img/sky-soft.png";
+import hirari from "../../../assets/img/hirari-co.png";
 
 Font.register({
   family: "KGoran",
@@ -56,7 +56,7 @@ function CustomPage({ children }) {
   return (
     <Page style={styles.page}>
       <View style={styles.header}>
-        <Image src={skysoft} style={styles.logo} />
+        <Image src={hirari} style={styles.logo} />
       </View>
       <View style={styles.content}>{children}</View>
     </Page>
@@ -64,11 +64,13 @@ function CustomPage({ children }) {
 }
 
 function Reciept({ recieptData }) {
+  const id = recieptData?.invoice_id;
   const invoice_price = recieptData?.invoice_price;
   const invoice_date = recieptData?.invoice_date;
   const para_dar_name = recieptData?.para_dar_name;
   const para_wargr_name = recieptData?.para_wargr_name;
   const invoice_remaining_price = recieptData?.invoice_remaining_price;
+  const item_name = recieptData?.item_name;
 
   return (
     // <PDFViewer>
@@ -88,8 +90,8 @@ function Reciept({ recieptData }) {
               fontWeight: "black",
             }}
           >
-            <Text>ژمارەی گرێبەست #1</Text>
-            <Text>پسوولەی پارە وەرگرتن</Text>
+            <Text>{id}ژمارەی گرێبەست #</Text>
+            <Text>پسوولە</Text>
             <Text>{invoice_date}بەروار: </Text>
           </View>
           <View
@@ -149,6 +151,7 @@ function Reciept({ recieptData }) {
             }}
           >
             <Text>For:</Text>
+            <Text>{item_name}</Text>
 
             <Text>لە بڕی:</Text>
           </View>
@@ -205,8 +208,8 @@ function Reciept({ recieptData }) {
               color: "black",
             }}
           >
-            <Text>0750 000 0000</Text>
-            <Text>Erbil, Somewhere</Text>
+            <Text>075089000000</Text>
+            <Text>Erbil, Zerin City</Text>
           </View>
         </View>
         <View>
@@ -233,7 +236,7 @@ function Reciept({ recieptData }) {
               fontWeight: "black",
             }}
           >
-            <Text>ژمارەی گرێبەست #1</Text>
+            <Text>{id}ژمارەی گرێبەست #</Text>
             <Text>پسوولەی پارە وەرگرتن</Text>
             <Text>{invoice_date}بەروار: </Text>
           </View>
@@ -294,7 +297,7 @@ function Reciept({ recieptData }) {
             }}
           >
             <Text>For:</Text>
-
+            <Text>{item_name}</Text>
             <Text>لە بڕی:</Text>
           </View>
           <View
@@ -350,8 +353,8 @@ function Reciept({ recieptData }) {
               color: "black",
             }}
           >
-            <Text>0750 000 0000</Text>
-            <Text>Erbil, Somewhere</Text>
+            <Text>075089000000</Text>
+            <Text>Erbil, Zerin City</Text>
           </View>
         </View>
       </CustomPage>

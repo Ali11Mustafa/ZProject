@@ -3,9 +3,6 @@ import { useTranslation } from "react-i18next";
 export default function useAccountantInvoicesTableColumns() {
   const { t } = useTranslation();
 
-  let usr = JSON.parse(sessionStorage.getItem("user"));
-  let role = usr?.role;
-
   const accountantInvoicesTableColumns = [
     {
       Header: t("accountantInvoiceTable.fields.invoice_item_name"),
@@ -35,15 +32,16 @@ export default function useAccountantInvoicesTableColumns() {
       Header: t("accountantInvoiceTable.fields.invoice_type"),
       accessor: "invoice_type",
     },
-   
-  ];
+    {
+      Header: t("accountantInvoiceTable.fields.is_approved"),
+      accessor: "is_approved",
+    },
 
-  if (role === "accountant") {
-    accountantInvoicesTableColumns.push({
+    {
       Header: t("accountantInvoiceTable.fields.actions"),
       accessor: "actions",
-    });
-  }
+    },
+  ];
 
   return { accountantInvoicesTableColumns };
 }
