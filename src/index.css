@@ -17,3 +17,23 @@
     letter-spacing: -0.5px;
   }
 }
+
+::-webkit-scrollbar {
+  width: 0.8em;
+  background-color: #223354;
+  border-radius: 100vw !important;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #223354;
+  border-radius: 100vw !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2b7bd6;
+  border-radius: 100vw !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4895ef;
+}

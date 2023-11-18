@@ -125,13 +125,13 @@ function AccountantInvoiceReport() {
             </button>
             <form
               className={`${showFilter ? "" : "hidden"} absolute top-0 ${
-                language === "en" ? "right-28" : "left-28"
+                language === "en" ? "right-10" : "left-10"
               } flex w-[400px] flex-col gap-4 rounded-md border bg-white p-4 shadow-lg dark:border-none dark:bg-myBlak`}
               onSubmit={handleSubmit(onFilterSubmit)}
             >
               <div className="flex items-center justify-between gap-2">
                 <label htmlFor="from-date" className="text-right">
-                  From Date:
+                  {t("invoiceReportPage.filter.fromDate")}
                 </label>
                 <input
                   type="date"
@@ -143,7 +143,7 @@ function AccountantInvoiceReport() {
               </div>
               <div className="flex items-center justify-between gap-2">
                 <label htmlFor="to-date" className="text-right">
-                  To Date:
+                  {t("invoiceReportPage.filter.toDate")}
                 </label>
                 <input
                   type="date"
@@ -155,7 +155,7 @@ function AccountantInvoiceReport() {
               </div>
               <div className="flex items-center justify-between gap-2">
                 <label htmlFor="invoice-type" className="text-right">
-                  Invoice Type:
+                  {t("invoiceReportPage.filter.invoiceType")}
                 </label>
                 <select
                   className="rounded px-2 py-1 dark:bg-black"
@@ -171,7 +171,7 @@ function AccountantInvoiceReport() {
               </div>
               <div className="flex items-center justify-between gap-2">
                 <label htmlFor="per-page" className="text-right">
-                  Per Page:
+                  {t("invoiceReportPage.filter.perPage")}
                 </label>
                 <select
                   className="rounded px-2 py-1 dark:bg-black"
@@ -202,14 +202,14 @@ function AccountantInvoiceReport() {
                 type="submit"
                 className=" rounded-lg bg-myPrimary px-5 py-2.5 text-sm font-medium text-white hover:bg-mySecondary focus:outline-none focus:ring-4  "
               >
-                Filter
+                {t("invoiceReportPage.filter.filter")}
               </button>
               <button
                 type="button"
                 className=" rounded-lg bg-myCard px-5 py-2.5 text-sm font-medium text-white focus:outline-none focus:ring-4 focus:ring-gray-300"
                 onClick={resetFilter}
               >
-                Reset
+                {t("invoiceReportPage.filter.reset")}
               </button>
             </form>
           </div>
@@ -217,7 +217,9 @@ function AccountantInvoiceReport() {
       </header>
 
       {!filterApplied ? (
-        <p className="my-10 p-4 text-center">No Reports to show!</p>
+        <p className="my-10 p-4 text-center">
+          {t("invoiceReportPage.noReportToShow")}
+        </p>
       ) : (
         <InvoiceTable
           columnsData={accountantInvoicesTableColumns}

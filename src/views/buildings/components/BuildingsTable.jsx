@@ -138,7 +138,7 @@ const BuildingsTable = (props) => {
 
       <div
         className={`mt-8  ${
-          tableData.length > 0 ? "overflow-scroll" : "overflow-hidden"
+          tableData.length > 0 ? "overflow-auto" : "overflow-hidden"
         }`}
       >
         <table
@@ -236,7 +236,7 @@ const BuildingsTable = (props) => {
                                   >
                                     <div
                                       value={row.original.id}
-                                      className="flex items-center justify-center text-xl rounded-sm from-brandLinear to-brand-500 "
+                                      className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl "
                                     >
                                       <MdDeleteOutline
                                         value={row.original.id}
@@ -244,7 +244,7 @@ const BuildingsTable = (props) => {
                                     </div>
                                     <p
                                       value={row.original.id}
-                                      className="text-sm font-medium text-black text-start dark:text-white"
+                                      className="text-start text-sm font-medium text-black dark:text-white"
                                     >
                                       {t("actions.delete")}
                                     </p>
@@ -253,10 +253,10 @@ const BuildingsTable = (props) => {
                                     to={`/buildings/update/${row.original.id}`}
                                     className="flex items-center gap-1 text-green-600"
                                   >
-                                    <div className="flex items-center justify-center text-lg rounded-sm from-brandLinear to-brand-500">
+                                    <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg">
                                       <FiEdit />
                                     </div>
-                                    <p className="text-sm font-medium text-black text-start dark:text-white">
+                                    <p className="text-start text-sm font-medium text-black dark:text-white">
                                       {t("actions.update")}
                                     </p>
                                   </Link>
@@ -266,10 +266,10 @@ const BuildingsTable = (props) => {
                                 to={`${row.original.id}/apartments`}
                                 className="flex items-center gap-1 text-blue-600"
                               >
-                                <div className="flex items-center justify-center text-lg rounded-sm from-brandLinear to-brand-500">
+                                <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg">
                                   <FiExternalLink />
                                 </div>
-                                <p className="text-sm font-medium text-black text-start dark:text-white">
+                                <p className="text-start text-sm font-medium text-black dark:text-white">
                                   {t("actions.apartments")}
                                 </p>
                               </Link>
@@ -304,7 +304,7 @@ const BuildingsTable = (props) => {
           breakLabel={<span className="mx-2">...</span>}
           nextLabel={
             showNextButton ? (
-              <button className="flex items-center justify-center w-10 h-10 mx-2 text-center text-white rounded-md text-md bg-mySecondary hover:bg-myPrimary">
+              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
                 {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
               </button>
             ) : null
@@ -314,7 +314,7 @@ const BuildingsTable = (props) => {
           pageCount={Math.ceil(total / 10)}
           previousLabel={
             showPrevButton ? (
-              <button className="flex items-center justify-center w-10 h-10 mx-2 text-center text-white rounded-md text-md bg-mySecondary hover:bg-myPrimary">
+              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
                 {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
               </button>
             ) : null

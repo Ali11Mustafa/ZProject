@@ -7,6 +7,18 @@ let role = usr?.role;
 const resources = {
   en: {
     translation: {
+      invoiceReportPage: {
+        noReportToShow: "No report to show!",
+        filter: {
+          fromDate: "From Date:",
+          toDate: "To Date:",
+          invoiceType: "Invoice Type:",
+          perPage: "Per Page:",
+          filter: "Filter",
+          reset: "Reset",
+        },
+      },
+
       zTower: "Z Tower",
       loading: "Loading...",
       downloadReciept: "Reciept",
@@ -596,6 +608,17 @@ const resources = {
   },
   ku: {
     translation: {
+      invoiceReportPage: {
+        noReportToShow: "هیچ ڕاپۆرتێک نییە بۆ پشاندان!",
+        filter: {
+          fromDate: "لە بەرواری:",
+          toDate: "تاكو بەرواری:",
+          invoiceType: "جۆری فاکتورە:",
+          perPage: "بۆ هەر لاپەڕەیەک:",
+          filter: "فلتەر",
+          reset: "ڕیسێت",
+        },
+      },
       zTower: "زێد تاوەر",
       loading: "بارکردن...",
       downloadReciept: "پسوولە",
@@ -608,6 +631,7 @@ const resources = {
         dashboard: "داشبۆرد",
         itemInvoice: "فاکتورەی بابەتی",
         accountantInvoice: "فاکتورەی ژمێریار",
+        invoiceReport: "ڕاپۆرتی فاکتورە",
       },
       dashboard: "داشبۆرد",
       contract: "گرێبەست",
@@ -1147,6 +1171,17 @@ const resources = {
   },
   ar: {
     translation: {
+      invoiceReportPage: {
+        noReportToShow: "لا يوجد تقرير لإظهار!",
+        filter: {
+          fromDate: "من تاريخ:",
+          toDate: "إلى تاريخ:",
+          invoiceType: "نوع الفاتورة:",
+          perPage: "لكل صفحة:",
+          filter: "تصفية",
+          reset: "إعادة تعيين",
+        },
+      },
       zTower: "زيد تاور",
       loading: "تحميل...",
       downloadReciept: "إيصال",
@@ -1159,6 +1194,7 @@ const resources = {
         dashboard: "داشبورد",
         itemInvoice: "فاتورة السلعة",
         accountantInvoice: "فاتورة المحاسب",
+        invoiceReport: "تقرير الفاتورة",
       },
       dashboard: "داشبورد",
       contract: "عقد",

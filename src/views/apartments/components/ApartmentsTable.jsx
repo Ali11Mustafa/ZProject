@@ -150,7 +150,7 @@ const ApartmentsTable = (props) => {
 
       <div
         className={`mt-8  ${
-          tableData.length > 0 ? "overflow-scroll" : "overflow-hidden"
+          tableData.length > 0 ? "overflow-auto" : "overflow-hidden"
         }`}
       >
         <table
@@ -240,10 +240,10 @@ const ApartmentsTable = (props) => {
                             className="flex items-center gap-1 text-red-600"
                             onClick={() => handleDelete(row.original.id)}
                           >
-                            <div className="flex items-center justify-center text-xl rounded-sm from-brandLinear to-brand-500 ">
+                            <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-xl ">
                               <MdDeleteOutline />
                             </div>
-                            <p className="text-sm font-medium text-black text-start dark:text-white">
+                            <p className="text-start text-sm font-medium text-black dark:text-white">
                               {t("actions.delete")}
                             </p>
                           </button>
@@ -251,10 +251,10 @@ const ApartmentsTable = (props) => {
                             to={`/buildings/${buildingId}/apartments/${row.original.id}/update`}
                             className="flex items-center gap-1 text-green-600"
                           >
-                            <div className="flex items-center justify-center text-lg rounded-sm from-brandLinear to-brand-500">
+                            <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg">
                               <FiEdit />
                             </div>
-                            <p className="text-sm font-medium text-black text-start dark:text-white">
+                            <p className="text-start text-sm font-medium text-black dark:text-white">
                               {t("actions.update")}
                             </p>
                           </Link>
@@ -262,10 +262,10 @@ const ApartmentsTable = (props) => {
                             to={`/buildings/${buildingId}/apartments/${row.original.id}/contract`}
                             className="flex items-center gap-1 text-green-600"
                           >
-                            <div className="flex items-center justify-center text-lg rounded-sm from-brandLinear to-brand-500 ">
+                            <div className="flex items-center justify-center rounded-sm from-brandLinear to-brand-500 text-lg ">
                               <FaEye />
                             </div>
-                            <p className="text-sm font-medium text-black text-start dark:text-white">
+                            <p className="text-start text-sm font-medium text-black dark:text-white">
                               {t("actions.view")}
                             </p>
                           </Link>
@@ -293,7 +293,7 @@ const ApartmentsTable = (props) => {
           breakLabel={<span className="mx-2">...</span>}
           nextLabel={
             showNextButton ? (
-              <button className="flex items-center justify-center w-10 h-10 mx-2 text-center text-white rounded-md text-md bg-mySecondary hover:bg-myPrimary">
+              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
                 {language === "en" ? <BsChevronRight /> : <BsChevronLeft />}
               </button>
             ) : null
@@ -303,7 +303,7 @@ const ApartmentsTable = (props) => {
           pageCount={Math.ceil(total / 10)}
           previousLabel={
             showPrevButton ? (
-              <button className="flex items-center justify-center w-10 h-10 mx-2 text-center text-white rounded-md text-md bg-mySecondary hover:bg-myPrimary">
+              <button className="text-md mx-2 flex h-10 w-10 items-center justify-center rounded-md bg-mySecondary text-center text-white hover:bg-myPrimary">
                 {language === "en" ? <BsChevronLeft /> : <BsChevronRight />}
               </button>
             ) : null

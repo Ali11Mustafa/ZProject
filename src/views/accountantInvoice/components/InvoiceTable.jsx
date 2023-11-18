@@ -151,8 +151,7 @@ function InvoiceTable(props) {
   return (
     <>
       <div
-        className={`mt-8  ${
-          tableData.length > 0 ? "overflow-scroll" : "overflow-hidden"
+        className={`mt-8  
         }`}
       >
         <table
@@ -286,15 +285,7 @@ function InvoiceTable(props) {
                                       {t("actions.update")}
                                     </p>
                                   </Link>
-                                  <div>
-                                    {row.original.is_approved ? (
-                                      <RecieptDownloadBtn
-                                        invoiceId={row.original.id}
-                                      />
-                                    ) : (
-                                      ""
-                                    )}
-                                  </div>
+                                  
                                 </>
                               )}
                             </div>

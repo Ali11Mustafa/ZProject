@@ -127,7 +127,7 @@ const InvoicesTable = (props) => {
 
       <div
         className={`mt-8  ${
-          tableData.length > 0 ? "overflow-scroll" : "overflow-hidden"
+          tableData.length > 0 ? "overflow-auto" : "overflow-hidden"
         }`}
       >
         <table
